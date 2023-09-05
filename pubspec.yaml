@@ -1,0 +1,23 @@
+name: benchmark_runner
+
+description: Extends benchmark_harness by providing inline benchmark functions
+  with the option of reporting score statistics.
+
+version: 0.0.1
+
+homepage: https://github.com/simphotonics/benchmark_runner
+
+executables:
+  benchmark_runner: benchmark_runner
+
+environment:
+  sdk: '^3.0.0'
+
+dependencies:
+  benchmark_harness: ^2.2.2
+  exception_templates: ^0.3.0
+  lazy_memo: ^0.2.2
+
+dev_dependencies:
+  lints: ^2.1.1
+  test: ^1.24.6
