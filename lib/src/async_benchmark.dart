@@ -1,10 +1,18 @@
 import 'dart:async';
+import 'dart:isolate';
 import 'dart:math';
 
+import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:benchmark_harness/benchmark_harness.dart'
-    show AsyncBenchmarkBase, PrintEmitter;
+    show AsyncBenchmarkBase;
 
+import 'color_print_emitter.dart';
 import 'extensions/color_print.dart';
+import 'extensions/color_profile.dart';
+import 'extensions/duration_formatter.dart';
+import 'extensions/string_utils.dart';
+import 'group.dart';
+import 'utils/environment.dart';
 import 'utils/stats.dart';
 
 typedef AsyncFunction = Future<void> Function();
@@ -12,7 +20,7 @@ typedef AsyncFunction = Future<void> Function();
 /// An asynchronous function that does nothing.
 Future<void> futureDoNothing() async {}
 
-/// A generic class used to benchmark asynchronous functions.
+/// A class used to benchmark asynchronous functions.
 /// The benchmarked function is provided as a constructor argument.
 class AsyncBenchmark extends AsyncBenchmarkBase {
   /// Constructs an [AsyncBenchmark] object using the following arguments:
@@ -27,7 +35,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
     required AsyncFunction run,
     AsyncFunction? setup,
     AsyncFunction? teardown,
-    super.emitter = const PrintEmitter(),
+    super.emitter = const ColorPrintEmitter(),
   })  : _run = run,
         _setup = setup ?? futureDoNothing,
         _teardown = teardown ?? futureDoNothing,
@@ -60,44 +68,183 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
   /// Returns the benchmark description (corresponds to the getter name).
   String get description => name;
 
+  /// Runs [measure] and emits the score and benchmark runtime.
+  @override
+  Future<void> report() async {
+    final watch = Stopwatch()..start();
+    final score = await measure();
+    final runtime = watch.elapsed.mmssms.style(ColorProfile.dim);
+    emitter.emit('$runtime $description', score);
+  }
+
   Future<List<double>> sample() async {
     await _setup();
-    final result = <double>[];
+
     try {
       // Warmup for at least 100ms. Discard result.
-      // Note: Score in ms.
-      final score = (await AsyncBenchmarkBase.measureFor(_run, 100)) ~/ 1000;
+      // Note: Score converted from us to ms.
+      final score = await AsyncBenchmarkBase.measureFor(_run, 400);
 
-      // Set the runtime to minimum: 1ms and max: 2000 ms
-      final minimumMillis = min(
-        max((score*10), 1),
-        2000,
-      );
+      // Micro-benchmark exercise runtime < 1ms
+      if (score < 1000) {
+        final result = <double>[];
+        // Note: score * 50 ~/1000 -> score ~/20
+        // 1 <= minimumMillis <= 50
+        final minimumMillis = max(score ~/ 20, 1);
+        // 40 <= sampleSize <= 120
+        final sampleSize = 120 - 20 * log(minimumMillis).ceil();
+        for (var i = 0; i < sampleSize; i++) {
+          result.add(await AsyncBenchmarkBase.measureFor(
+            _run,
+            minimumMillis,
+          ));
+        }
+        return result;
+      } else {
+        final sample = <int>[];
+        final overhead = <int>[];
+        // Benchmark with exercise runtime > 1ms
+        // 1000  <= sampleSize <= 10
+        var sampleSize = 300 - 41 * log(score ~/ 1000).ceil();
+        sampleSize = sampleSize < 10 ? 10 : sampleSize;
 
-      /// Set the sampleSize to minimum: 11 and maximum: 75.
-      final sampleSize = 75 - 8 * log(minimumMillis).ceil();
-      for (var i = 0; i < sampleSize; i++) {
-        result.add(await AsyncBenchmarkBase.measureFor(
-          _run,
-          minimumMillis,
-        ));
+        final watch = Stopwatch()..start();
+        final warmupRuns = 3;
+        for (var i = 0; i < sampleSize + warmupRuns; i++) {
+          watch.reset();
+          await _run();
+          sample.add(watch.elapsedTicks);
+          watch.reset();
+          overhead.add(watch.elapsedTicks);
+        }
+        for (var i = 0; i < sampleSize; i++) {
+          sample[i] = (sample[i] - overhead[i]);
+        }
+        final frequency = watch.frequency / 1000000;
+        return sample
+            .map<double>(
+              (e) => e / frequency,
+            )
+            .skip(warmupRuns)
+            .toList();
       }
-      return result;
     } finally {
       await _teardown();
     }
   }
 
-  Future<void> reportStats() async {
+  /// Returns a record holding the total benchmark duration
+  /// and a [Stats] object created from the score samples.
+  Future<RuntimeStats> runtimeStats() async {
+    final watch = Stopwatch()..start();
     final stats = Stats(await sample());
-    stats.removeOutliers(10);
+    watch.stop();
+    //stats.removeOutliers(10);
+    return (runtime: watch.elapsed, stats: stats);
+  }
+
+  /// Emits score statistics.
+  Future<void> reportStats() async {
+    final (:stats, :runtime) = await runtimeStats();
     emitter.emitStats(
+      runtime: runtime,
       description: description,
-      mean: stats.mean,
-      median: stats.median,
-      stdDev: stats.stdDev,
-      interQuartileRange: (stats.quartile3 - stats.quartile1).toDouble(),
-      blockHistogram: stats.blockHistogram(),
+      stats: stats,
     );
   }
+}
+
+/// Defines an asynchronous benchmark.
+/// * `run`: the benchmarked function,
+/// * `setup`: exectued once before the benchmark,
+/// * `teardown`: executed once after the benchmark runs.
+/// * `emitStats`: Set to `false` to emit score as provided by benchmark_harness.
+/// * `runInIsolate`: Set to `true` to run benchmarks in an isolate.
+Future<void> asyncBenchmark(
+  String description,
+  Future<void> Function() run, {
+  Future<void> Function()? setup,
+  Future<void> Function()? teardown,
+  bool emitStats = true,
+  bool runInIsolate = true,
+}) async {
+  // final parentDescription = Zone.current[#_benchmarkDescription] as String?;
+  // if (parentDescription != null) {
+  //   throw UnsupportedError('${'Nested benchmarks are '
+  //           'not supported! '.style(ColorProfile.error)}'
+  //       'Check benchmarks: '
+  //       '$parentDescription > $description');
+  // }
+
+  final group = Zone.current[#group] as Group?;
+  final groupDescription = group == null ? '' : '${group.description} ';
+
+  final instance = AsyncBenchmark(
+    description: groupDescription +
+        (hourGlass + description).style(
+          ColorProfile.asyncBenchmark,
+        ),
+    run: run,
+    setup: setup,
+    teardown: teardown,
+  );
+  final watch = Stopwatch()..start();
+
+  void reportError(Object error, StackTrace stack) {
+    print(
+      '${watch.elapsed.mmssms.style(ColorProfile.dim)} '
+      '${instance.description} '
+      '${error.toString().style(ColorProfile.error)}\n',
+    );
+    if (isVerbose) {
+      print(stack.toString().indentLines(2, indentMultiplierFirstLine: 2));
+    }
+    addErrorMark();
+  }
+
+  await runZonedGuarded(
+    () async {
+      try {
+        switch ((emitStats, runInIsolate)) {
+          case (true, true):
+
+            /// Run method sample() in an isolate.
+            final (:stats, :runtime) = await Isolate.run(instance.runtimeStats);
+            instance.emitter.emitStats(
+              runtime: runtime,
+              description: instance.description,
+              stats: stats,
+            );
+            addSuccessMark();
+            break;
+          case (true, false):
+            await instance.reportStats();
+            addSuccessMark();
+            break;
+          case (false, true):
+
+            /// Run method measure() in an isolate.
+            final watch = Stopwatch()..start();
+            final score = await Isolate.run(instance.measure);
+            final runtime = watch.elapsed.mmssms.style(ColorProfile.dim);
+            instance.emitter.emit(
+              '$runtime ${instance.description}',
+              score,
+            );
+            addSuccessMark();
+            break;
+          case (false, false):
+            await instance.report();
+            addSuccessMark();
+        }
+      } catch (error, stack) {
+        reportError(error, stack);
+      }
+    },
+    ((error, stack) {
+      /// Safequard: Errors should be caught in the try block above.
+      reportError(error, stack);
+    }),
+    zoneValues: {#_benchmarkDescription: instance.description},
+  );
 }

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-/// Returns a list of resolved test files as `Future<List<File>>`.
-/// * Test files must end with `_test.dart`.
-/// * Returns an empty list if no test files are found.
+/// Returns a list of resolved benchmark files.
+/// * Benchmark files must end with `_benchmark.dart`.
+/// * Returns an empty list if no benchmark files were found.
 Future<List<File>> resolveBenchmarkFiles(String path) async {
   final benchmarkFiles = <File>[];
   final entityType = FileSystemEntity.typeSync(path);

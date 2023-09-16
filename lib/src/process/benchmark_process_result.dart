@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io' show ProcessResult, Process, systemEncoding;
 
+import 'package:ansi_modifier/ansi_modifier.dart';
+import 'package:benchmark_runner/src/extensions/color_profile.dart';
+import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
 import 'package:benchmark_runner/src/extensions/string_utils.dart';
 
-import '../utils/ansi_modifier.dart';
 import 'exit_code.dart';
 
 /// A record holding:
@@ -60,83 +62,107 @@ extension BenchmarkUtils on BenchmarkProcessResult {
   /// Returns the process exit code.
   int get exitCode => processResult.exitCode;
 
-  /// Note: Every time a benchmark fails a
-  /// message is written to `stderr`.
+  /// Returns the number of benchmarks throwing an uncaught exception
+  /// or error.
   int get numberOfFailedBenchmarks {
     return processResult.stderr.toString().countSubstring(errorMark);
   }
 
-  /// Indents `stdout`.
+  /// Returns the number of groups throwing an uncaught exception or error.
   ///
-  /// Each line of output will start with
-  /// `indentChars` repeated `indentMultiplier` times.
-  String formattedStdout({
-    String indentChars = ' ',
-    int indentMultiplier = 1,
-  }) =>
-      (processResult.stdout as String).indentLines(
-        indentMultiplier,
-        indentChars: indentChars,
-      );
+  /// Note: Errors thrown within benchmark functions are counted separately.
+  int get numberOfFailedGroups {
+    return processResult.stderr.toString().countSubstring(groupErrorMark);
+  }
 
-  /// Indents and colorizes `this.stderr`.
-  ///
-  /// Each line of output will start with
-  /// `indentChars` repeated `indentMultiplier` times.
-  String formattedStderr({
-    String indentChars = ' ',
-    int indentMultiplier = 1,
-  }) =>
-      (processResult.stderr as String)
-          .replaceAllMapped(errorMark, (match) => '')
-          .indentLines(
-            indentMultiplier,
-            indentChars: indentChars,
-          );
+  /// Returns the number of successfully completed benchmark runs.
+  int get numberOfCompletedBenchmarks {
+    return processResult.stderr.toString().countSubstring(successMark);
+  }
+
+  /// Standard output from the process as [String].
+  String get stdout => (processResult.stdout as String);
+
+  /// Returns the standard error output from the process.
+  String get stderr => (processResult.stderr as String)
+      .replaceAll(errorMark, '')
+      .replaceAll(groupErrorMark, '')
+      .replaceAll(successMark, '');
 
   /// Returns a record of type [ExitStatus].
   /// * Checks if the benchmark processes exited normally.
   /// * Checks if stderr contains the string `To do`.
   static ExitStatus aggregatedExitStatus({
     required List<BenchmarkProcessResult> results,
+    required Duration duration,
     bool isVerbose = false,
   }) {
-    var msg = '\nSummary:';
-    var exitCode = ExitCode.allBenchmarksPassed;
+    var exitCode = ExitCode.allBenchmarksExecuted;
     var numberOfFailedBenchmarks = 0;
+    var numberOfFailedGroups = 0;
+    var numberOfCompletedBenchmarks = 0;
+    final out = StringBuffer();
+
+    out.writeln('-------      Summary     -------- '.style(ColorProfile.dim));
+    out.write('Total run time: ${duration.mmssms.style(
+      ColorProfile.success,
+    )}');
+    out.writeln('(Futures are awaited in parallel.)'.style(ColorProfile.dim));
 
     for (final result in results) {
-      final failedBenchmarks = result.numberOfFailedBenchmarks;
-      numberOfFailedBenchmarks += failedBenchmarks;
+      numberOfFailedBenchmarks += result.numberOfFailedBenchmarks;
+      numberOfFailedGroups += result.numberOfFailedGroups;
+      numberOfCompletedBenchmarks += result.numberOfCompletedBenchmarks;
     }
 
+    out.writeln('Completed benchmarks: '
+        '${numberOfCompletedBenchmarks.toString().style(
+              ColorProfile.success,
+            )}.');
+
     if (numberOfFailedBenchmarks > 0) {
-      msg = '${msg}Benchmarks resulting in an uncaught exception: '
-          '${numberOfFailedBenchmarks.toString().colorize(
-                AnsiModifier.red,
-              )}.'
-          '${isVerbose ? '' : '\nTry using the option ${'--verbose'.colorize(
-              AnsiModifier.whiteBold,
-            )} '
-              'for more details.'}';
+      out.writeln('Benchmarks with errors: '
+          '${numberOfFailedBenchmarks.toString().style(ColorProfile.error)}.');
       exitCode = ExitCode.someBenchmarksFailed;
+    }
+
+    if (numberOfFailedGroups > 0) {
+      out.writeln('Groups with errors: '
+          '${numberOfFailedGroups.toString().style(ColorProfile.error)}.\n'
+          'Some benchmark may have been skipped!');
+      exitCode = ExitCode.someGroupsFailed;
+    }
+
+    if ((numberOfFailedBenchmarks > 0 || numberOfFailedGroups > 0) &&
+        !isVerbose) {
+      out.writeln('Try using the option '
+          '${'--verbose'.style(ColorProfile.emphasize)} or '
+          '${'-v'.style(ColorProfile.emphasize)} '
+          'for more details.');
     }
 
     switch (exitCode) {
       case ExitCode.someBenchmarksFailed:
-        msg = '$msg\nExiting with code '
+        out.writeln('Exiting with code '
             '${ExitCode.someBenchmarksFailed.code}: '
-            '${ExitCode.someBenchmarksFailed.description.colorize(
-          AnsiModifier.red,
-        )}';
+            '${ExitCode.someBenchmarksFailed.description.style(
+          ColorProfile.error,
+        )}');
         break;
-      case ExitCode.allBenchmarksPassed:
-        msg = '${'Completed successfully.'.colorize(AnsiModifier.green)}\n'
-            'Exiting with code: 0.';
+      case ExitCode.allBenchmarksExecuted:
+        out.writeln('${'Completed successfully.'.style(ColorProfile.success)}\n'
+            'Exiting with code: 0.');
+        break;
+      case ExitCode.someGroupsFailed:
+        out.writeln('Exiting with code '
+            '${ExitCode.someGroupsFailed.code}: '
+            '${ExitCode.someGroupsFailed.description.style(
+          ColorProfile.error,
+        )}');
         break;
       default:
     }
 
-    return (message: msg, exitCode: exitCode);
+    return (message: out.toString(), exitCode: exitCode);
   }
 }

@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:benchmark_runner/benchmark_runner.dart';
 
 /// The script usage.
 const usage =
-    '---------------------------------------------------------------\n'
-    'Usage: benchmark_runner [<benchmark-directory/benchmark-file>] '
-    '[options]\n\n'
+    '------------------------------------------------------------------------\n'
+    'Usage: benchmark_runner [options] [<benchmark-directory/benchmark-file>] '
+    '\n\n'
     '  Note: If a benchmark-directory is specified, the program  will attempt \n'
     '        to run all dart files ending with \'_benchmark.dart.\'\n'
     '  Options:\n'
     '    -h, --help                Shows script usage.\n'
     '    -v, --verbose             Enables displaying error messages.\n'
-    '    --disable-color           Disables color output.\n';
+    '    --isMonochrome            Disables color output.\n';
 
 Future<void> main(List<String> args) async {
   final clock = Stopwatch()..start();
@@ -23,10 +24,10 @@ Future<void> main(List<String> args) async {
   // Reading script options.
 
   final isVerbose = args.contains('--verbose') || args.contains('-v');
-  final isMonochrome = args.contains('--disable-color') ? true : false;
-  AnsiModifier.colorOutput = isMonochrome ? ColorOutput.off : ColorOutput.on;
+  final isMonochrome = args.contains('--isMonochrome') ? true : false;
+  Ansi.status = isMonochrome ? AnsiOutput.disabled : AnsiOutput.enabled;
 
-  argsCopy.remove('--disable-color');
+  argsCopy.remove('--isMonochrome');
   argsCopy.remove('--verbose');
   argsCopy.remove('-v');
 
@@ -46,17 +47,17 @@ Future<void> main(List<String> args) async {
     print('');
     print('Could not resolve any benchmark files using '
         '${isUsingDefaultDirectory ? 'default' : ''}'
-        ' path: ${argsCopy[0].colorize(AnsiModifier.yellow)}');
+        ' path: ${argsCopy[0].style(ColorProfile.highlight)}');
     print(
       'Please specify a path to a benchmark directory '
       'containing benchmark files: \n'
-      '\$  ${'dart run benchmark_runner'.colorize(AnsiModifier.whiteBold)} '
-      '${'benchmark_directory'.colorize(AnsiModifier.yellow)}',
+      '\$  ${'dart run benchmark_runner'.style(ColorProfile.emphasize)} '
+      '${'benchmark_directory'.style(ColorProfile.highlight)}',
     );
     print(usage);
     exit(ExitCode.noBenchmarkFilesFound.index);
   } else {
-    print('\nFinding test files... '.colorize(AnsiModifier.grey));
+    print('\nFinding benchmark files... '.style(ColorProfile.dim));
     for (final file in benchmarkFiles) {
       print('  ${file.path}');
     }
@@ -69,41 +70,30 @@ Future<void> main(List<String> args) async {
       'dart',
       [
         '--define=isBenchmarkProcess=true',
-        '--define=isVerbose=${isVerbose ? 'true': 'false'}',
-        '--define=isMonochrome=${isMonochrome ? 'true': 'false'}',
+        '--define=isVerbose=${isVerbose ? 'true' : 'false'}',
+        '--define=isMonochrome=${isMonochrome ? 'true' : 'false'}',
         file.path,
       ],
     ));
-  }
-
-  // Printing results.
-  for (var fResult in fResults) {
-    fResult.then((result) {
-      print('\nRunning: ${result.command}'.colorize(AnsiModifier.grey));
-      print(result.formattedStdout(
-        indentMultiplier: 2,
-      ));
-      if (isVerbose) {
-        // Indenting stderr output by 10 spaces.
-        print(result.formattedStderr(
-          indentMultiplier: 2,
-        ));
-      }
-    });
   }
 
   // Composing exit message.
   final results = await Future.wait(fResults);
   final exitStatus = BenchmarkUtils.aggregatedExitStatus(
     results: results,
+    duration: clock.elapsed,
     isVerbose: isVerbose,
   );
 
-  // Exiting.
-  if (isVerbose) {
-    print('Total run time: '
-        '${clock.elapsed.toString().colorize(AnsiModifier.greenBright)}');
+  // Printing results.
+  for (final result in results) {
+    print('\nRunning: ${result.command}'.style(ColorProfile.dim));
+    print(result.stdout.indentLines(2, indentMultiplierFirstLine: 2));
+    if (isVerbose) {
+      print(result.stderr.indentLines(4, indentMultiplierFirstLine: 4));
+    }
   }
+
   print(exitStatus.message);
   exit(exitStatus.exitCode.code);
 }

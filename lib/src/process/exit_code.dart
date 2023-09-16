@@ -1,8 +1,10 @@
 /// Predefined benchmark process exit codes.
 enum ExitCode {
-  allBenchmarksPassed('All benchmarks passed.'),
+  allBenchmarksExecuted('All benchmarks executed.'),
   noBenchmarkFilesFound('No benchmark files found.'),
-  someBenchmarksFailed('Some benchmarks failed.');
+  someBenchmarksFailed('Some benchmarks failed.'),
+  someGroupsFailed('Some groups failed.');
+  
 
   const ExitCode(this.description);
 

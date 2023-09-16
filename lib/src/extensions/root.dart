@@ -14,7 +14,7 @@ extension Root on num {
   /// Therefore: `-32.root(5) == -(32.root(5)) == -2`.
   ///
   /// Whereas:  `(-32).root(5)` throws an error of
-  /// type `ErrorOfType<InvalidFunctionParameter`.
+  /// type `ErrorOf<num>`.
   double root(num n) {
     if (isNegative) {
       throw ErrorOf<num>(

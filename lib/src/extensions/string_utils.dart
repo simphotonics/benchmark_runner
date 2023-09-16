@@ -1,56 +1,46 @@
 import 'dart:io';
 import '../utils/environment.dart';
 
-const errorMark = '  . .-. .-. --- .-.';
+const errorMark = '. .-. .-. --- .-.';
+const groupErrorMark = r'.--. ..- --- .-. --. / .-. --- .-. .-. .';
+const successMark = '... ..- -.-. -.-. . ... ...';
+const hourGlass = '\u29D6 ';
 
-// /// Writes [input] to stdout. If the environment is a benchmark process
-// /// the String [marker] is prepended.
-// void write(String input) {
-//   if (isBenchmarkProcess) {
-//     stdout.write('$marker$input');
-//   } else {
-//     stdout.write(input);
-//   }
-// }
-
-// /// Writes [input] to stdout adding a newline symbol.
-// /// If the environment is a benchmark process
-// /// the String [marker] is prepended.
-// void writeln(String input) {
-//   if (isBenchmarkProcess) {
-//     stdout.write('$marker$input\n');
-//   } else {
-//     stdout.write('$input\n');
-//   }
-// }
-
-/// Writes mark to stderr.
+/// Writes a mark to stderr. Is used by `BenchmarkProcessResult` to
+/// count errors.
 void addErrorMark([String mark = errorMark]) {
   if (isBenchmarkProcess) {
-    stderr.writeln(mark);
+    stderr.write(mark);
+  }
+}
+
+void addSuccessMark([String mark = successMark]) {
+  if (isBenchmarkProcess) {
+    stderr.write(mark);
   }
 }
 
 extension StringBlock on String {
   /// Returns the [String] resulting by prefixing each
-  /// line with `chars` (repeated `indentMultiplier` times).
+  /// line with `indentChars` (repeated `indentMultiplier` times).
+  /// * By default the first line is not indented.
+  /// * The indent the first line set [indentMultiplierFirstLine]
+  /// to the required value.
   String indentLines(
     int indentMultiplier, {
     String indentChars = ' ',
-    bool skipFirstLine = false,
+    int indentMultiplierFirstLine = 0,
   }) {
-    var indentString = indentChars * indentMultiplier;
+    final indentString = indentChars * indentMultiplier;
+    final indentStringFirstLine = indentChars * indentMultiplierFirstLine;
+
     if (isEmpty) {
-      return (skipFirstLine) ? '' : indentString;
+      return indentStringFirstLine;
     }
     final lines = split('\n');
-    if (skipFirstLine) {
-      final out = lines.map((item) => indentString + item).toList();
-      out[0] = lines[0];
-      return out.join('\n').trimRight();
-    } else {
-      return lines.map((item) => indentString + item).join('\n').trimRight();
-    }
+    final out = lines.map((line) => indentString + line).toList();
+    out[0] = indentStringFirstLine + lines[0];
+    return out.join('\n');
   }
 
   /// Returns the number of times `substring` is found in `this`.

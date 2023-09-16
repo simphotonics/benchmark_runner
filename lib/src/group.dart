@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:ansi_modifier/ansi_modifier.dart';
+import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
+
+import 'extensions/color_profile.dart';
 import 'extensions/string_utils.dart';
-import 'utils/ansi_modifier.dart';
 import 'utils/environment.dart';
 
-class _Group {
-  _Group(this.description, this.body);
+class Group {
+  Group(this.description, this.body);
 
   /// Group description
   final String description;
@@ -13,55 +16,32 @@ class _Group {
   /// Group body
   final FutureOr<void> Function() body;
 
-  void run() {
+  FutureOr<void> run() async{
     // Check for nested groups:
-    final parentGroup = Zone.current[#_group] as _Group?;
+    final parentGroup = Zone.current[#group] as Group?;
     if (parentGroup != null) {
       throw UnsupportedError('${'Nested benchmark groups are '
-              'not supported! '.colorize(AnsiModifier.red)}'
-          'Check groups: ${parentGroup.description} > $description');
+              'not supported! '.style(ColorProfile.error)}'
+          'Check group ${description.style(ColorProfile.emphasize)} defined '
+          'within group ${parentGroup.description.style(
+        ColorProfile.emphasize,
+      )}');
     }
-    return runZonedGuarded(
+    final watch = Stopwatch()..start();
+    await runZonedGuarded(
       body,
       ((error, stack) {
-        print('  $error'.colorize(AnsiModifier.red));
+        addErrorMark(groupErrorMark);
+        print(
+          '${watch.elapsed.mmssms.style(ColorProfile.dim)} '
+          '$description '
+          '${error.toString().style(ColorProfile.error)}',
+        );
         if (isVerbose) {
-          print(stack.toString().indentLines(2, skipFirstLine: true));
+          print(stack.toString().indentLines(2, indentMultiplierFirstLine: 2));
         }
       }),
-      zoneValues: {#_group: this},
-      zoneSpecification: ZoneSpecification(
-        print: (Zone self, parent, zone, String value) {
-          // Add indent
-          parent.print(zone, '  $value');
-        },
-      ),
-    );
-  }
-
-  Future<void> asyncRun() async {
-    // Check for nested groups:
-    final parentGroup = Zone.current[#_group] as _Group?;
-    if (parentGroup != null) {
-      throw UnsupportedError('${'Nested benchmark groups are '
-              'not supported! '.colorize(AnsiModifier.red)}'
-          'Check groups: ${parentGroup.description} > $description');
-    }
-    return runZonedGuarded(
-      body,
-      ((error, stack) {
-        print('  $error'.colorize(AnsiModifier.red));
-        if (isVerbose) {
-          print(stack.toString().indentLines(2, skipFirstLine: true));
-        }
-      }),
-      zoneValues: {#_group: this},
-      zoneSpecification: ZoneSpecification(
-        print: (Zone self, parent, zone, String value) {
-          // Add indent
-          parent.print(zone, '  $value');
-        },
-      ),
+      zoneValues: {#group: this},
     );
   }
 }
@@ -69,23 +49,15 @@ class _Group {
 /// Defines a benchmark group.
 ///
 /// Note: Groups may not be nested.
-void group(
+FutureOr<void> group(
   String description,
-  void Function() body,
+  FutureOr<void> Function() body,
 ) {
-  print(description.colorize(AnsiModifier.cyanBold));
-  final instance = _Group(description, body);
-  instance.run();
-}
-
-/// Defines an asynchronous benchmark group.
-///
-/// Note: Groups may not be nested.
-Future<void> asyncGroup(
-  String description,
-  Future<void> Function() body,
-) async {
-  print(description.colorize(AnsiModifier.magentaBold));
-  final instance = _Group(description, body);
-  return instance.asyncRun();
+  description = description.trimRight();
+  description = description.endsWith(':') ? description : '$description:';
+  final instance = Group(
+    description.style(ColorProfile.group),
+    body,
+  );
+  return instance.run();
 }

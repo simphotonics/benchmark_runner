@@ -54,15 +54,4 @@ echo
 echo -e "${BLUE}=== Running Example $PWD...${RESET}"
 echo
 
-dart example/bin/directed_graph_example.dart
-
-echo
-
-# =================
-# Running benchmark
-# =================
-echo
-echo -e "${GREEN}=== Running Benchmark $PWD...${RESET}"
-echo
-
-dart run benchmark bin/
+# dart example/bin/directed_graph_example.dart
