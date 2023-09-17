@@ -1,22 +1,61 @@
 import 'dart:io';
-import '../utils/environment.dart';
+import 'package:ansi_modifier/ansi_modifier.dart';
+import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
 
-const errorMark = '. .-. .-. --- .-.';
+import '../utils/environment.dart';
+import 'color_profile.dart';
+
+const benchmarkError = '. .-. .-. --- .-.';
 const groupErrorMark = r'.--. ..- --- .-. --. / .-. --- .-. .-. .';
 const successMark = '... ..- -.-. -.-. . ... ...';
 const hourGlass = '\u29D6 ';
 
 /// Writes a mark to stderr. Is used by `BenchmarkProcessResult` to
 /// count errors.
-void addErrorMark([String mark = errorMark]) {
+void addErrorMark([String mark = benchmarkError]) {
   if (isBenchmarkProcess) {
     stderr.write(mark);
   }
 }
 
+/// Writes a mark to stderr. Is used by `BenchmarkProcessResult` to
+/// count successfully finished benchmarks.
 void addSuccessMark([String mark = successMark]) {
   if (isBenchmarkProcess) {
     stderr.write(mark);
+  }
+}
+
+/// Reports an error and adds an error mark
+void reportError(
+  error,
+  StackTrace stack, {
+  required String description,
+  required Duration runtime,
+  required String errorMark,
+}) {
+  print(
+    '${runtime.mmssms.style(ColorProfile.dim)} '
+    '$description'
+    '${errorMark == groupErrorMark ? ':' : ';'} '
+    '${error.toString().style(ColorProfile.error)}\n ',
+  );
+  if (isVerbose) {
+    print(stack.toString().indentLines(2, indentMultiplierFirstLine: 2));
+  }
+  addErrorMark(errorMark);
+}
+
+extension GroupDescription on String {
+  /// Add a separator if the string does not end in separator.
+  String addSeparator(String separator) {
+    // Note: The string might include Ansi modifiers that
+    //       confuse the function endsWith().
+    if (clearStyle().endsWith(separator)) {
+      return this;
+    } else {
+      return this + separator;
+    }
   }
 }
 

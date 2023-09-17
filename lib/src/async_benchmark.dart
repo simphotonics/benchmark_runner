@@ -7,12 +7,10 @@ import 'package:benchmark_harness/benchmark_harness.dart'
     show AsyncBenchmarkBase;
 
 import 'color_print_emitter.dart';
-import 'extensions/color_print.dart';
 import 'extensions/color_profile.dart';
 import 'extensions/duration_formatter.dart';
 import 'extensions/string_utils.dart';
 import 'group.dart';
-import 'utils/environment.dart';
 import 'utils/stats.dart';
 
 typedef AsyncFunction = Future<void> Function();
@@ -35,11 +33,11 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
     required AsyncFunction run,
     AsyncFunction? setup,
     AsyncFunction? teardown,
-    super.emitter = const ColorPrintEmitter(),
+    ColorPrintEmitter emitter = const ColorPrintEmitter(),
   })  : _run = run,
         _setup = setup ?? futureDoNothing,
         _teardown = teardown ?? futureDoNothing,
-        super(description);
+        super(description, emitter: emitter);
 
   // static void main() {
   //   const GenericBenchmark().report();
@@ -146,7 +144,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
   /// Emits score statistics.
   Future<void> reportStats() async {
     final (:stats, :runtime) = await runtimeStats();
-    emitter.emitStats(
+    (emitter as ColorPrintEmitter).emitStats(
       runtime: runtime,
       description: description,
       stats: stats,
@@ -168,16 +166,9 @@ Future<void> asyncBenchmark(
   bool emitStats = true,
   bool runInIsolate = true,
 }) async {
-  // final parentDescription = Zone.current[#_benchmarkDescription] as String?;
-  // if (parentDescription != null) {
-  //   throw UnsupportedError('${'Nested benchmarks are '
-  //           'not supported! '.style(ColorProfile.error)}'
-  //       'Check benchmarks: '
-  //       '$parentDescription > $description');
-  // }
-
   final group = Zone.current[#group] as Group?;
-  final groupDescription = group == null ? '' : '${group.description} ';
+  final groupDescription =
+      group == null ? '' : '${group.description.addSeparator(':')} ';
 
   final instance = AsyncBenchmark(
     description: groupDescription +
@@ -190,18 +181,6 @@ Future<void> asyncBenchmark(
   );
   final watch = Stopwatch()..start();
 
-  void reportError(Object error, StackTrace stack) {
-    print(
-      '${watch.elapsed.mmssms.style(ColorProfile.dim)} '
-      '${instance.description} '
-      '${error.toString().style(ColorProfile.error)}\n',
-    );
-    if (isVerbose) {
-      print(stack.toString().indentLines(2, indentMultiplierFirstLine: 2));
-    }
-    addErrorMark();
-  }
-
   await runZonedGuarded(
     () async {
       try {
@@ -210,7 +189,7 @@ Future<void> asyncBenchmark(
 
             /// Run method sample() in an isolate.
             final (:stats, :runtime) = await Isolate.run(instance.runtimeStats);
-            instance.emitter.emitStats(
+            (instance.emitter as ColorPrintEmitter).emitStats(
               runtime: runtime,
               description: instance.description,
               stats: stats,
@@ -238,13 +217,24 @@ Future<void> asyncBenchmark(
             addSuccessMark();
         }
       } catch (error, stack) {
-        reportError(error, stack);
+        reportError(
+          error,
+          stack,
+          description: instance.description,
+          runtime: watch.elapsed,
+          errorMark: benchmarkError,
+        );
       }
     },
     ((error, stack) {
-      /// Safequard: Errors should be caught in the try block above.
-      reportError(error, stack);
+      // Safequard: Errors should be caught in the try block above.
+      reportError(
+        error,
+        stack,
+        description: instance.description,
+        runtime: watch.elapsed,
+        errorMark: benchmarkError,
+      );
     }),
-    zoneValues: {#_benchmarkDescription: instance.description},
   );
 }
