@@ -2,19 +2,14 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
-import 'package:benchmark_harness/benchmark_harness.dart'
-    show BenchmarkBase, PrintEmitter;
+import 'package:benchmark_harness/benchmark_harness.dart' show BenchmarkBase;
 import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
 
 import 'color_print_emitter.dart';
-import 'extensions/color_print.dart';
 import 'extensions/color_profile.dart';
 import 'extensions/string_utils.dart';
 import 'group.dart';
-import 'utils/environment.dart';
 import 'utils/stats.dart';
-
-typedef SyncFunction = void Function();
 
 /// A synchronous function that does nothing.
 void doNothing() {}
@@ -30,22 +25,18 @@ class Benchmark extends BenchmarkBase {
   /// completed.
   const Benchmark({
     required String description,
-    required SyncFunction run,
-    SyncFunction? setup,
-    SyncFunction? teardown,
-    super.emitter = const ColorPrintEmitter(),
+    required void Function() run,
+    void Function()? setup,
+    void Function()? teardown,
+    ColorPrintEmitter emitter = const ColorPrintEmitter(),
   })  : _run = run,
         _setup = setup ?? doNothing,
         _teardown = teardown ?? doNothing,
-        super(description);
+        super(description, emitter: emitter);
 
-  // static void main() {
-  //   const GenericBenchmark().report();
-  // }
-
-  final SyncFunction _run;
-  final SyncFunction _setup;
-  final SyncFunction _teardown;
+  final void Function() _run;
+  final void Function() _setup;
+  final void Function() _teardown;
 
   // The benchmark code.
   @override
@@ -72,23 +63,25 @@ class Benchmark extends BenchmarkBase {
     final overhead = <int>[];
     try {
       // Warmup for at least 100ms.
-      final score = BenchmarkBase.measureFor(_run, 400);
+      final score = BenchmarkBase.measureFor(_run, 200);
 
       // Micro-benchmark exercise runtime < 1ms
       // Note: score units: [us]
       if (score < 1000) {
         final result = <double>[];
-        // 1 <= minimumMillis <= 50
         // Note: score * 50 ~/1000 -> score ~/20
-        final minimumMillis = max(score ~/ 20, 1);
-        // 40 <= sampleSize <= 200
-        final sampleSize = 120 - 20 * log(minimumMillis).ceil();
+        // 1 <= minimumMillis <= 50
+        var minimumMillis = max(score ~/ 20, 1);
+        // 40 <= sampleSize <= 120
+        var sampleSize = 120 - 40 * log(minimumMillis).ceil();
+
         for (var i = 0; i < sampleSize; i++) {
-          result.add(BenchmarkBase.measureFor(
+          result.add(measureFor(
             _run,
             minimumMillis,
           ));
         }
+
         return result;
       } else {
         // Benchmark with exercise runtime > 1ms
@@ -133,7 +126,11 @@ class Benchmark extends BenchmarkBase {
   void reportStats() {
     final (:stats, :runtime) = runtimeStats();
     //stats.removeOutliers(10);
-    emitter.emitStats(runtime: runtime, description: description, stats: stats);
+    (emitter as ColorPrintEmitter).emitStats(
+      runtime: runtime,
+      description: description,
+      stats: stats,
+    );
   }
 
   /// Runs the method [measure] and emits the benchmark score.
@@ -145,6 +142,26 @@ class Benchmark extends BenchmarkBase {
     final runtime = watch.elapsed.mmssms.style(ColorProfile.dim);
     emitter.emit('$runtime $description', score);
     print(' ');
+  }
+
+  /// Runs the function until [minimumMillis] is reached and
+  /// reports the average benchmark score.
+  ///
+  /// Inspired by the function with the same name in the class
+  /// `AsyncBenchmarkBase`.
+  // Note: For some reason the `measureFor` provided by
+  // `BenchmarkBase` performs very poorly.
+  static double measureFor(void Function() f, int minimumMillis) {
+    final minimumMicros = minimumMillis * 1000;
+    final watch = Stopwatch()..start();
+    var iter = 0;
+    var elapsed = 0;
+    while (elapsed < minimumMicros) {
+      f();
+      elapsed = watch.elapsedMicroseconds;
+      iter++;
+    }
+    return elapsed / iter;
   }
 }
 
@@ -162,7 +179,8 @@ void benchmark(
   bool emitStats = true,
 }) {
   final group = Zone.current[#group] as Group?;
-  final groupDescription = group == null ? '' : '${group.description} ';
+  var groupDescription =
+      group == null ? '' : '${group.description.addSeparator(':')} ';
   final instance = Benchmark(
     description: groupDescription +
         description.style(
@@ -172,34 +190,51 @@ void benchmark(
     setup: setup,
     teardown: teardown,
   );
-  // Check for nested benchmarks.
-  // final description = Zone.current[#_benchmarkDescription] as String?;
-  // if (description != null) {
-  //   throw UnsupportedError('${'Nested benchmarks are '
-  //           'not supported! '.style(ColorProfile.error)}'
-  //       'Check benchmarks: $description > ${benchmark.description}');
-  // }
   final watch = Stopwatch()..start();
+
+  try {
+    if (run is Future<void> Function()) {
+      throw UnsupportedError('The callback "run" must not be marked async!');
+    }
+  } catch (error, stack) {
+    reportError(
+      error,
+      stack,
+      description: instance.description,
+      runtime: watch.elapsed,
+      errorMark: benchmarkError,
+    );
+    return;
+  }
+
   runZonedGuarded(
     () {
-      if (emitStats) {
-        instance.reportStats();
-      } else {
-        instance.report();
+      try {
+        if (emitStats) {
+          instance.reportStats();
+        } else {
+          instance.report();
+        }
+        addSuccessMark();
+      } catch (error, stack) {
+        reportError(
+          error,
+          stack,
+          description: instance.description,
+          runtime: watch.elapsed,
+          errorMark: benchmarkError,
+        );
       }
-      addSuccessMark();
     },
     ((error, stack) {
-      print(
-        '${watch.elapsed.mmssms.style(ColorProfile.dim)} '
-        '${instance.description}'
-        '${' $error'.style(ColorProfile.error)} \n',
+      // Safequard: Errors should be caught in the try block above.
+      reportError(
+        error,
+        stack,
+        description: instance.description,
+        runtime: watch.elapsed,
+        errorMark: benchmarkError,
       );
-      if (isVerbose) {
-        print(stack.toString().indentLines(2, indentMultiplierFirstLine: 2));
-      }
-      addErrorMark();
     }),
-    zoneValues: {#_benchmarkDescription: instance.description},
   );
 }
