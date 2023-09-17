@@ -23,9 +23,9 @@ class ColorPrintEmitter extends PrintEmitter {
     required String description,
     required Stats stats,
   }) {
-    final indent = '${runtime.mmssms}  '.clearStyle().length;
+    final indent = '${runtime.mmssms}  '.length;
 
-    final part1 = '${runtime.mmssms.style(ColorProfile.dim)} $description';
+    final part1 = '${runtime.mmssms.style(ColorProfile.dim)} $description;';
 
     final part2 =
         // mean +- standard deviation
