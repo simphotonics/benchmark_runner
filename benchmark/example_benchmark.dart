@@ -3,17 +3,16 @@ import 'dart:collection';
 
 import 'package:benchmark_runner/benchmark_runner.dart';
 
-void main(List<String> args) async {
-  group('Set', () async {
-    await asyncBenchmark('future values', () async {
-      final set = {for (var i = 0; i < 100; ++i) Future.value(i)};
+void main(List<String> args) {
+  group('Set', () {
+    benchmark('construct', () {
+      final set = {for (var i = 0; i < 1000; ++i) i};
     });
-    await asyncBenchmark(
-      'awaited future values',
-      () async {
-        final set = {for (var i = 0; i < 10; ++i) await Future.value(i)};
-      },
-    );
+
+    final list = [for (var i = 0; i < 1000; ++i) i];
+    benchmark('construct from list', () {
+      final set = Set<int>.of(list);
+    });
   });
   group('List:', () {
     final originalList = <int>[for (var i = 0; i < 1000; ++i) i];
