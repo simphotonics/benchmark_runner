@@ -22,7 +22,6 @@ Future<void> main(List<String> args) async {
   bool isUsingDefaultDirectory = false;
 
   // Reading script options.
-
   final isVerbose = args.contains('--verbose') || args.contains('-v');
   final isMonochrome = args.contains('--isMonochrome') ? true : false;
   Ansi.status = isMonochrome ? AnsiOutput.disabled : AnsiOutput.enabled;
@@ -70,8 +69,8 @@ Future<void> main(List<String> args) async {
       'dart',
       [
         '--define=isBenchmarkProcess=true',
-        '--define=isVerbose=${isVerbose ? 'true' : 'false'}',
-        '--define=isMonochrome=${isMonochrome ? 'true' : 'false'}',
+        if (isVerbose) '--define=isVerbose=true',
+        if (isMonochrome) '--define=isMonochrome=true',
         file.path,
       ],
     ));

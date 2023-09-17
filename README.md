@@ -4,14 +4,16 @@
 ## Introduction
 
 Benchmarking is used to estimate and compare the execution speed of
-numerical algorithms and programs. Benchmark runner is a lightweight package based on
+numerical algorithms and programs.
+Benchmark runner is a lightweight package based on
 [`benchmark_harness`][benchmark_harness].
-
-The runner allows executing several benchmark files and reports if
-uncaught exceptions/errors were encountered. The package includes helper
-functions for creating *inline* benchmarks with the option of reporting
+The package includes helper
+functions for writing *inline* micro-benchmarks with the option of reporting
 the score statistics: mean, standard deviation, median, inter quartile range,
 and a block histogram.
+
+The benchmark runner allows executing several benchmark files and reports if
+uncaught exceptions/errors were encountered.
 
 ## Usage
 
@@ -26,7 +28,9 @@ Write inline benchmarks using the functions:
  * [`group`][group]: Used to label a group of benchmarks.
    The callback `body` usually contains one or several calls to
    [`benchmark`][benchmark] and [`asyncBenchmark`][asyncBenchmark].
-   Note: Groups may not be nested.
+   Benchmark groups may not be nested.
+ * Files must end with `_benchmark.dart` in order to be detected as
+   benchmark files by `benchmark_runner`.
 
  The example below shows a benchmark file containing synchronous and
  asynchronous benchmarks.
@@ -115,7 +119,7 @@ optional argument `emitStats: false`.
 calling the benchmark runner. When executing a single benchmark file the
 corresponding option is `--define=isMonochrome=true`.
 
-- The default colors used to style benchmark reports are optimized
+- The default colors used to style benchmark reports are best suited
 for a dark terminal background.
 They can, however, be altered by setting the static variables defined by
 the class [`ColorProfile`][ColorProfile]. In the example below, the styling of

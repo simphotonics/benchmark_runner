@@ -65,7 +65,7 @@ extension BenchmarkUtils on BenchmarkProcessResult {
   /// Returns the number of benchmarks throwing an uncaught exception
   /// or error.
   int get numberOfFailedBenchmarks {
-    return processResult.stderr.toString().countSubstring(errorMark);
+    return processResult.stderr.toString().countSubstring(benchmarkError);
   }
 
   /// Returns the number of groups throwing an uncaught exception or error.
@@ -85,7 +85,7 @@ extension BenchmarkUtils on BenchmarkProcessResult {
 
   /// Returns the standard error output from the process.
   String get stderr => (processResult.stderr as String)
-      .replaceAll(errorMark, '')
+      .replaceAll(benchmarkError, '')
       .replaceAll(groupErrorMark, '')
       .replaceAll(successMark, '');
 
