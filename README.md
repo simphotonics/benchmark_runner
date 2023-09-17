@@ -37,6 +37,7 @@ Write inline benchmarks using the functions:
 
   ```Dart
   // ignore_for_file: unused_local_variable
+
   import 'package:benchmark_runner/benchmark_runner.dart';
 
   /// Returns the value [t] after waiting for [duration].
@@ -45,58 +46,61 @@ Write inline benchmarks using the functions:
   }
 
   void main(List<String> args) async {
-    await group('Collection', () async {
-      await asyncBenchmark('set of futures', () async {
-        final set = {for (var i = 0; i < 100; ++i) Future.value(i)};
+    await group('Wait for duration', () async {
+      await asyncBenchmark('10ms', () async {
+        await later<int>(39, Duration(milliseconds: 10));
       });
-      await asyncBenchmark(
-        'set of awaited futures',
-        () async {
-          final set = {for (var i = 0; i < 10; ++i) await Future.value(i)};
-        },
-      );
-    });
-    await group('Delayed execution', () async {
-      await asyncBenchmark('wait 10 ms', () async {
-        await later<int>(10, Duration(milliseconds: 10));
+
+      await asyncBenchmark('5ms', () async {
+        await later<int>(27, Duration(milliseconds: 5));
       }, emitStats: false);
-      await asyncBenchmark('wait 10 ms', () async {
-        await later<int>(10, Duration(milliseconds: 10));
+    });
+
+    group('Set', () async {
+      await asyncBenchmark('error test', () {
+        throw ('Thrown in benchmark.');
       });
+
+      benchmark('construct', () {
+        final set = {for (var i = 0; i < 1000; ++i) i};
+      });
+
+      throw 'Error in group';
     });
   }
 
   ```
-
-Run a single benchmark file as an executable:
+*
+Run a *single* benchmark file as an executable:
 ```Console
 $ dart benchmark/list_benchmark.dart
 ```
 
-Run several benchmark files (ending with `_benchmark.dart`)
+Run *several* benchmark files (ending with `_benchmark.dart`)
 by calling the benchmark_runner and specifying a directory.
-The directory name defaults to `benchmark`:
+If no directory or file name is specified it defaults to `benchmark`:
 
 ```Console
 $ dart run benchmark_runner
 ```
 
-
 ![Console Output](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_output.png)
 
-A typical console output is shown above. The following colour-coding is used:
-* The labels of synchronous benchmarks and groups are printed using <span style="color: #28B5D7">*cyan*</span>
-foreground.
-* The labels of asynchronous benchmarks and groups are
-printed using <span style="color:#AE5AAE">*magenta*</span> foreground.
-* The histogram block containing the *mean*
-is printed using <span style="color:#11A874">*green*</span> foreground.
-* The block containg the *median* is printed
+A typical console output is shown above. The following colours and coding
+are used:
+* The first columns shows the micro-benchmark runtime.
+* The labels of asynchronous benchmarks and groups are marked with an hour-glass
+symbol.
+* The *mean* and the histogram block containing the *mean*
+are printed using <span style="color:#11A874">*green*</span> foreground.
+* The *median* and the block containg the *median* are printed
 using <span style="color:#2370C4">*blue*</span> foreground.
 * If the same block contains mean and median it is printed
 using <span style="color:#28B5D7">*cyan*</span> foreground.
-* Error are printed using <span style="color:#CB605E"> *red* </span> foreground.
-
+* Errors are printed using <span style="color:#CB605E"> *red* </span> foreground.
+* The summary shows the total number of completed benchmars, the number of
+benchmarks with errors and the number of groups with errors (that do not
+occur within the scope of a benchmark function).
 
 ## Tips and Tricks
 
@@ -141,7 +145,7 @@ error messages and the mean value is altered.
 
 When running **asynchronous** benchmarks the score are printed in order of
 completion. The print the scores in sequential order it is recommended
-to *await* the completion of the benchmark functions.
+to *await* the completion of the async benchmark functions.
 
 ## Features and bugs
 
