@@ -70,7 +70,6 @@ Write inline benchmarks using the functions:
   }
 
   ```
-*
 Run a *single* benchmark file as an executable:
 ```Console
 $ dart benchmark/list_benchmark.dart
