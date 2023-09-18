@@ -1,5 +1,5 @@
 # Benchmark Runner - Example
-
+[![Dart](https://github.com/simphotonics/benchmark_runner/actions/workflows/dart.yml/badge.svg)](https://github.com/simphotonics/benchmark_runner/actions/workflows/dart.yml)
 
 ## Usage
 

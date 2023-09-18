@@ -1,4 +1,5 @@
 # Benchmark Runner
+[![Dart](https://github.com/simphotonics/benchmark_runner/actions/workflows/dart.yml/badge.svg)](https://github.com/simphotonics/benchmark_runner/actions/workflows/dart.yml)
 
 
 ## Introduction
@@ -87,7 +88,7 @@ $ dart run benchmark_runner
 
 A typical console output is shown above. The following colours and coding
 are used:
-* The first columns shows the micro-benchmark runtime.
+* The first column shows the micro-benchmark runtime.
 * The labels of asynchronous benchmarks and groups are marked with an hour-glass
 symbol.
 * The *mean* and the histogram block containing the *mean*
@@ -154,8 +155,15 @@ the enclosing group.
 
 ## Contributions
 
-Help and enhancement requests are welcome. Please file a request via the issue
-tracker.
+Help and enhancement requests are welcome. Please file requests via the [issue
+tracker][tracker].
+
+The To-Do list currently includes:
+* Add tests.
+
+* Add color profiles optimized for terminals with light background color.
+
+* Improve the way benchmark score samples are generated.
 
 ## Features and bugs
 
