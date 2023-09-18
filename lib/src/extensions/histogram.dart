@@ -185,8 +185,8 @@ extension Histogram on Stats {
 
       // Make histogram more compact
       return '${result.skip(indexLeft).take(indexRight - indexLeft).join()}  '
-      '$skippedRight  '
-      '${result.skip(length - rightBlocks).take(rightBlocks).join()}';
+          '$skippedRight  '
+          '${result.skip(length - rightBlocks).take(rightBlocks).join()}';
     } else {
       return result.join();
     }

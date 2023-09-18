@@ -2,7 +2,6 @@ import 'package:ansi_modifier/ansi_modifier.dart';
 
 /// Defines styles and colors used to print benchmark reports to a terminal.
 extension ColorProfile on Ansi {
-
   /// Style of an error message
   static Ansi error = Ansi.red;
 

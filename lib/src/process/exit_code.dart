@@ -4,7 +4,6 @@ enum ExitCode {
   noBenchmarkFilesFound('No benchmark files found.'),
   someBenchmarksFailed('Some benchmarks failed.'),
   someGroupsFailed('Some groups failed.');
-  
 
   const ExitCode(this.description);
 
