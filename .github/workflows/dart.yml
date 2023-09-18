@@ -47,6 +47,6 @@ jobs:
       - name: Run tests
         run: dart test
 
-      # Run benchmarks
+      # Run benchmark
       - name: Run benchmarks
-        run: dart run benchmark_runner
+        run: dart benchmark/example_benchmark.dart
