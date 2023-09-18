@@ -1,7 +1,7 @@
 name: benchmark_runner
 
-description: Extends benchmark_harness by providing functions for creating
-  inline benchmarks with the option of reporting score statistics.
+description: Runs benchmarkings, enables writing inline synchronous
+    and asynchronous benchmarks with the option of reporting score statistics.
 
 version: 0.0.1
 
@@ -9,6 +9,13 @@ homepage: https://github.com/simphotonics/benchmark_runner
 
 executables:
   benchmark_runner: benchmark_runner
+
+topics:
+  - benchmark
+  - asynchronous
+  - inline
+  - histogram
+  - statistics
 
 environment:
   sdk: '^3.0.0'

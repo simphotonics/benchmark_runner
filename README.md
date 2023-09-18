@@ -5,7 +5,7 @@
 
 Benchmarking is used to estimate and compare the execution speed of
 numerical algorithms and programs.
-Benchmark runner is a lightweight package based on
+Benchmark runner is a light-weight package based on
 [`benchmark_harness`][benchmark_harness].
 The package includes helper
 functions for writing *inline* micro-benchmarks with the option of reporting
@@ -72,12 +72,12 @@ Write inline benchmarks using the functions:
   ```
 Run a *single* benchmark file as an executable:
 ```Console
-$ dart benchmark/list_benchmark.dart
+$ dart benchmark/example_async_benchmark.dart
 ```
 
 Run *several* benchmark files (ending with `_benchmark.dart`)
 by calling the benchmark_runner and specifying a directory.
-If no directory or file name is specified it defaults to `benchmark`:
+If no directory or file name is specified, then it defaults to `benchmark`:
 
 ```Console
 $ dart run benchmark_runner
@@ -97,7 +97,7 @@ using <span style="color:#2370C4">*blue*</span> foreground.
 * If the same block contains mean and median it is printed
 using <span style="color:#28B5D7">*cyan*</span> foreground.
 * Errors are printed using <span style="color:#CB605E"> *red* </span> foreground.
-* The summary shows the total number of completed benchmars, the number of
+* The summary shows the total number of completed benchmarks, the number of
 benchmarks with errors and the number of groups with errors (that do not
 occur within the scope of a benchmark function).
 
@@ -109,9 +109,13 @@ refer to a *single* run of the benchmarked function.
 
 - Benchmarks do *not* need to be enclosed by a group.
 
-- The program does check for name group and benchmark *description* clashes.
-
 - A benchmark group may *not* contain another benchmark group.
+
+- The program does **not** check for group *description*
+and benchmark *description* clashes. It can be useful to have a second
+benchmark with the same name for example to compare the standard score
+as reported by [`benchmark_harness`][benchmark_harness] and the
+score statistics.
 
 - By default, [`benchmark`][benchmark] and
 [`asyncBenchmark`][asyncBenchmark] report score statistics. In order to generate
@@ -142,9 +146,16 @@ error messages and the mean value is altered.
   }
   ```
 
-When running **asynchronous** benchmarks the score are printed in order of
-completion. The print the scores in sequential order it is recommended
-to *await* the completion of the async benchmark functions.
+- When running **asynchronous** benchmarks, the scores are printed in order of
+completion. The print the scores in sequential order (as they are listed in the
+benchmark executable) it is required to *await* the completion
+of the async benchmark functions and
+the enclosing group.
+
+## Contributions
+
+Help and enhancement requests are welcome. Please file a request via the issue
+tracker.
 
 ## Features and bugs
 

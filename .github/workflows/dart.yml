@@ -47,6 +47,6 @@ jobs:
       - name: Run tests
         run: dart test
 
-      # Run example
-      - name: Run example
-        run: dart example/bin/directed_graph_example.dart
+      # Run benchmarks
+      - name: Run benchmarks
+        run: dart run benchmark_runner

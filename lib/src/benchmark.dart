@@ -63,11 +63,11 @@ class Benchmark extends BenchmarkBase {
     final overhead = <int>[];
     try {
       // Warmup for at least 100ms.
-      final score = BenchmarkBase.measureFor(_run, 200);
+      final score = measureFor(_run, 200);
 
-      // Micro-benchmark exercise runtime < 1ms
-      // Note: score units: [us]
       if (score < 1000) {
+        // Micro-benchmark exercise runtime < 1ms
+        // Note: score units: [us]
         final result = <double>[];
         // Note: score * 50 ~/1000 -> score ~/20
         // 1 <= minimumMillis <= 50
@@ -76,6 +76,7 @@ class Benchmark extends BenchmarkBase {
         var sampleSize = 120 - 40 * log(minimumMillis).ceil();
 
         for (var i = 0; i < sampleSize; i++) {
+          // Averaging each score over at least 50 runs.
           result.add(measureFor(
             _run,
             minimumMillis,
@@ -94,11 +95,14 @@ class Benchmark extends BenchmarkBase {
         for (var i = 0; i < sampleSize + warmupRuns; i++) {
           watch.reset();
           _run();
+          // These scores are not averaged.
           sample.add(watch.elapsedTicks);
           watch.reset();
           overhead.add(watch.elapsedTicks);
         }
         for (var i = 0; i < sampleSize; i++) {
+          // Removing overhead of calling elapsedTicks and adding list element.
+          // overhead scores are of the order of 0.1 us.
           sample[i] = sample[i] - overhead[i];
         }
         final frequency = watch.frequency / 1000000;

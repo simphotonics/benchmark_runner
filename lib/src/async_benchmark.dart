@@ -79,12 +79,11 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
     await _setup();
 
     try {
-      // Warmup for at least 100ms. Discard result.
-      // Note: Score converted from us to ms.
-      final score = await AsyncBenchmarkBase.measureFor(_run, 400);
+      // Warmup.
+      final score = await AsyncBenchmarkBase.measureFor(_run, 200);
 
-      // Micro-benchmark exercise runtime < 1ms
       if (score < 1000) {
+        // Micro-benchmark exercise runtime < 1ms
         final result = <double>[];
         // Note: score * 50 ~/1000 -> score ~/20
         // 1 <= minimumMillis <= 50
@@ -92,6 +91,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
         // 40 <= sampleSize <= 120
         final sampleSize = 120 - 20 * log(minimumMillis).ceil();
         for (var i = 0; i < sampleSize; i++) {
+          // Averaging scores over at least 50 runs.
           result.add(await AsyncBenchmarkBase.measureFor(
             _run,
             minimumMillis,
@@ -111,11 +111,13 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
         for (var i = 0; i < sampleSize + warmupRuns; i++) {
           watch.reset();
           await _run();
+          // These are not averaged scores.
           sample.add(watch.elapsedTicks);
           watch.reset();
           overhead.add(watch.elapsedTicks);
         }
         for (var i = 0; i < sampleSize; i++) {
+          // Overhead recorded is minimal (of the order of 0.1 us).
           sample[i] = (sample[i] - overhead[i]);
         }
         final frequency = watch.frequency / 1000000;
