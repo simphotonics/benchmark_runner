@@ -18,7 +18,7 @@ uncaught exceptions/errors were encountered.
 
 ## Usage
 
-Include [`benchmark_runner`][benchmark_runner] as a dependency
+Include [`benchmark_runner`][benchmark_runner] as a `dev_dependency`
  in your `pubspec.yaml` file.
 
 Write inline benchmarks using the functions:
@@ -30,8 +30,8 @@ Write inline benchmarks using the functions:
    The callback `body` usually contains one or several calls to
    [`benchmark`][benchmark] and [`asyncBenchmark`][asyncBenchmark].
    Benchmark groups may not be nested.
- * Files must end with `_benchmark.dart` in order to be detected as
-   benchmark files by `benchmark_runner`.
+ * Benchmark files must end with `_benchmark.dart` in order to be detected
+   by the `benchmark_runner`.
 
  The example below shows a benchmark file containing synchronous and
  asynchronous benchmarks.

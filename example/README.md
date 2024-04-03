@@ -3,7 +3,7 @@
 
 ## Usage
 
-Include [`benchmark_runner`][benchmark_runner] as a dependency
+Include [`benchmark_runner`][benchmark_runner] as a `dev_dependency`
  in your `pubspec.yaml` file.
 
 Write inline benchmarks using the functions:

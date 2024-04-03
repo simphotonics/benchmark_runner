@@ -1,3 +1,7 @@
+## 0.0.3
+- Updated dependencies.
+- Amended `README.md`.
+
 ## 0.0.2
 - Amended package description.
 - Formated files.
