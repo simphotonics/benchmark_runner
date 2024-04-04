@@ -6,12 +6,12 @@
 
 Benchmarking is used to estimate and compare the execution speed of
 numerical algorithms and programs.
-Benchmark runner is a light-weight package based on
+[Benchmark runner][benchmark_runner] is a light-weight package based on
 [`benchmark_harness`][benchmark_harness].
 The package includes helper
-functions for writing *inline* micro-benchmarks with the option of reporting
-the score statistics: mean, standard deviation, median, inter quartile range,
-and a block histogram.
+functions for writing *inline* micro-benchmarks with the option of
+printing a score histogram and reporting score **mean**,
+**standard deviation**, **median**, and **inter quartile range**.
 
 The benchmark runner allows executing several benchmark files and reports if
 uncaught exceptions/errors were encountered.
