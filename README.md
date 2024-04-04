@@ -10,7 +10,7 @@ numerical algorithms and programs.
 [`benchmark_harness`][benchmark_harness].
 The package includes helper
 functions for writing *inline* micro-benchmarks with the option of
-printing a score histogram and reporting score **mean**,
+printing a score **histogram** and reporting the score **mean**,
 **standard deviation**, **median**, and **inter quartile range**.
 
 The benchmark runner allows executing several benchmark files and reports if
