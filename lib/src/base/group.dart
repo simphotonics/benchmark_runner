@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
 
-import 'extensions/color_profile.dart';
-import 'extensions/string_utils.dart';
+import '../extensions/color_profile.dart';
+import '../extensions/string_utils.dart';
 
 class Group {
   const Group(this.description, this.body);

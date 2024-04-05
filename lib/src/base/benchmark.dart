@@ -6,10 +6,11 @@ import 'package:benchmark_harness/benchmark_harness.dart' show BenchmarkBase;
 import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
 
 import 'color_print_emitter.dart';
-import 'extensions/color_profile.dart';
-import 'extensions/string_utils.dart';
+import '../extensions/color_profile.dart';
+import '../extensions/string_utils.dart';
 import 'group.dart';
-import 'utils/stats.dart';
+import '../utils/stats.dart';
+import 'score.dart';
 
 /// A synchronous function that does nothing.
 void doNothing() {}
@@ -118,22 +119,19 @@ class Benchmark extends BenchmarkBase {
     }
   }
 
-  /// Returns a record holding the total benchmark duration
+  /// Returns a [Score] object holding the total benchmark duration
   /// and a [Stats] object created from the score samples.
-  RuntimeStats runtimeStats() {
+  Score score() {
     final watch = Stopwatch()..start();
-    final stats = Stats(sample());
-    return (runtime: watch.elapsed, stats: stats);
+    return Score(runtime: watch.elapsed, sample: sample());
   }
 
   /// Runs the method [sample] and emits the benchmark score statistics.
   void reportStats() {
-    final (:stats, :runtime) = runtimeStats();
     //stats.removeOutliers(10);
     (emitter as ColorPrintEmitter).emitStats(
-      runtime: runtime,
       description: description,
-      stats: stats,
+      score: score(),
     );
   }
 

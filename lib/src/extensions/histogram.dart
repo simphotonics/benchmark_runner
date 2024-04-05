@@ -137,7 +137,7 @@ extension Histogram on Stats {
       final index = (current - leftBorder) ~/ intervalSize;
       counts[index]++;
     }
-    final sampleSize = sample.length;
+    final sampleSize = sortedSample.length;
     for (var i = 0; i < gridPoints; ++i) {
       counts[i] = counts[i] / (sampleSize * intervalSize);
     }

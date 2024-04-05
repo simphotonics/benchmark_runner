@@ -2,28 +2,25 @@ import 'dart:math' as math show sqrt, pow;
 
 import 'package:lazy_memo/lazy_memo.dart';
 
-/// A record holding sample stats and the sample generation runtime.
-typedef RuntimeStats<T extends num> = ({
-  Duration runtime,
-  Stats<T> stats,
-});
-
 /// Provides access to basic statistical entities of a
 /// numerical random sample.
 class Stats<T extends num> {
-  Stats(this.sample);
+  Stats(List<T> sample) : _sample = List.of(sample);
 
-  /// Random data sample. Must not be empty.
-  final List<T> sample;
+  /// Original random data sample. Must not be empty.
+  final List<T> _sample;
+
+  /// Returns a copy of the random sample
+  List<T> get sample => List.of(_sample);
 
   /// Sorted sample stored as lazy variable.
-  late final _sortedSample = LazyList<T>(() => sample..sort());
+  late final LazyList<T> _sortedSample = LazyList<T>(() => sample..sort());
 
   /// Returns the sorted random sample.
   List<T> get sortedSample => _sortedSample();
 
   late final _sum = Lazy<T>(() {
-    if (sample.isEmpty) {
+    if (_sample.isEmpty) {
       throw RangeError.index(
         1,
         this,
@@ -31,12 +28,12 @@ class Stats<T extends num> {
         'List must have at least 1 element.',
       );
     }
-    return sample.reduce((value, current) => (value + current) as T);
+    return _sample.reduce((value, current) => (value + current) as T);
   });
 
   /// Sample mean.
   late final _mean = Lazy<double>(() {
-    if (sample.isEmpty) {
+    if (_sample.isEmpty) {
       throw RangeError.index(
         1,
         this,
@@ -44,12 +41,12 @@ class Stats<T extends num> {
         'List must have at least 1 element.',
       );
     }
-    return _sum() / sample.length;
+    return _sum() / _sample.length;
   });
 
   /// Corrected sample standard deviation.
   late final Lazy<double> _stdDev = Lazy<double>(() {
-    if (sample.length < 2) {
+    if (_sample.length < 2) {
       throw RangeError.index(
         2,
         this,
@@ -59,11 +56,11 @@ class Stats<T extends num> {
     }
     final mean = _mean();
     double sum = 0.0;
-    final it = sample.iterator;
+    final it = _sample.iterator;
     while (it.moveNext()) {
       sum += math.pow(mean - it.current, 2);
     }
-    return math.sqrt(sum / (sample.length - 1));
+    return math.sqrt(sum / (_sample.length - 1));
   });
 
   /// Returns the smallest sample value.
@@ -83,7 +80,7 @@ class Stats<T extends num> {
 
   late final _median = Lazy<double>(() {
     final q2 = _sortedSample().length ~/ 2;
-    return (sample.length.isEven)
+    return (_sample.length.isEven)
         ? (_sortedSample()[q2 - 1] + _sortedSample()[q2]) / 2
         : _sortedSample()[q2].toDouble();
   });
@@ -143,7 +140,7 @@ class Stats<T extends num> {
     iqrScaling = iqrScaling.abs();
     final lowerFence = quartile1 - iqrScaling * iqr;
     final upperFence = quartile3 + iqrScaling * iqr;
-    sample.removeWhere((current) {
+    _sample.removeWhere((current) {
       if (current < lowerFence || current > upperFence) {
         outliers.add(current);
         return true;

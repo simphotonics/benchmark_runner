@@ -7,11 +7,12 @@ import 'package:benchmark_harness/benchmark_harness.dart'
     show AsyncBenchmarkBase;
 
 import 'color_print_emitter.dart';
-import 'extensions/color_profile.dart';
-import 'extensions/duration_formatter.dart';
-import 'extensions/string_utils.dart';
+import '../extensions/color_profile.dart';
+import '../extensions/duration_formatter.dart';
+import '../extensions/string_utils.dart';
 import 'group.dart';
-import 'utils/stats.dart';
+import '../utils/stats.dart';
+import 'score.dart';
 
 typedef AsyncFunction = Future<void> Function();
 
@@ -135,21 +136,19 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
 
   /// Returns a record holding the total benchmark duration
   /// and a [Stats] object created from the score samples.
-  Future<RuntimeStats> runtimeStats() async {
+  Future<Score> score() async {
     final watch = Stopwatch()..start();
-    final stats = Stats(await sample());
+    final sample = await this.sample();
     watch.stop();
     //stats.removeOutliers(10);
-    return (runtime: watch.elapsed, stats: stats);
+    return Score(runtime: watch.elapsed, sample: sample);
   }
 
   /// Emits score statistics.
   Future<void> reportStats() async {
-    final (:stats, :runtime) = await runtimeStats();
     (emitter as ColorPrintEmitter).emitStats(
-      runtime: runtime,
       description: description,
-      stats: stats,
+      score: await score(),
     );
   }
 }
@@ -190,11 +189,10 @@ Future<void> asyncBenchmark(
           case (true, true):
 
             /// Run method sample() in an isolate.
-            final (:stats, :runtime) = await Isolate.run(instance.runtimeStats);
+            final score = await Isolate.run(instance.score);
             (instance.emitter as ColorPrintEmitter).emitStats(
-              runtime: runtime,
               description: instance.description,
-              stats: stats,
+              score: score,
             );
             addSuccessMark();
             break;
