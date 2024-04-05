@@ -54,4 +54,8 @@ echo
 echo -e "${BLUE}=== Running Example $PWD...${RESET}"
 echo
 
-# dart example/bin/directed_graph_example.dart
+dart run benchmark_runner
+
+echo
+echo -e "${BLUE}=== Script finished successfully ${RESET}"
+echo
