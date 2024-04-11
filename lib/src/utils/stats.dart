@@ -36,7 +36,7 @@ class Stats<T extends num> {
     if (_sample.isEmpty) {
       throw RangeError.index(
         1,
-        this,
+        _sample,
         'mean',
         'List must have at least 1 element.',
       );
@@ -49,7 +49,7 @@ class Stats<T extends num> {
     if (_sample.length < 2) {
       throw RangeError.index(
         2,
-        this,
+        _sample,
         'stdDev',
         'List must have at least 2 elements.',
       );
