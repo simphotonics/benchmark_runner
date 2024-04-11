@@ -1,15 +1,15 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:benchmark_harness/benchmark_harness.dart' show BenchmarkBase;
-import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
 
-import 'color_print_emitter.dart';
+import '../extensions/benchmark_helper.dart';
 import '../extensions/color_profile.dart';
+import '../extensions/duration_formatter.dart';
 import '../extensions/string_utils.dart';
-import 'group.dart';
 import '../utils/stats.dart';
+import 'color_print_emitter.dart';
+import 'group.dart';
 import 'score.dart';
 
 /// A synchronous function that does nothing.
@@ -58,42 +58,38 @@ class Benchmark extends BenchmarkBase {
   /// Returns the benchmark description (corresponds to the getter name).
   String get description => name;
 
-  List<double> sample() {
+  ({List<double> scores, int innerIter}) sample() {
     _setup();
+    final warmupRuns = 3;
     final sample = <int>[];
+    final innerIters = <int>[];
     final overhead = <int>[];
+    final watch = Stopwatch();
+    var innerIterMean = 1;
     try {
       // Warmup for at least 100ms.
-      final score = measureFor(_run, 200);
+      final scoreEstimate = (watch.measure(
+        _run,
+        BenchmarkHelper.millisecondsToTicks(200),
+      ));
+      final sampleSize = BenchmarkHelper.sampleSize(scoreEstimate.ticks);
 
-      if (score < 1000) {
-        // Micro-benchmark exercise runtime < 1ms
-        // Note: score units: [us]
-        final result = <double>[];
-        // Note: score * 50 ~/1000 -> score ~/20
-        // 1 <= minimumMillis <= 50
-        var minimumMillis = max(score ~/ 20, 1);
-        // 40 <= sampleSize <= 120
-        var sampleSize = 120 - 40 * log(minimumMillis).ceil();
-
-        for (var i = 0; i < sampleSize; i++) {
-          // Averaging each score over at least 50 runs.
-          result.add(measureFor(
+      if (sampleSize.inner > 0) {
+        final durationAsTicks = sampleSize.inner * scoreEstimate.ticks;
+        for (var i = 0; i < sampleSize.outer + warmupRuns; i++) {
+          // Averaging each score over at least 25 runs.
+          // For details see function BenchmarkHelper.sampleSize.
+          final score = watch.measure(
             _run,
-            minimumMillis,
-          ));
+            durationAsTicks,
+          );
+          sample.add(score.ticks);
+          innerIters.add(score.iter);
         }
-
-        return result;
+        innerIterMean = innerIters.reduce((sum, element) => sum + element) ~/
+            innerIters.length;
       } else {
-        // Benchmark with exercise runtime > 1ms
-        // 300  <= sampleSize <= 10
-        var sampleSize = 300 - 41 * log(score ~/ 1000).ceil();
-        sampleSize = sampleSize < 10 ? 10 : sampleSize;
-
-        final watch = Stopwatch()..start();
-        final warmupRuns = 3;
-        for (var i = 0; i < sampleSize + warmupRuns; i++) {
+        for (var i = 0; i < sampleSize.outer + warmupRuns; i++) {
           watch.reset();
           _run();
           // These scores are not averaged.
@@ -101,19 +97,24 @@ class Benchmark extends BenchmarkBase {
           watch.reset();
           overhead.add(watch.elapsedTicks);
         }
-        for (var i = 0; i < sampleSize; i++) {
+        for (var i = 0; i < sampleSize.outer; i++) {
           // Removing overhead of calling elapsedTicks and adding list element.
           // overhead scores are of the order of 0.1 us.
           sample[i] = sample[i] - overhead[i];
         }
-        final frequency = watch.frequency / 1000000;
-        return sample
+      }
+
+      // Rescale to microseconds.
+      // Note: frequency is expressed in Hz (ticks/second).
+      return (
+        scores: sample
             .map<double>(
-              (e) => e / frequency,
+              (e) => e * (1000000 / watch.frequency),
             )
             .skip(warmupRuns)
-            .toList();
-      }
+            .toList(),
+        innerIter: innerIterMean
+      );
     } finally {
       teardown();
     }
@@ -123,7 +124,12 @@ class Benchmark extends BenchmarkBase {
   /// and a [Stats] object created from the score samples.
   Score score() {
     final watch = Stopwatch()..start();
-    return Score(runtime: watch.elapsed, sample: sample());
+    final sample = this.sample();
+    return Score(
+      runtime: watch.elapsed,
+      sample: sample.scores,
+      innerIter: sample.innerIter,
+    );
   }
 
   /// Runs the method [sample] and emits the benchmark score statistics.
@@ -141,29 +147,9 @@ class Benchmark extends BenchmarkBase {
     final watch = Stopwatch()..start();
     final score = measure();
     watch.stop();
-    final runtime = watch.elapsed.mmssms.style(ColorProfile.dim);
+    final runtime = watch.elapsed.msus.style(ColorProfile.dim);
     emitter.emit('$runtime $description', score);
     print(' ');
-  }
-
-  /// Runs the function until [minimumMillis] is reached and
-  /// reports the average benchmark score.
-  ///
-  /// Inspired by the function with the same name in the class
-  /// `AsyncBenchmarkBase`.
-  // Note: For some reason the `measureFor` provided by
-  // `BenchmarkBase` performs very poorly.
-  static double measureFor(void Function() f, int minimumMillis) {
-    final minimumMicros = minimumMillis * 1000;
-    final watch = Stopwatch()..start();
-    var iter = 0;
-    var elapsed = 0;
-    while (elapsed < minimumMicros) {
-      f();
-      elapsed = watch.elapsedMicroseconds;
-      iter++;
-    }
-    return elapsed / iter;
   }
 }
 
