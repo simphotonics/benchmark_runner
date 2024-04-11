@@ -9,3 +9,4 @@ export 'src/process/benchmark_process_result.dart';
 export 'src/process/exit_code.dart';
 export 'src/utils/file_utils.dart';
 export 'src/utils/stats.dart';
+export 'src/extensions/benchmark_helper.dart';
