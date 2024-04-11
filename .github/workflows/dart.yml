@@ -49,4 +49,4 @@ jobs:
 
       # Run benchmark
       - name: Run benchmarks
-        run: dart benchmark_runner/example_benchmark.dart
+        run: dart benchmark/example_benchmark.dart
