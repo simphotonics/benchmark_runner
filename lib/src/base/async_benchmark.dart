@@ -108,7 +108,8 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
           sample.add(score.ticks);
           innerIters.add(score.iter);
         }
-        innerIterMean = innerIters.reduce((sum, element) => sum + element) ~/ innerIters.length;
+        innerIterMean = innerIters.reduce((sum, element) => sum + element) ~/
+            innerIters.length;
       } else {
         for (var i = 0; i < sampleSize.outer + warmupRuns; i++) {
           watch.reset();

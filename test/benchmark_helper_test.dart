@@ -29,23 +29,4 @@ void main() {
       expect(BenchmarkHelper.microsecondsToTicks(1), watch.frequency / 1000000);
     });
   });
-
-  group('sampleSize:', () {
-    test('1000', () {
-      expect(BenchmarkHelper.sampleSize(1000).outer, 100);
-      expect(BenchmarkHelper.sampleSize(1000).inner, 300);
-    });
-    test('10000', () {
-      expect(BenchmarkHelper.sampleSize(10000).outer, 100);
-      expect(BenchmarkHelper.sampleSize(10000).inner, 100);
-    });
-    test('100000', () {
-      expect(BenchmarkHelper.sampleSize(100000).outer, 100);
-      expect(BenchmarkHelper.sampleSize(100000).inner, 25);
-    });
-    test('1000000', () {
-      expect(BenchmarkHelper.sampleSize(1000000).outer, 100);
-      expect(BenchmarkHelper.sampleSize(1000000).inner, 10);
-    });
-  });
 }

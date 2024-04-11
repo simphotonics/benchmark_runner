@@ -70,7 +70,8 @@ Write inline benchmarks using the functions:
   }
 
   ```
-A *single* benchmark file may be run as an executable:
+### 1. Running a Single Benchmark File
+A *single* benchmark file may be run as a Dart executable:
 ```Console
 $ dart benchmark/example_async_benchmark.dart
 ```
@@ -89,8 +90,9 @@ using <span style="color:#2370C4">*blue*</span> foreground.
 using <span style="color:#28B5D7">*cyan*</span> foreground.
 * Errors are printed using <span style="color:#CB605E"> *red* </span> foreground.
 
+### 2. Running Several Benchmark Files
 To run *several* benchmark files (ending with `_benchmark.dart`)
-invoke the the benchmark_runner and specify a directory.
+invoke the benchmark_runner and specify a directory.
 If no directory or file name is specified, then it defaults to `benchmark`:
 
 ```Console
@@ -173,22 +175,19 @@ benchmark run times within acceptable limits.
 The graph below shows the strategy currently used:
 ![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/sample_size.png)
 
-The sample size depends on the time used by a single run:
-* ticks < 1e6 => sample size: 100,
-* 1e6 < ticks < 1e7 => sample size: 100 ... 50 linearly interpolated,
-* 1e7 < ticks  < 1e8 => sample size: 50 ... 10 linearly interpolated
-* ticks > 1e8 => sample size: 10.
+The sample size is calculated depending on the execution time estimated for
+a single run.
 
-For short run times each sample score is generated using the functions
-[`measure`][measure] or [`measureAsync`][measureAsync].  The parameter
+For short run times below 100000 clock ticks each sample score is generated
+using the functions [`measure`][measure] or [`measureAsync`][measureAsync].
+The parameter
 `ticks` used when calling the functions [`measure`][measure] and
 [`measureAsync`][measureAsync] is chosen such that the benchmark score is
 averaged over:
-* ticks < 1000 => 300 runs,
-* 1000 < ticks 1e4 => 300 ... 100 runs linearly interpolated,
-* 1e4 < ticks < 1e5 => 100 ... 25 runs linearly interpolated,
-* 1e5 < ticks 1e6 => 25 ... 10 runs linearly interpolated,
-* ticks > 1e6 =
+* ticks < 1000 => 200 runs,
+* 1000 < ticks 1e4 => 200 ... 100 runs (exponentialy interpolated),
+* 1e4 < ticks < 1e5 => 100 ... 1 runs,
+* ticks > 1e5 => no preliminary averaging of sample scores.
 
 ## Contributions
 
@@ -221,3 +220,7 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 [ColorProfile]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/ColorProfile.html
 
 [group]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/group.html
+
+[measure]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/BenchmarkHelper/measure.html
+
+[measureAsync]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/BenchmarkHelper/measureAsync.html

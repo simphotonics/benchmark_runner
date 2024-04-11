@@ -3,9 +3,7 @@ import '../utils/stats.dart';
 /// Object holding sample stats and the sample generation runtime.
 class Score<T extends num> {
   Score(
-      {required this.runtime,
-      required List<T> sample,
-      required this.innerIter})
+      {required this.runtime, required List<T> sample, required this.innerIter})
       : stats = Stats(sample);
 
   /// Micro-benchmark duration

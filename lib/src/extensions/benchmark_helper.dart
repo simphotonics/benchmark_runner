@@ -75,7 +75,9 @@ extension BenchmarkHelper on Stopwatch {
   ) =>
       y1 + ((y2 - y1) * (x - x1) / (x2 - x1));
 
-  static double interpolate(num x, num x1, num y1, num x2, num y2) {
+  /// Returns the result of the exponential interpolation between the
+  /// points (x1,y1) and (x2, y2).
+  static double interpolateExp(num x, num x1, num y1, num x2, num y2) {
     final t = log(y1 / y2) / (x2 - x1);
     final A = y1 * exp(t * x1);
     return A * exp(-t * x);
@@ -112,25 +114,25 @@ extension BenchmarkHelper on Stopwatch {
       < t1e3 => (outer: s1e3, inner: i1e3), // 1 us
       < t1e4 => (
           // 10 us
-          outer: interpolate(ticks, t1e3, s1e3, t1e4, s1e4).ceil(),
-          inner: interpolate(ticks, t1e3, i1e3, t1e4, i1e4).ceil()
+          outer: interpolateExp(ticks, t1e3, s1e3, t1e4, s1e4).ceil(),
+          inner: interpolateExp(ticks, t1e3, i1e3, t1e4, i1e4).ceil()
         ),
       < t1e5 => (
           // 100 us
-          outer: interpolate(ticks, t1e4, s1e4, t1e5, s1e5).ceil(),
-          inner: interpolate(ticks, t1e4, i1e4, t1e5, i1e5).ceil()
+          outer: interpolateExp(ticks, t1e4, s1e4, t1e5, s1e5).ceil(),
+          inner: interpolateExp(ticks, t1e4, i1e4, t1e5, i1e5).ceil()
         ),
       < t1e6 => (
           // 1ms
-          outer: interpolate(ticks, t1e5, s1e5, t1e6, s1e6).ceil(),
-          inner: interpolate(ticks, t1e5, i1e5, t1e6, i1e6).ceil(),
+          outer: interpolateExp(ticks, t1e5, s1e5, t1e6, s1e6).ceil(),
+          inner: interpolateExp(ticks, t1e5, i1e5, t1e6, i1e6).ceil(),
         ),
       < t1e7 => (
-          outer: interpolate(ticks, t1e6, s1e6, t1e7, s1e7).ceil(),
+          outer: interpolateExp(ticks, t1e6, s1e6, t1e7, s1e7).ceil(),
           inner: i1e7
         ), // 10 ms
       < t1e8 => (
-          outer: interpolate(ticks, t1e7, s1e7, t1e8, s1e8).ceil(),
+          outer: interpolateExp(ticks, t1e7, s1e7, t1e8, s1e8).ceil(),
           inner: i1e8
         ), // 100 ms
       _ => (outer: s1e8, inner: i1e8),
