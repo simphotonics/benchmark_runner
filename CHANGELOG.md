@@ -1,3 +1,6 @@
+## 0.1.2
+- Amended all links referencing the API documentation. (/doc/api -> /latest).
+
 ## 0.1.1
 - Added extension `BenchmarkHelper`.
 - Improved calculation of sample size.
@@ -22,5 +25,4 @@
 - Amended tags.
 
 ## 0.0.1
-
-Initial version
+- Initial version
