@@ -74,7 +74,7 @@ A *single* benchmark file may be run as an executable:
 ```Console
 $ dart benchmark/example_async_benchmark.dart
 ```
-![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_outpu_single_.png)
+![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_output_single_.png)
 
 The console output is shown above. The following colours and coding
 are used:
