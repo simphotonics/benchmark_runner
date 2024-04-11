@@ -104,7 +104,7 @@ extension BenchmarkUtils on BenchmarkProcessResult {
     final out = StringBuffer();
 
     out.writeln('-------      Summary     -------- '.style(ColorProfile.dim));
-    out.write('Total run time: ${duration.mmssms.style(
+    out.write('Total run time: ${duration.ssms.style(
       ColorProfile.success,
     )}');
     out.writeln('(Futures are awaited in parallel.)'.style(ColorProfile.dim));
@@ -129,15 +129,15 @@ extension BenchmarkUtils on BenchmarkProcessResult {
     if (numberOfFailedGroups > 0) {
       out.writeln('Groups with errors: '
           '${numberOfFailedGroups.toString().style(ColorProfile.error)}.\n'
-          'Some benchmark may have been skipped!');
+          'Some benchmarks may have been skipped!');
       exitCode = ExitCode.someGroupsFailed;
     }
 
     if ((numberOfFailedBenchmarks > 0 || numberOfFailedGroups > 0) &&
         !isVerbose) {
       out.writeln('Try using the option '
-          '${'--verbose'.style(ColorProfile.emphasize)} or '
-          '${'-v'.style(ColorProfile.emphasize)} '
+          '${'--verbose'.style(ColorProfile.emphasize + Ansi.yellow)} or '
+          '${'-v'.style(ColorProfile.emphasize + Ansi.yellow)} '
           'for more details.');
     }
 
