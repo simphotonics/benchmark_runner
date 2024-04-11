@@ -35,7 +35,7 @@ void reportError(
   required String errorMark,
 }) {
   print(
-    '${runtime.mmssms.style(ColorProfile.dim)} '
+    '${runtime.ssms.style(ColorProfile.dim)} '
     '$description'
     '${errorMark == groupErrorMark ? ':' : ';'} '
     '${error.toString().style(ColorProfile.error)}\n ',
