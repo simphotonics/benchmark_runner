@@ -13,7 +13,7 @@ printing a score **histogram** and reporting the score **mean**,
 **standard deviation**, **median**, and **inter quartile range**.
 
 The benchmark runner allows executing several benchmark files and reports if
-uncaught exceptions/errors were encountered. 
+uncaught exceptions/errors were encountered.
 
 ## Usage
 
@@ -70,22 +70,13 @@ Write inline benchmarks using the functions:
   }
 
   ```
-Run a *single* benchmark file as an executable:
+A *single* benchmark file may be run as an executable:
 ```Console
 $ dart benchmark/example_async_benchmark.dart
 ```
+![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_outpu_single_.png)
 
-Run *several* benchmark files (ending with `_benchmark.dart`)
-by calling the benchmark_runner and specifying a directory.
-If no directory or file name is specified, then it defaults to `benchmark`:
-
-```Console
-$ dart run benchmark_runner
-```
-
-![Console Output](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_output.png)
-
-A typical console output is shown above. The following colours and coding
+The console output is shown above. The following colours and coding
 are used:
 * The first column shows the micro-benchmark runtime.
 * The labels of asynchronous benchmarks and groups are marked with an hour-glass
@@ -97,9 +88,29 @@ using <span style="color:#2370C4">*blue*</span> foreground.
 * If the same block contains mean and median it is printed
 using <span style="color:#28B5D7">*cyan*</span> foreground.
 * Errors are printed using <span style="color:#CB605E"> *red* </span> foreground.
+
+To run *several* benchmark files (ending with `_benchmark.dart`)
+invoke the the benchmark_runner and specify a directory.
+If no directory or file name is specified, then it defaults to `benchmark`:
+
+```Console
+$ dart run benchmark_runner
+```
+
+![Console Output](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_output.png)
+
+A typical console output is shown above. In this example, the benchmark_runner
+detected two benchmark files, ran the micro-benchmarks and produced a report.
+
+
 * The summary shows the total number of completed benchmarks, the number of
 benchmarks with errors and the number of groups with errors (that do not
 occur within the scope of a benchmark function).
+* To show a stack trace for each error, run the benchmar_runner using
+the option ``-v`` or `--verbose`.
+* The total benchmark run time may be shorter than the sum of the
+micro-benchmark run times since by default async benchmarks are run in a
+separate isolate.
 
 ## Tips and Tricks
 
@@ -151,6 +162,33 @@ completion. The print the scores in sequential order (as they are listed in the
 benchmark executable) it is required to *await* the completion
 of the async benchmark functions and
 the enclosing group.
+
+## Score Sampling
+
+In order to calculate benchmark score statistics a sample of scores is
+required. The question is how to generate the score sample while minimizing
+systematic errors (like overheads) and keeping the
+benchmark run times within acceptable limits.
+
+The graph below shows the strategy currently used:
+![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/sample_size.png)
+
+The sample size depends on the time used by a single run:
+* ticks < 1e6 => sample size: 100,
+* 1e6 < ticks < 1e7 => sample size: 100 ... 50 linearly interpolated,
+* 1e7 < ticks  < 1e8 => sample size: 50 ... 10 linearly interpolated
+* ticks > 1e8 => sample size: 10.
+
+For short run times each sample score is generated using the functions
+[`measure`][measure] or [`measureAsync`][measureAsync].  The parameter
+`ticks` used when calling the functions [`measure`][measure] and
+[`measureAsync`][measureAsync] is chosen such that the benchmark score is
+averaged over:
+* ticks < 1000 => 300 runs,
+* 1000 < ticks 1e4 => 300 ... 100 runs linearly interpolated,
+* 1e4 < ticks < 1e5 => 100 ... 25 runs linearly interpolated,
+* 1e5 < ticks 1e6 => 25 ... 10 runs linearly interpolated,
+* ticks > 1e6 =
 
 ## Contributions
 
