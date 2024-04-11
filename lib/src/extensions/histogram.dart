@@ -13,7 +13,7 @@ extension Histogram on Stats {
   /// Returns the optimal number of intervals. The interval size
   /// is estimated using the Freedman-Diaconis rule.
   int get intervalNumberFreedman =>
-      math.max((max - min).abs() ~/ intervalSizeFreedman, 3);
+      iqr == 0 ? 3 : math.max((max - min).abs() ~/ intervalSizeFreedman, 3);
 
   /// Returns a map representing a sample histogram.
   /// * keys: The map keys correspond to the histogram interval mid-points.
