@@ -1,5 +1,5 @@
 // Extension on `num` providing the method
-import 'dart:math' show exp, log;
+import 'dart:math' show pow;
 
 import 'package:exception_templates/exception_templates.dart';
 
@@ -22,6 +22,6 @@ extension Root on num {
           invalidState: '$this < 0',
           expectedState: 'A positive function argument.');
     }
-    return exp(log(this) / n).toDouble();
+    return pow(this, 1 / n).toDouble();
   }
 }
