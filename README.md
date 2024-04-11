@@ -185,9 +185,9 @@ The parameter
 [`measureAsync`][measureAsync] is chosen such that the benchmark score is
 averaged over:
 * ticks < 1000 => 200 runs,
-* 1000 < ticks 1e4 => 200 ... 100 runs (exponentialy interpolated),
+* 1000 < ticks < 1e4 => 200 ... 100 runs (exponentialy interpolated),
 * 1e4 < ticks < 1e5 => 100 ... 1 runs,
-* ticks > 1e5 => no preliminary averaging of sample scores.
+* ticks > 1e5 => No preliminary averaging of sample scores.
 
 ## Contributions
 
@@ -207,20 +207,20 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 
 [tracker]: https://github.com/simphotonics/benchmark_runner/issues
 
-[asyncBenchmark]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/asyncBenchmark.html
+[asyncBenchmark]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/asyncBenchmark.html
 
-[asyncGroup]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/asyncGroup.html
+[asyncGroup]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/asyncGroup.html
 
 [benchmark_harness]: https://pub.dev/packages/benchmark_harness
 
 [benchmark_runner]: https://pub.dev/packages/benchmark_runner
 
-[benchmark]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/benchmark.html
+[benchmark]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/benchmark.html
 
-[ColorProfile]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/ColorProfile.html
+[ColorProfile]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/ColorProfile.html
 
-[group]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/group.html
+[group]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/group.html
 
-[measure]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/BenchmarkHelper/measure.html
+[measure]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/measure.html
 
-[measureAsync]: https://pub.dev/documentation/benchmark_runner/doc/api/benchmark_runner/BenchmarkHelper/measureAsync.html
+[measureAsync]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/measureAsync.html
