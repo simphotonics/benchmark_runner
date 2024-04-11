@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:isolate';
-import 'dart:math';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:benchmark_harness/benchmark_harness.dart'
     show AsyncBenchmarkBase;
 
-import 'color_print_emitter.dart';
+import '../extensions/benchmark_helper.dart';
 import '../extensions/color_profile.dart';
 import '../extensions/duration_formatter.dart';
 import '../extensions/string_utils.dart';
-import 'group.dart';
 import '../utils/stats.dart';
+import 'color_print_emitter.dart';
+import 'group.dart';
 import 'score.dart';
 
 typedef AsyncFunction = Future<void> Function();
@@ -72,63 +72,70 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
   Future<void> report() async {
     final watch = Stopwatch()..start();
     final score = await measure();
-    final runtime = watch.elapsed.mmssms.style(ColorProfile.dim);
+    final runtime = watch.elapsed.msus.style(ColorProfile.dim);
     emitter.emit('$runtime $description', score);
   }
 
-  Future<List<double>> sample() async {
+  /// Returns a sample of benchmark scores. For runtimes < 1ms, the function
+  /// [BenchmarkHelper.measureAsync] is used to generate the score point.
+  Future<({List<double> scores, int innerIter})> sample() async {
     await _setup();
+    final warmupRuns = 3;
+    final sample = <int>[];
+    final innerIters = <int>[];
+    final overhead = <int>[];
+    final watch = Stopwatch();
+    var innerIterMean = 1;
 
     try {
       // Warmup.
-      final score = await AsyncBenchmarkBase.measureFor(_run, 200);
+      // Warmup for at least 100ms.
+      final scoreEstimate = await (watch.measureAsync(
+        _run,
+        BenchmarkHelper.millisecondsToTicks(200),
+      ));
+      final sampleSize = BenchmarkHelper.sampleSize(scoreEstimate.ticks);
 
-      if (score < 1000) {
-        // Micro-benchmark exercise runtime < 1ms
-        final result = <double>[];
-        // Note: score * 50 ~/1000 -> score ~/20
-        // 1 <= minimumMillis <= 50
-        final minimumMillis = max(score ~/ 20, 1);
-        // 40 <= sampleSize <= 120
-        final sampleSize = 120 - 20 * log(minimumMillis).ceil();
-        for (var i = 0; i < sampleSize; i++) {
-          // Averaging scores over at least 50 runs.
-          result.add(await AsyncBenchmarkBase.measureFor(
+      if (sampleSize.inner > 0) {
+        final durationAsTicks = sampleSize.inner * scoreEstimate.ticks;
+        for (var i = 0; i < sampleSize.outer + warmupRuns; i++) {
+          // Averaging each score over at least 25 runs.
+          // For details see function BenchmarkHelper.sampleSize.
+          final score = await watch.measureAsync(
             _run,
-            minimumMillis,
-          ));
+            durationAsTicks,
+          );
+          sample.add(score.ticks);
+          innerIters.add(score.iter);
         }
-        return result;
+        innerIterMean = innerIters.reduce((sum, element) => sum + element) ~/ innerIters.length;
       } else {
-        final sample = <int>[];
-        final overhead = <int>[];
-        // Benchmark with exercise runtime > 1ms
-        // 1000  <= sampleSize <= 10
-        var sampleSize = 300 - 41 * log(score ~/ 1000).ceil();
-        sampleSize = sampleSize < 10 ? 10 : sampleSize;
-
-        final watch = Stopwatch()..start();
-        final warmupRuns = 3;
-        for (var i = 0; i < sampleSize + warmupRuns; i++) {
+        for (var i = 0; i < sampleSize.outer + warmupRuns; i++) {
           watch.reset();
           await _run();
-          // These are not averaged scores.
+          // These scores are not averaged.
           sample.add(watch.elapsedTicks);
           watch.reset();
           overhead.add(watch.elapsedTicks);
         }
-        for (var i = 0; i < sampleSize; i++) {
-          // Overhead recorded is minimal (of the order of 0.1 us).
-          sample[i] = (sample[i] - overhead[i]);
+        for (var i = 0; i < sampleSize.outer; i++) {
+          // Removing overhead of calling elapsedTicks and adding list element.
+          // overhead scores are of the order of 0.1 us.
+          sample[i] = sample[i] - overhead[i];
         }
-        final frequency = watch.frequency / 1000000;
-        return sample
+      }
+
+      // Rescale to microseconds.
+      // Note: frequency is expressed in Hz (ticks/second).
+      return (
+        scores: sample
             .map<double>(
-              (e) => e / frequency,
+              (e) => e * (1000000 / watch.frequency),
             )
             .skip(warmupRuns)
-            .toList();
-      }
+            .toList(),
+        innerIter: innerIterMean
+      );
     } finally {
       await _teardown();
     }
@@ -141,7 +148,11 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
     final sample = await this.sample();
     watch.stop();
     //stats.removeOutliers(10);
-    return Score(runtime: watch.elapsed, sample: sample);
+    return Score(
+      runtime: watch.elapsed,
+      sample: sample.scores,
+      innerIter: sample.innerIter,
+    );
   }
 
   /// Emits score statistics.
@@ -205,7 +216,7 @@ Future<void> asyncBenchmark(
             /// Run method measure() in an isolate.
             final watch = Stopwatch()..start();
             final score = await Isolate.run(instance.measure);
-            final runtime = watch.elapsed.mmssms.style(ColorProfile.dim);
+            final runtime = watch.elapsed.ssms.style(ColorProfile.dim);
             instance.emitter.emit(
               '$runtime ${instance.description}',
               score,
