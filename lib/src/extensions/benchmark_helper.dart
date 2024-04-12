@@ -33,7 +33,7 @@ extension BenchmarkHelper on Stopwatch {
   ({int ticks, int iter}) warmup(
     void Function() f, {
     Duration duration = const Duration(milliseconds: 200),
-    int preRuns = 3
+    int preRuns = 3,
   }) {
     var ticks = microsecondsToTicks(duration.inMicroseconds);
     var iter = 0;
@@ -51,9 +51,11 @@ extension BenchmarkHelper on Stopwatch {
 
   /// Measures the runtime of [f] for [duration] and
   /// reports the average runtime expressed as clock ticks.
-  Future<({int ticks, int iter})> warmupAsync(Future<void> Function() f,
-      {Duration duration = const Duration(milliseconds: 200),
-      int preRuns = 3}) async {
+  Future<({int ticks, int iter})> warmupAsync(
+    Future<void> Function() f, {
+    Duration duration = const Duration(milliseconds: 200),
+    int preRuns = 3,
+  }) async {
     var ticks = microsecondsToTicks(duration.inMicroseconds);
     var iter = 0;
     reset();
