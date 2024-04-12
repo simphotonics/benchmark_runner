@@ -67,14 +67,11 @@ class Benchmark extends BenchmarkBase {
     final watch = Stopwatch();
     var innerIterMean = 1;
     try {
-      // Warmup for at least 100ms.
-      final scoreEstimate = (watch.measure(
-        _run,
-        BenchmarkHelper.millisecondsToTicks(200),
-      ));
+      // Warmup (Default: For 200 ms with 3 pre-runs).
+      final scoreEstimate = watch.warmup(_run);
       final sampleSize = BenchmarkHelper.sampleSize(scoreEstimate.ticks);
 
-      if (sampleSize.inner > 0) {
+      if (sampleSize.inner > 1) {
         final durationAsTicks = sampleSize.inner * scoreEstimate.ticks;
         for (var i = 0; i < sampleSize.outer + warmupRuns; i++) {
           // Averaging each score over at least 25 runs.

@@ -80,7 +80,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
   /// [BenchmarkHelper.measureAsync] is used to generate the score point.
   Future<({List<double> scores, int innerIter})> sample() async {
     await _setup();
-    final warmupRuns = 3;
+    int warmupRuns = 3;
     final sample = <int>[];
     final innerIters = <int>[];
     final overhead = <int>[];
@@ -88,15 +88,11 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
     var innerIterMean = 1;
 
     try {
-      // Warmup.
-      // Warmup for at least 100ms.
-      final scoreEstimate = await (watch.measureAsync(
-        _run,
-        BenchmarkHelper.millisecondsToTicks(200),
-      ));
+      // Warmup (Default: For 200 ms with 3 pre-runs).
+      final scoreEstimate = await watch.warmupAsync(_run);
       final sampleSize = BenchmarkHelper.sampleSize(scoreEstimate.ticks);
 
-      if (sampleSize.inner > 0) {
+      if (sampleSize.inner > 1) {
         final durationAsTicks = sampleSize.inner * scoreEstimate.ticks;
         for (var i = 0; i < sampleSize.outer + warmupRuns; i++) {
           // Averaging each score over at least 25 runs.
