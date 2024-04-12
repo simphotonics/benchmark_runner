@@ -20,7 +20,7 @@ set xrange [ 1000 : 1.9e8 ] noreverse writeback
 set x2range [ * : * ] noreverse writeback
 
 #set ylabel "Iteration estimate"
-set yrange [ 0 : 550 ] noreverse writeback
+set yrange [ 0 : 500 ] noreverse writeback
 set y2range [ * : * ] noreverse writeback
 
 
