@@ -60,6 +60,7 @@ Future<void> main(List<String> args) async {
     for (final file in benchmarkFiles) {
       print('  ${file.path}');
     }
+    print('');
   }
 
   // Starting processes.
@@ -76,8 +77,36 @@ Future<void> main(List<String> args) async {
     ));
   }
 
+  final stream = Stream<String>.periodic(
+      const Duration(milliseconds: 500),
+      (i) => 'Progress timer: '
+          '${Duration(milliseconds: i * 500).ssms.style(Ansi.green)}');
+
+  const cursorToStartOfLine = Ansi.cursorToColumn(1);
+  // intStream = intStream.take(3);
+  final subscription = stream.listen((event) {
+    stdout.write(event);
+    stdout.write(cursorToStartOfLine);
+  });
+
+  final results = <BenchmarkProcessResult>[];
+
+  //Printing results.
+  for (final fResult in fResults) {
+    fResult.then((result) {
+      print('\n\nRunning: ${result.command}'.style(ColorProfile.dim));
+      print(result.stdout.indentLines(2, indentMultiplierFirstLine: 2));
+      if (isVerbose) {
+        print(result.stderr.indentLines(4, indentMultiplierFirstLine: 4));
+      }
+      results.add(result);
+    });
+  }
+
   // Composing exit message.
-  final results = await Future.wait(fResults);
+  await Future.wait(fResults);
+
+  subscription.cancel();
   final exitStatus = BenchmarkUtils.aggregatedExitStatus(
     results: results,
     duration: clock.elapsed,
@@ -94,5 +123,5 @@ Future<void> main(List<String> args) async {
   }
 
   print(exitStatus.message);
-  exit(exitStatus.exitCode.code);
+  //exit(exitStatus.exitCode.code);
 }
