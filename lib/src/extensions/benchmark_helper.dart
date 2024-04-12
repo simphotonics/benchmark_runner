@@ -28,6 +28,46 @@ extension BenchmarkHelper on Stopwatch {
     return (ticks: elapsedTicks ~/ iter, iter: iter);
   }
 
+  /// Measures the runtime of [f] for [duration] and
+  /// reports the average runtime expressed as clock ticks.
+  ({int ticks, int iter}) warmup(
+    void Function() f, {
+    Duration duration = const Duration(milliseconds: 200),
+    int preRuns = 3
+  }) {
+    var ticks = microsecondsToTicks(duration.inMicroseconds);
+    var iter = 0;
+    for (var i = 0; i < preRuns; i++) {
+      f();
+    }
+    reset();
+    start();
+    do {
+      f();
+      iter++;
+    } while (elapsedTicks < ticks);
+    return (ticks: elapsedTicks ~/ iter, iter: iter);
+  }
+
+  /// Measures the runtime of [f] for [duration] and
+  /// reports the average runtime expressed as clock ticks.
+  Future<({int ticks, int iter})> warmupAsync(Future<void> Function() f,
+      {Duration duration = const Duration(milliseconds: 200),
+      int preRuns = 3}) async {
+    var ticks = microsecondsToTicks(duration.inMicroseconds);
+    var iter = 0;
+    reset();
+    for (var i = 0; i < preRuns; i++) {
+      await f();
+    }
+    start();
+    do {
+      await f();
+      iter++;
+    } while (elapsedTicks < ticks);
+    return (ticks: elapsedTicks ~/ iter, iter: iter);
+  }
+
   /// Stopwatch frequency: ticks per second.
   static final frequency = Stopwatch().frequency;
 
