@@ -113,15 +113,7 @@ Future<void> main(List<String> args) async {
     isVerbose: isVerbose,
   );
 
-  // Printing results.
-  for (final result in results) {
-    print('\nRunning: ${result.command}'.style(ColorProfile.dim));
-    print(result.stdout.indentLines(2, indentMultiplierFirstLine: 2));
-    if (isVerbose) {
-      print(result.stderr.indentLines(4, indentMultiplierFirstLine: 4));
-    }
-  }
 
   print(exitStatus.message);
-  //exit(exitStatus.exitCode.code);
+  exit(exitStatus.exitCode.code);
 }
