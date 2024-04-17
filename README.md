@@ -6,7 +6,7 @@
 
 Benchmarking is used to estimate and compare the execution speed of
 numerical algorithms and programs.
-The package [benchmark_runner][benchmark_runner] is based on
+The package [`benchmark_runner`][benchmark_runner] is based on
 [`benchmark_harness`][benchmark_harness] and includes helper
 functions for writing *inline* micro-benchmarks with the option of
 printing a score **histogram** and reporting the score **mean**,
