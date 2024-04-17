@@ -112,7 +112,6 @@ Future<void> main(List<String> args) async {
     isVerbose: isVerbose,
   );
 
-
   print(exitStatus.message);
   exit(exitStatus.exitCode.code);
 }
