@@ -1,3 +1,7 @@
+## 0.1.6
+- Format.
+- Amended link in docs.
+
 ## 0.1.5
 - Made [BenchmarkHelper.sampleSize][sampleSize] a variable assignable with
 defined function. This allows changing the benchmark runtime by customizing
