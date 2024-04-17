@@ -69,7 +69,9 @@ class Benchmark extends BenchmarkBase {
     try {
       // Warmup (Default: For 200 ms with 3 pre-runs).
       final scoreEstimate = watch.warmup(_run);
-      final sampleSize = BenchmarkHelper.sampleSize(scoreEstimate.ticks);
+      final sampleSize = BenchmarkHelper.sampleSize(
+        scoreEstimate.ticks,
+      );
 
       if (sampleSize.inner > 1) {
         final durationAsTicks = sampleSize.inner * scoreEstimate.ticks;

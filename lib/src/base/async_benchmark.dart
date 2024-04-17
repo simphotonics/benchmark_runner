@@ -76,8 +76,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
     emitter.emit('$runtime $description', score);
   }
 
-  /// Returns a sample of benchmark scores. For runtimes < 1ms, the function
-  /// [BenchmarkHelper.measureAsync] is used to generate the score point.
+  /// Returns a sample of benchmark scores.
   Future<({List<double> scores, int innerIter})> sample() async {
     await _setup();
     int warmupRuns = 3;
@@ -90,7 +89,9 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
     try {
       // Warmup (Default: For 200 ms with 3 pre-runs).
       final scoreEstimate = await watch.warmupAsync(_run);
-      final sampleSize = BenchmarkHelper.sampleSize(scoreEstimate.ticks);
+      final sampleSize = BenchmarkHelper.sampleSize(
+        scoreEstimate.ticks,
+      );
 
       if (sampleSize.inner > 1) {
         final durationAsTicks = sampleSize.inner * scoreEstimate.ticks;
