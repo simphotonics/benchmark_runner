@@ -191,6 +191,7 @@ The parameter
 averaged over (see the cyan curve in the graph above):
 * ticks < 1000 => 200 runs,
 * 1000 < ticks < 1e4 => 200 ... 100 runs (exponentialy interpolated),
+* 1e4 < ticks < 1e5 => 100 ... 20 runs (exponentially interpolated),
 * ticks > 1e5 => No preliminary averaging of sample scores.
 
 ### 2. Custom Sampling Method
@@ -206,16 +207,15 @@ To restore the default score sampling settings use:
 BenchmarkHelper.sampleSize = BenchmarkHelper.sampleSizeDefault;
 ```
 ----
-The graph show above can be generated using the user set sampleSize function
-by copying and customizing the file `gnuplot/sample_size.dart`
+The graph show above may be re-generated using the user created `sampleSize`
+function by copying and amending the file `gnuplot/sample_size.dart`
 and using the command:
 ```Console
 dart sample_size.dart
 ```
-The command abover lauches a process and run a [`gnuplot`][gnuplot] command.
-For this reason,
-a pre-requisite is the avalability of the program [`gnuplot`][gnuplot]
-with the `qt` terminal enabled.
+The command above lauches a process and runs a [`gnuplot`][gnuplot] script.
+For this reason, the program [`gnuplot`][gnuplot] must be installed (with
+the `qt` terminal enabled).
 
 
 ## Contributions
