@@ -1,3 +1,8 @@
+## 0.1.5
+- Made [BenchmarkHelper.sampleSize][sampleSize] a variable assignable with
+defined function. This allows changing the benchmark runtime by customizing
+the relation between score estimate and score sample size.
+
 ## 0.1.4
 - Fixed bugs in runner (results were listed twice, exit code was always 0).
 
@@ -34,3 +39,5 @@
 
 ## 0.0.1
 - Initial version
+
+[sampleSize]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/sampleSize.html
