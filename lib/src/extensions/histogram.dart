@@ -161,7 +161,7 @@ extension Histogram on Stats {
     if (indexOfMedian == indexOfMean) {
       // Colorize block containing mean and median
       result[indexOfMedian] = result[indexOfMedian].style(
-        ColorProfile.medianHistogramBlock,
+        ColorProfile.meanMedianHistogramBlock,
       );
     } else {
       // Colorize block containing the median value.
@@ -174,11 +174,14 @@ extension Histogram on Stats {
       );
     }
 
-    if (length > 70) {
-      var indexLeft = (quartile1 - 3 * iqr - leftBorder) ~/ intervalSize;
+    /// Avoid situations where iqr = 0
+    final iqrStandIn = iqr == 0.0 ? 20 * intervalSize : iqr;
+
+    if (length > 40) {
+      var indexLeft = (quartile1 - 3 * iqrStandIn - leftBorder) ~/ intervalSize;
       indexLeft = indexLeft < 0 ? 0 : indexLeft;
 
-      var indexRight = (quartile3 + 5 * iqr - leftBorder) ~/ intervalSize;
+      var indexRight = (quartile3 + 5 * iqrStandIn - leftBorder) ~/ intervalSize;
       indexRight = indexRight > length - 1 ? length - 1 : indexRight;
       final rightBlocks = 5;
       final skippedRight = length - rightBlocks - indexRight;
