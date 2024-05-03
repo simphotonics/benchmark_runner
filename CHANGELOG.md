@@ -1,3 +1,8 @@
+## 0.1.7
+- Fixed bug in function `blockHistogram` that surfaced when the
+inter-quartile-range is zero.
+- Made benchmark report more compact. 
+
 ## 0.1.6
 - Format.
 - Amended link in docs.

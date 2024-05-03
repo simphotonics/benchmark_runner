@@ -181,7 +181,8 @@ extension Histogram on Stats {
       var indexLeft = (quartile1 - 3 * iqrStandIn - leftBorder) ~/ intervalSize;
       indexLeft = indexLeft < 0 ? 0 : indexLeft;
 
-      var indexRight = (quartile3 + 5 * iqrStandIn - leftBorder) ~/ intervalSize;
+      var indexRight =
+          (quartile3 + 5 * iqrStandIn - leftBorder) ~/ intervalSize;
       indexRight = indexRight > length - 1 ? length - 1 : indexRight;
       final rightBlocks = 5;
       final skippedRight = length - rightBlocks - indexRight;
