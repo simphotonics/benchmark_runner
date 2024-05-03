@@ -37,7 +37,7 @@ void reportError(
   print(
     '${runtime.ssms.style(ColorProfile.dim)} '
     '$description'
-    '${errorMark == groupErrorMark ? ':' : ';'} '
+    '${errorMark == groupErrorMark ? ':' : ''} '
     '${error.toString().style(ColorProfile.error)}\n ',
   );
   if (isVerbose) {
