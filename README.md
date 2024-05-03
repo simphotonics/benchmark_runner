@@ -108,11 +108,12 @@ detected two benchmark files, ran the micro-benchmarks and produced a report.
 * The summary shows the total number of completed benchmarks, the number of
 benchmarks with errors and the number of groups with errors (that do not
 occur within the scope of a benchmark function).
-* To show a stack trace for each error, run the benchmar_runner using
+* To show a stack trace for each error, run the benchmark_runner using
 the option ``-v`` or `--verbose`.
 * The total benchmark run time may be shorter than the sum of the
-micro-benchmark run times since by default async benchmarks are run in a
-separate isolate.
+micro-benchmark run times since each executable benchmark file is run in
+a separate process.
+
 
 ## Tips and Tricks
 
