@@ -6,7 +6,7 @@ import 'package:benchmark_runner/src/extensions/color_profile.dart';
 import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
 import 'package:benchmark_runner/src/extensions/string_utils.dart';
 
-import 'enums/exit_code.dart';
+import '../enums/exit_code.dart';
 
 /// A record holding:
 /// * the name of the executable that was used to start the process,

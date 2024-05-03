@@ -22,9 +22,9 @@ class ColorPrintEmitter extends PrintEmitter {
     required String description,
     required Score score,
   }) {
-    final indent = '${score.runtime.msus}  '.length;
-
-    final part1 = '${score.runtime.msus.style(ColorProfile.dim)} $description;';
+    //final indentCharacters = score.runtime.msus.length;
+    final indent = '  ';
+    final part1 = '${score.runtime.msus.style(ColorProfile.dim)} $description';
 
     final mean = score.stats.mean / score.timeScale.factor;
     final stdDev = score.stats.stdDev / score.timeScale.factor;
@@ -32,19 +32,23 @@ class ColorPrintEmitter extends PrintEmitter {
     final iqr = score.stats.iqr / score.timeScale.factor;
     final unit = score.timeScale.unit;
 
-    final part2 = ' mean: ${mean.toStringAsFixedDigits()} $plusMinus '
+    final part2 = '${indent}mean: ${mean.toStringAsFixedDigits()} $plusMinus '
                 '${stdDev.toStringAsFixedDigits()} $unit, '
             .style(ColorProfile.mean) +
         'median: ${median.toStringAsFixedDigits()} $plusMinus '
                 '${iqr.toStringAsFixedDigits()} $unit'
             .style(ColorProfile.median);
 
-    final part3 = '${' ' * indent}${score.stats.blockHistogram()} '
+    final part3 = '$indent${score.stats.blockHistogram()} '
         'sample size: ${score.stats.sortedSample.length}';
     final part4 =
         score.innerIter > 1 ? ' (averaged over ${score.innerIter} runs)' : '';
 
-    print(part1 + part2);
+    // final rulerLength = part1.clearStyle().length;
+    // final ruler = (' ' * (rulerLength~/4)).style(ColorProfile.dim);
+    // print(ruler);
+    print(part1);
+    print(part2);
     print(part3 + part4.style(ColorProfile.dim));
 
     print('');

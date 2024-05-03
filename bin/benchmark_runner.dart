@@ -93,7 +93,10 @@ Future<void> main(List<String> args) async {
   //Printing results.
   for (final fResult in fResults) {
     fResult.then((result) {
-      print('\n\nRunning: ${result.command}'.style(ColorProfile.dim));
+      final command = '${result.executable} ${result.arguments
+              .where((arg) => arg != '--define=isBenchmarkProcess=true')
+              .join(' ')}';
+      print('\n\n\$ '.style(ColorProfile.dim) + command);
       print(result.stdout.indentLines(2, indentMultiplierFirstLine: 2));
       if (isVerbose) {
         print(result.stderr.indentLines(4, indentMultiplierFirstLine: 4));

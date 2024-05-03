@@ -7,7 +7,7 @@ export 'src/extensions/precision.dart';
 export 'src/extensions/string_utils.dart' hide benchmarkError, addErrorMark;
 export 'src/base/group.dart';
 export 'src/base/benchmark_process_result.dart';
-export 'src/base/enums/exit_code.dart';
+export 'src/enums/exit_code.dart';
 export 'src/utils/file_utils.dart';
 export 'src/utils/stats.dart';
 export 'src/extensions/benchmark_helper.dart';
