@@ -9,8 +9,8 @@ numerical algorithms and programs.
 The package [`benchmark_runner`][benchmark_runner] is based on
 [`benchmark_harness`][benchmark_harness] and includes helper
 functions for writing *inline* micro-benchmarks with the option of
-printing a score **histogram** and reporting the score **mean**,
-**standard deviation**, **median**, and **inter quartile range**.
+printing a score **histogram** and reporting the score **mean** &#177;
+**standard deviation**, and score **median** &#177; **inter quartile range**.
 
 The benchmark runner allows executing several benchmark files and reports if
 uncaught exceptions/errors were encountered.
@@ -79,21 +79,22 @@ $ dart benchmark/example_async_benchmark.dart
 
 The console output is shown above. The following colours and coding
 are used:
-* The first column shows the micro-benchmark runtime.
-* The labels of asynchronous benchmarks and groups are marked with an hour-glass
+* The first column shows the micro-benchmark runtime, followed by the group
+  name and the benchmark name.
+* The labels of asynchronous groups and benchmarks are marked with an hour-glass
 symbol.
 * The *mean* and the histogram block containing the *mean*
 are printed using <span style="color:#11A874">*green*</span> foreground.
 * The *median* and the block containg the *median* are printed
 using <span style="color:#2370C4">*blue*</span> foreground.
-* If the same block contains mean and median it is printed
+* If the same block contains mean and median then it is printed
 using <span style="color:#28B5D7">*cyan*</span> foreground.
 * Errors are printed using <span style="color:#CB605E"> *red* </span> foreground.
 
 ### 2. Running Several Benchmark Files
-To run *several* benchmark files (ending with `_benchmark.dart`)
+To run *several* benchmark files (with the format`*_benchmark.dart`)
 invoke the benchmark_runner and specify a directory.
-If no directory or file name is specified, then it defaults to `benchmark`:
+If no directory is specified, it defaults to `benchmark`:
 
 ```Console
 $ dart run benchmark_runner
@@ -112,7 +113,7 @@ occur within the scope of a benchmark function).
 the option ``-v`` or `--verbose`.
 * The total benchmark run time may be shorter than the sum of the
 micro-benchmark run times since each executable benchmark file is run in
-a separate process.
+a separate process. 
 
 
 ## Tips and Tricks

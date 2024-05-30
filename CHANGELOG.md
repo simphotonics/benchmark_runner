@@ -1,3 +1,7 @@
+## 0.1.9
+- Updated docs.
+- Updated deps. 
+
 ## 0.1.8
 - Amended error reporting.
 - Formatted executable.
