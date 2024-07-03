@@ -113,7 +113,7 @@ occur within the scope of a benchmark function).
 the option ``-v`` or `--verbose`.
 * The total benchmark run time may be shorter than the sum of the
 micro-benchmark run times since each executable benchmark file is run in
-a separate process. 
+a separate process.
 
 
 ## Tips and Tricks
@@ -181,7 +181,7 @@ or [`warmupAsync`][warmupAsync] are run for 200 milliseconds.
 The graph below shows the sample size (orange curve) as calculated by the function
 [`BenchmarkHelper.sampleSize`][sampleSize].
 The green curve shows the lower limit of the total microbenchmark duration and
-represent the value: `clockTicks * sampleSize * innerIterations`.
+represents the value: `clockTicks * sampleSize * innerIterations`.
 
 ![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/sample_size.png)
 
@@ -198,7 +198,7 @@ averaged over (see the cyan curve in the graph above):
 
 ### 2. Custom Sampling Method
 To amend the score sampling process the static function
-[`BenchmarkHelper.sampleSize`][sampleSize] may replaced with a custom function:
+[`BenchmarkHelper.sampleSize`][sampleSize] can be replaced with a custom function:
 ```Dart
 BenchmarkHelper.sampleSize = (int clockTicks) {
   return (outer: 100, inner: 1)
@@ -209,7 +209,7 @@ To restore the default score sampling settings use:
 BenchmarkHelper.sampleSize = BenchmarkHelper.sampleSizeDefault;
 ```
 ----
-The graph show above may be re-generated using the user created `sampleSize`
+The graph shown above may be re-generated using the custom `sampleSize`
 function by copying and amending the file `gnuplot/sample_size.dart`
 and using the command:
 ```Console
