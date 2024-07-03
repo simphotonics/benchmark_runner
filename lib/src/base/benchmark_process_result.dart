@@ -1,5 +1,5 @@
-import 'dart:convert';
-import 'dart:io' show ProcessResult, Process, systemEncoding;
+import 'dart:convert' show Encoding, Utf8Codec;
+import 'dart:io' show ProcessResult, Process;
 
 import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:benchmark_runner/src/extensions/color_profile.dart';
@@ -35,8 +35,8 @@ extension BenchmarkProcess on Process {
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
     bool runInShell = false,
-    Encoding? stdoutEncoding = systemEncoding,
-    Encoding? stderrEncoding = systemEncoding,
+    Encoding? stdoutEncoding = const Utf8Codec(), // Enables histogram output
+    Encoding? stderrEncoding = const Utf8Codec(), //               on windows.
   }) {
     return Process.run(executable, arguments,
             workingDirectory: workingDirectory,

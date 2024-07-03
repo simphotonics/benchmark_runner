@@ -1,3 +1,8 @@
+## 0.1.9
+- Changed default encoding of standard output of benchmark processes
+to `Utf8Codec()`. This enables the correct output of histograms in windows
+terminals with utf8 support. 
+
 ## 0.1.8
 - Updated docs.
 - Amended error reporting.
