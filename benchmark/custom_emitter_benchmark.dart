@@ -2,7 +2,6 @@
 import 'dart:collection';
 
 import 'package:benchmark_runner/benchmark_runner.dart';
-import 'package:benchmark_runner/src/base/color_print_emitter.dart';
 
 class CustomEmitter extends ColorPrintEmitter {
   void emitMean({required Score score}) {
