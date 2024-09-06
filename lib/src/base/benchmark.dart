@@ -25,7 +25,7 @@ void reportStats(Benchmark instance, ColorPrintEmitter emitter) {
 }
 
 /// Generates a BenchmarkHarness style report. Score times refer to
-/// a single execution of the `run()` function.
+/// a single execution of function `run`.
 void reportLegacyStyle(Benchmark instance, ColorPrintEmitter emitter) {
   instance.report();
 }
@@ -166,7 +166,9 @@ class Benchmark extends BenchmarkBase {
 /// * `run`: the benchmarked function,
 /// * `setup`: exectued once before the benchmark,
 /// * `teardown`: executed once after the benchmark runs.
-/// * `emitStats`: Set to `false` to emit score as provided by benchmark_harness.
+/// * `report`: report to emit score as provided by benchmark_harness.
+/// * `emitter`: An emitter for generating a custom benchmark report.
+/// * `report`: A callback that can be used to call an emitter method.
 void benchmark<E extends ColorPrintEmitter>(
   String description,
   void Function() run, {
