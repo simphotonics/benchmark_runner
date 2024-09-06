@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
-import 'package:benchmark_harness/benchmark_harness.dart' show BenchmarkBase;
+import 'package:benchmark_harness/benchmark_harness.dart'
+    show BenchmarkBase;
 
 import '../extensions/benchmark_helper.dart';
 import '../extensions/color_profile.dart';
@@ -15,6 +16,23 @@ import 'score.dart';
 /// A synchronous function that does nothing.
 void doNothing() {}
 
+/// Generates a report that includes benchmark score statistics.
+void reportStats(Benchmark instance, ColorPrintEmitter emitter) {
+  emitter.emitStats(
+    description: instance.description,
+    score: instance.score(),
+  );
+}
+
+/// Generates a BenchmarkHarness style report. Score times refer to
+/// a single execution of the `run()` function.
+void reportLegacyStyle(Benchmark instance, ColorPrintEmitter emitter) {
+  instance.report();
+}
+
+/// Generic function that reports benchmark scores by calling an emitter [E].
+typedef Reporter<E extends ColorPrintEmitter> = void Function(Benchmark, E);
+
 /// A class used to benchmark synchronous functions.
 /// The benchmarked function is provided as a constructor argument.
 class Benchmark extends BenchmarkBase {
@@ -27,12 +45,12 @@ class Benchmark extends BenchmarkBase {
   const Benchmark({
     required String description,
     required void Function() run,
-    void Function()? setup,
-    void Function()? teardown,
+    void Function() setup = doNothing,
+    void Function() teardown = doNothing,
     ColorPrintEmitter emitter = const ColorPrintEmitter(),
   })  : _run = run,
-        _setup = setup ?? doNothing,
-        _teardown = teardown ?? doNothing,
+        _setup = setup,
+        _teardown = teardown,
         super(description, emitter: emitter);
 
   final void Function() _run;
@@ -131,15 +149,6 @@ class Benchmark extends BenchmarkBase {
     );
   }
 
-  /// Runs the method [sample] and emits the benchmark score statistics.
-  void reportStats() {
-    //stats.removeOutliers(10);
-    (emitter as ColorPrintEmitter).emitStats(
-      description: description,
-      score: score(),
-    );
-  }
-
   /// Runs the method [measure] and emits the benchmark score.
   @override
   void report() {
@@ -158,12 +167,13 @@ class Benchmark extends BenchmarkBase {
 /// * `setup`: exectued once before the benchmark,
 /// * `teardown`: executed once after the benchmark runs.
 /// * `emitStats`: Set to `false` to emit score as provided by benchmark_harness.
-void benchmark(
+void benchmark<E extends ColorPrintEmitter>(
   String description,
   void Function() run, {
-  void Function()? setup,
-  void Function()? teardown,
-  bool emitStats = true,
+  void Function() setup = doNothing,
+  void Function() teardown = doNothing,
+  E? emitter,
+  Reporter<E> report = reportStats,
 }) {
   final group = Zone.current[#group] as Group?;
   var groupDescription =
@@ -176,6 +186,7 @@ void benchmark(
     run: run,
     setup: setup,
     teardown: teardown,
+    emitter: emitter ?? ColorPrintEmitter(),
   );
   final watch = Stopwatch()..start();
 
@@ -197,10 +208,10 @@ void benchmark(
   runZonedGuarded(
     () {
       try {
-        if (emitStats) {
-          instance.reportStats();
+        if (emitter == null) {
+          reportStats(instance, instance.emitter as ColorPrintEmitter);
         } else {
-          instance.report();
+          report(instance, emitter);
         }
         addSuccessMark();
       } catch (error, stack) {
