@@ -26,3 +26,6 @@ doc/api/
 
 # Compiled executables
 bin/*.exe
+
+# Exported benchmark scores
+benchmark/*.txt
