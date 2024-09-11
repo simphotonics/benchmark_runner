@@ -50,7 +50,6 @@ class ColorPrintEmitter extends PrintEmitter {
     print(part1);
     print(part2);
     print(part3 + part4.style(ColorProfile.dim));
-
     print('');
   }
 }

@@ -1,22 +1,47 @@
+import 'dart:collection';
 import 'dart:convert' show Encoding, Utf8Codec;
-import 'dart:io' show ProcessResult, Process;
+import 'dart:io' show File, Process, ProcessResult;
 
 import 'package:ansi_modifier/ansi_modifier.dart';
-import 'package:benchmark_runner/src/extensions/color_profile.dart';
-import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
-import 'package:benchmark_runner/src/extensions/string_utils.dart';
-
 import '../enums/exit_code.dart';
+import '../extensions/color_profile.dart';
+import '../extensions/duration_formatter.dart';
+import '../extensions/string_utils.dart';
 
-/// A record holding:
-/// * the name of the executable that was used to start the process,
+/// A class holding:
+/// * the name of the executable that was used to run the benchmark,
 /// * the list of arguments,
 /// * and the resulting [ProcessResult] object.
-typedef BenchmarkProcessResult = ({
-  String executable,
-  List<String> arguments,
-  ProcessResult processResult
-});
+class BenchmarkProcessResult {
+  BenchmarkProcessResult({
+    required this.executable,
+    required List<String> arguments,
+    required this.processResult,
+    required this.benchmarkFile,
+  }) : arguments = UnmodifiableListView(arguments);
+
+  final String executable;
+  final UnmodifiableListView<String> arguments;
+  final ProcessResult processResult;
+  final File benchmarkFile;
+
+  /// Returns the command used to generate the benchmark scores.
+  ///
+  /// Set [isBrief] to true to strips the argument
+  /// `--define=isBenchmarkProcess=true`.
+  String command({bool isBrief = true}) {
+    final args = switch (isBrief) {
+      true => arguments
+          .where((arg) => arg != '--define=isBenchmarkProcess=true')
+          .join(' '),
+      false => arguments.join(' ')
+    };
+    return executable +
+        (args.isEmpty
+            ? ' ${benchmarkFile.path}'
+            : ' $args ${benchmarkFile.path}');
+  }
+}
 
 /// A record holding:
 /// * an exit message,
@@ -28,9 +53,10 @@ typedef ExitStatus = ({String message, ExitCode exitCode});
 extension BenchmarkProcess on Process {
   /// Runs a benchmark and returns an instance of
   /// [BenchmarkProcessResult].
-  static Future<BenchmarkProcessResult> runBenchmark(
-    String executable,
-    List<String> arguments, {
+  static Future<BenchmarkProcessResult> runBenchmark({
+    required String executable,
+    List<String> arguments = const [],
+    required File benchmarkFile,
     String? workingDirectory,
     Map<String, String>? environment,
     bool includeParentEnvironment = true,
@@ -38,7 +64,7 @@ extension BenchmarkProcess on Process {
     Encoding? stdoutEncoding = const Utf8Codec(), // Enables histogram output
     Encoding? stderrEncoding = const Utf8Codec(), //               on windows.
   }) {
-    return Process.run(executable, arguments,
+    return Process.run(executable, [...arguments, benchmarkFile.path],
             workingDirectory: workingDirectory,
             environment: environment,
             includeParentEnvironment: includeParentEnvironment,
@@ -46,19 +72,17 @@ extension BenchmarkProcess on Process {
             stdoutEncoding: stdoutEncoding,
             stderrEncoding: stderrEncoding)
         .then<BenchmarkProcessResult>((processResult) {
-      return (
+      return BenchmarkProcessResult(
         executable: executable,
         arguments: arguments,
         processResult: processResult,
+        benchmarkFile: benchmarkFile,
       );
     });
   }
 }
 
 extension BenchmarkUtils on BenchmarkProcessResult {
-  /// Returns the command and the options used to start this process.
-  String get command => '$executable ${arguments.join(' ')}';
-
   /// Returns the process exit code.
   int get exitCode => processResult.exitCode;
 
@@ -81,7 +105,7 @@ extension BenchmarkUtils on BenchmarkProcessResult {
   }
 
   /// Standard output from the process as [String].
-  String get stdout => (processResult.stdout as String);
+  String get stdout => (processResult.stdout as String).trimRight();
 
   /// Returns the standard error output from the process.
   String get stderr => (processResult.stderr as String)

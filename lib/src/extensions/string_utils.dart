@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:ansi_modifier/ansi_modifier.dart';
-import 'package:benchmark_runner/src/extensions/duration_formatter.dart';
 
 import '../utils/environment.dart';
 import 'color_profile.dart';
+import 'duration_formatter.dart';
 
 const benchmarkError = '. .-. .-. --- .-.';
 const groupErrorMark = r'.--. ..- --- .-. --. / .-. --- .-. .-. .';

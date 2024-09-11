@@ -4,6 +4,8 @@ export 'src/base/benchmark_process_result.dart';
 export 'src/base/color_print_emitter.dart';
 export 'src/base/group.dart';
 export 'src/base/score.dart';
+export 'src/commands/benchmark_runner.dart';
+export 'src/commands/export_command.dart';
 export 'src/enums/exit_code.dart';
 export 'src/extensions/benchmark_helper.dart';
 export 'src/extensions/color_profile.dart';
