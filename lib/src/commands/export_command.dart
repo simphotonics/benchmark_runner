@@ -14,6 +14,9 @@ class ExportCommand extends Command {
   @override
   final name = 'export';
 
+  // @override
+  // final category = 'benchmark';
+
   @override
   final description = 'Exports benchmark scores. A custom file extension '
       'and directory may be specified.';
@@ -121,7 +124,7 @@ class ExportCommand extends Command {
         'Writing scores to: '.style(ColorProfile.dim) + outputPath + '\n',
       );
 
-     await writeTo(path: outputPath, contents: result.stdout);
+      await writeTo(path: outputPath, contents: result.stdout);
 
       if (isVerbose) {
         print(result.stderr.indentLines(4, indentMultiplierFirstLine: 4));

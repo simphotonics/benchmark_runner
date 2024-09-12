@@ -11,8 +11,8 @@ class ReportCommand extends Command {
   @override
   final name = 'report';
 
-  @override
-  String get category => 'benchmark';
+  // @override
+  // final category = 'benchmark';
 
   @override
   String get invocation => super.invocation + ' <path to directory|file>';

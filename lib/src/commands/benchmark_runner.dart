@@ -22,7 +22,7 @@ class BenchmarkRunner extends CommandRunner {
 
   @override
   String? get usageFooter =>
-    '\nNote: Benchmark files are dart files ending with \'_benchmark.dart\'.';
+      '\nNote: Benchmark files are dart files ending with \'_benchmark.dart\'.';
 
   factory BenchmarkRunner() {
     return _instance ?? BenchmarkRunner._()
@@ -44,5 +44,6 @@ class BenchmarkRunner extends CommandRunner {
   }
 
   @override
-  final String invocation = 'dart run benchmark <command> [arguments] [path to directory or file]';
+  final String invocation =
+      'dart run benchmark <command> [arguments] <path to directory|file>';
 }
