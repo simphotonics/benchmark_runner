@@ -91,20 +91,19 @@ using <span style="color:#2370C4">*blue*</span> foreground.
 using <span style="color:#28B5D7">*cyan*</span> foreground.
 * Errors are printed using <span style="color:#CB605E"> *red* </span> foreground.
 
-### 2. Running Several Benchmark Files
+### 2. Using the Benchmark Runner
 To run *several* benchmark files (with the format`*_benchmark.dart`)
-invoke the benchmark_runner and specify a directory.
+and print a report, invoke the subcommand `report`and specify a directory.
 If no directory is specified, it defaults to `benchmark`:
 
 ```Console
-$ dart run benchmark_runner
+$ dart run benchmark_runner report
 ```
 
 ![Console Output](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_output.png)
 
 A typical console output is shown above. In this example, the benchmark_runner
 detected two benchmark files, ran the micro-benchmarks and produced a report.
-
 
 * The summary shows the total number of completed benchmarks, the number of
 benchmarks with errors and the number of groups with errors (that do not
@@ -115,6 +114,49 @@ the option ``-v`` or `--verbose`.
 micro-benchmark run times since each executable benchmark file is run in
 a separate process.
 
+### 3. Exporting Benchmark Scores
+
+To export benchmark scores use the subcommand `export`:
+```
+$ dart run benchmark_runner export --outDir=out --extension=csv searchDirectory
+```
+In the example above, the `searchDirectory` is scanned for `*_benchmark.dart`
+files. For each benchmark file a corresponding file `*_benchmark.csv` is
+written to the directory `out`.
+
+Note: When exporting benchmark scores to a file
+and the emitter output is colorized,
+it is recommended to use the option `--no-color`, to
+avoid spurious characters due to the use of Ansi modifiers.
+
+Since version 0.2.0, the functions [`benchmark`][benchmark] and
+[`asyncBenchmark`][asyncBenchmark] accept the optional parameters `emitter` and
+`report`. These parameters can be used to customize the score reports e.g.
+to make the score format more suitable for writing to a file:
+
+```Dart
+import 'package:benchmark_runner/benchmark_runner.dart';
+
+class CustomEmitter extends ColorPrintEmitter {
+  void emitMean({required Score score}) {
+    print('Mean               Standard Deviation');
+    print('${score.stats.mean}  ${score.stats.stdDev}');
+  }
+}
+
+void main(){
+  benchmark(
+      'construct list | use custom emitter',
+      () {
+        var list = <int>[for (var i = 0; i < 1000; ++i) i];
+      },
+      emitter: CustomEmitter(),
+      report: (instance, emitter) => emitter.emitMean(
+        score: instance.score(),
+      ),
+    );
+}
+```
 
 ## Tips and Tricks
 
@@ -135,9 +177,9 @@ score statistics.
 - By default, [`benchmark`][benchmark] and
 [`asyncBenchmark`][asyncBenchmark] report score statistics. In order to generate
 the report provided by [`benchmark_harness`][benchmark_harness] use the
-optional argument `emitStats: false`.
+optional argument `report: reportMean`.
 
-- Color output can be switched off by using the option: `--isMonochrome` when
+- Color output can be switched off by using the option: `--no-color` when
 calling the benchmark runner. When executing a single benchmark file the
 corresponding option is `--define=isMonochrome=true`.
 

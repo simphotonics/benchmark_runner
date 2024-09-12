@@ -5,11 +5,7 @@ Breaking changes:
 - The functions `benchmark` and `asyncBenchmark` are now generic and
   accept an optional parameter `E extents ColorPrintEmitter emitter`
   and the callback `report(instance, emitter){}` that can be used to
-  pass benchmark scores to the emitter. 
-
-
-
-
+  pass benchmark scores to the emitter.
 
 ## 0.1.9
 - Changed default encoding of standard output of benchmark processes
