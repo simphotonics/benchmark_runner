@@ -181,7 +181,7 @@ optional argument `report: reportMean`.
 
 - Color output can be switched off by using the option: `--no-color` when
 calling the benchmark runner. When executing a single benchmark file the
-corresponding option is `--define=isMonochrome=true`.
+corresponding option is `--define=noColor=true`.
 
 - The default colors used to style benchmark reports are best suited
 for a dark terminal background.
