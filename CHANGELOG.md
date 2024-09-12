@@ -1,7 +1,20 @@
+## 0.2.0
+Breaking changes:
+- Command `benchmark_runner` now has subcommands `report` and `export`.
+- The command option `isMonochrome` has been replace with `--no-color`.
+- The functions `benchmark` and `asyncBenchmark` are now generic and
+  accept an optional parameter `E extents ColorPrintEmitter emitter`
+  and the callback `report(instance, emitter){}` that can be used to
+  pass benchmark scores to the emitter. 
+
+
+
+
+
 ## 0.1.9
 - Changed default encoding of standard output of benchmark processes
 to `Utf8Codec()`. This enables the correct output of histograms in windows
-terminals with utf8 support. 
+terminals with utf8 support.
 
 ## 0.1.8
 - Updated docs.
