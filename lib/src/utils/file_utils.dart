@@ -3,7 +3,8 @@ import 'dart:io';
 /// Returns a list of resolved benchmark files.
 /// * Benchmark files must end with `_benchmark.dart`.
 /// * Returns an empty list if no benchmark files were found.
-Future<List<File>> resolveBenchmarkFiles(String path) async {
+Future<({List<File> benchmarkFiles, FileSystemEntityType entityType})>
+    resolveBenchmarkFiles(String path) async {
   final benchmarkFiles = <File>[];
   final entityType = await FileSystemEntity.type(path);
   if ((entityType == FileSystemEntityType.directory)) {
@@ -18,7 +19,7 @@ Future<List<File>> resolveBenchmarkFiles(String path) async {
   } else if ((entityType == FileSystemEntityType.file)) {
     benchmarkFiles.add(File(path));
   }
-  return benchmarkFiles;
+  return (benchmarkFiles:benchmarkFiles, entityType: entityType);
 }
 
 /// Opens a file using [path], writes [contents], and closes the file.
