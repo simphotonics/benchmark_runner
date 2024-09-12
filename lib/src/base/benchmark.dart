@@ -25,9 +25,13 @@ void reportStats(Benchmark instance, ColorPrintEmitter emitter) {
 }
 
 /// Generates a BenchmarkHarness style report. Score times refer to
-/// a single execution of function `run`.
-void reportLegacyStyle(Benchmark instance, ColorPrintEmitter emitter) {
-  instance.report();
+/// a single execution of the function `run`.
+void reportMean(Benchmark instance, ColorPrintEmitter emitter) {
+  final watch = Stopwatch()..start();
+  final value = instance.measure();
+  watch.stop();
+  final runtime = watch.elapsed.msus.style(ColorProfile.dim);
+  emitter.emit('$runtime ${instance.description}', value);
 }
 
 /// Generic function that reports benchmark scores by calling an emitter [E].
@@ -150,14 +154,7 @@ class Benchmark extends BenchmarkBase {
 
   /// Runs the method [measure] and emits the benchmark score.
   @override
-  void report() {
-    final watch = Stopwatch()..start();
-    final value = measure();
-    watch.stop();
-    final runtime = watch.elapsed.msus.style(ColorProfile.dim);
-    emitter.emit('$runtime $description', value);
-    print(' ');
-  }
+  void report() => reportMean(this, emitter as ColorPrintEmitter);
 }
 
 /// Defines a benchmark for the synchronous function [run]. The benchmark
@@ -216,17 +213,16 @@ void benchmark<E extends ColorPrintEmitter>(
                 instance.emitter as ColorPrintEmitter,
               );
               break;
-            case reportLegacyStyle:
-              reportLegacyStyle(
+            case reportMean:
+              reportMean(
                 instance,
                 instance.emitter as ColorPrintEmitter,
               );
             default:
               throw ErrorOf<Reporter<E>>(
-                message: 'Could not run benchmark.',
-                invalidState: 'Emitter is missing.',
-                expectedState: 'Please specify an emitter of type <$E>.'
-              );
+                  message: 'Could not run benchmark.',
+                  invalidState: 'Emitter is missing.',
+                  expectedState: 'Please specify an emitter of type <$E>.');
           }
         } else {
           report(instance, emitter);

@@ -21,7 +21,7 @@ typedef AsyncFunction = Future<void> Function();
 Future<void> futureDoNothing() async {}
 
 /// Generates a report that includes benchmark score statistics.
-Future<void> reportStatsAsync(
+Future<void> asyncReportStats(
     AsyncBenchmark instance, ColorPrintEmitter emitter) async {
   emitter.emitStats(
     description: instance.description,
@@ -31,9 +31,14 @@ Future<void> reportStatsAsync(
 
 /// Generates a BenchmarkHarness style report. Score times refer to
 /// a single execution of function `run`.
-Future<void> reportLegacyStyleAsync(
-    AsyncBenchmark instance, ColorPrintEmitter emitter) async {
-  await instance.report();
+Future<void> asyncReportMean(
+  AsyncBenchmark instance,
+  ColorPrintEmitter emitter,
+) async {
+  final watch = Stopwatch()..start();
+  final score = await instance.measure();
+  final runtime = watch.elapsed.msus.style(ColorProfile.dim);
+  emitter.emit('$runtime ${instance.description}', score);
 }
 
 // Generic function that reports benchmark scores by calling an emitter [E].
@@ -86,10 +91,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
   /// Runs [measure] and emits the score and benchmark runtime.
   @override
   Future<void> report() async {
-    final watch = Stopwatch()..start();
-    final score = await measure();
-    final runtime = watch.elapsed.msus.style(ColorProfile.dim);
-    emitter.emit('$runtime $description', score);
+    await asyncReportMean(this, emitter as ColorPrintEmitter);
   }
 
   /// Returns a sample of benchmark scores.
@@ -184,7 +186,7 @@ Future<void> asyncBenchmark<E extends ColorPrintEmitter>(
   Future<void> Function() setup = futureDoNothing,
   Future<void> Function() teardown = futureDoNothing,
   E? emitter,
-  AsyncReporter<E> report = reportStatsAsync,
+  AsyncReporter<E> report = asyncReportStats,
   bool runInIsolate = true,
 }) async {
   final group = Zone.current[#group] as Group?;
@@ -208,17 +210,17 @@ Future<void> asyncBenchmark<E extends ColorPrintEmitter>(
         switch ((emitter, runInIsolate)) {
           case (null, true):
             switch (report) {
-              case reportStatsAsync:
+              case asyncReportStats:
                 await Isolate.run(
-                  () => reportStatsAsync(
+                  () => asyncReportStats(
                     instance,
                     instance.emitter as ColorPrintEmitter,
                   ),
                 );
                 break;
-              case reportLegacyStyleAsync:
+              case asyncReportMean:
                 await Isolate.run(
-                  () => reportLegacyStyleAsync(
+                  () => asyncReportMean(
                     instance,
                     instance.emitter as ColorPrintEmitter,
                   ),
@@ -238,27 +240,18 @@ Future<void> asyncBenchmark<E extends ColorPrintEmitter>(
             break;
           case (E emitter, true):
             await Isolate.run(() => report(instance, emitter));
-
-            /// Run method measure() in an isolate.
-            // final watch = Stopwatch()..start();
-            // final score = await Isolate.run(instance.measure);
-            // final runtime = watch.elapsed.ssms.style(ColorProfile.dim);
-            // instance.emitter.emit(
-            //   '$runtime ${instance.description}',
-            //   score,
-            // );
             addSuccessMark();
             break;
           case (null, false):
             switch (report) {
-              case reportStatsAsync:
-                await reportStatsAsync(
+              case asyncReportStats:
+                await asyncReportStats(
                   instance,
                   instance.emitter as ColorPrintEmitter,
                 );
                 break;
-              case reportLegacyStyleAsync:
-                await reportLegacyStyleAsync(
+              case asyncReportMean:
+                await asyncReportMean(
                   instance,
                   instance.emitter as ColorPrintEmitter,
                 );

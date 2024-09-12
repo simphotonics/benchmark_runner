@@ -22,7 +22,7 @@ class ExportCommand extends Command {
       'and directory may be specified.';
 
   static const extension = 'extension';
-  static const dir = 'dir';
+  static const outputDir = 'outputDir';
 
   ExportCommand() {
     argParser
@@ -30,13 +30,13 @@ class ExportCommand extends Command {
         extension,
         abbr: 'e',
         defaultsTo: 'txt',
-        help: 'File extension of exported files.',
+        help: 'Set file extension of exported files.',
       )
       ..addOption(
-        dir,
-        abbr: 'd',
+        outputDir,
+        abbr: 'o',
         defaultsTo: null,
-        help: 'Benchmark scores will be exported to this directory.',
+        help: 'Directory must exist. Score files will be written to it.',
       );
   }
 
@@ -75,7 +75,7 @@ class ExportCommand extends Command {
     }
 
     // Reading options
-    final outputDirectory = argResults!.option('dir') ?? searchDirectory;
+    final outputDirectory = argResults!.option(outputDir) ?? searchDirectory;
 
     // Starting processes.
     final fResults = <Future<BenchmarkProcessResult>>[];

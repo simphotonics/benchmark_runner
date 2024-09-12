@@ -54,7 +54,7 @@ echo
 echo -e "${BLUE}=== Running Example $PWD...${RESET}"
 echo
 
-dart run benchmark_runner
+dart run benchmark_runner report
 
 echo
 echo -e "${BLUE}=== Script finished successfully ${RESET}"

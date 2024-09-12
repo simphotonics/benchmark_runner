@@ -6,8 +6,8 @@ import 'report_command.dart';
 class BenchmarkRunner extends CommandRunner {
   BenchmarkRunner._()
       : super(
-          'benchmark',
-          'Runs benchmarks, exports score reports.',
+          'benchmark_runner',
+          'Runs benchmarks. Prints and exports score reports.',
         );
 
   static BenchmarkRunner? _instance;
@@ -45,5 +45,5 @@ class BenchmarkRunner extends CommandRunner {
 
   @override
   final String invocation =
-      'dart run benchmark <command> [arguments] <path to directory|file>';
+      'dart run benchmark_runner <command> [arguments] <path to directory|file>';
 }
