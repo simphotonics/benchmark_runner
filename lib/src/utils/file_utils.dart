@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:path/path.dart' as p;
-
 /// Returns a list of resolved benchmark files.
 /// * Benchmark files must end with `_benchmark.dart`.
 /// * Returns an empty list if no benchmark files were found.
