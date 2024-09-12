@@ -61,7 +61,12 @@ void main() {
     test('run benchmark file', () async {
       final process = await TestProcess.start(
         'dart',
-        ['run', 'benchmark_runner', 'report', 'test/samples/sample_benchmark.dart'],
+        [
+          'run',
+          'benchmark_runner',
+          'report',
+          'test/samples/sample_benchmark.dart'
+        ],
       );
       await process.shouldExit(0);
     });

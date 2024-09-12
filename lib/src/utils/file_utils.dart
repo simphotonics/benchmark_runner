@@ -19,7 +19,7 @@ Future<({List<File> benchmarkFiles, FileSystemEntityType entityType})>
   } else if ((entityType == FileSystemEntityType.file)) {
     benchmarkFiles.add(File(path));
   }
-  return (benchmarkFiles:benchmarkFiles, entityType: entityType);
+  return (benchmarkFiles: benchmarkFiles, entityType: entityType);
 }
 
 /// Opens a file using [path], writes [contents], and closes the file.

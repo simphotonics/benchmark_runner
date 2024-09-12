@@ -36,7 +36,8 @@ class ReportCommand extends Command {
         argResults!.rest.isEmpty ? 'benchmark' : argResults!.rest.first;
 
     // Resolving test files.
-    final (benchmarkFiles: benchmarkFiles, entityType: entityType) = await resolveBenchmarkFiles(searchDirectory);
+    final (benchmarkFiles: benchmarkFiles, entityType: entityType) =
+        await resolveBenchmarkFiles(searchDirectory);
     if (benchmarkFiles.isEmpty) {
       print('');
       print('Could not resolve any benchmark files using path: '
