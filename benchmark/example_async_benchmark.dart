@@ -15,7 +15,7 @@ void main(List<String> args) async {
 
     await asyncBenchmark('5ms', () async {
       await later<int>(27, Duration(milliseconds: 5));
-    }, emitStats: false);
+    }, report: reportLegacyStyleAsync);
   });
 
   group('Set', () async {

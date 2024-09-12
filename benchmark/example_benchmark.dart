@@ -23,7 +23,7 @@ void main(List<String> args) {
 
     benchmark('construct', () {
       var list = <int>[for (var i = 0; i < 1000; ++i) i];
-    }, report: reportLegacyStyle );
+    }, report: reportLegacyStyle);
 
     benchmark('construct list view', () {
       final listView = UnmodifiableListView(originalList);
