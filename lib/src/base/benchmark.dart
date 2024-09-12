@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
-import 'package:benchmark_harness/benchmark_harness.dart'
-    show BenchmarkBase;
+import 'package:benchmark_harness/benchmark_harness.dart' show BenchmarkBase;
+import 'package:exception_templates/exception_templates.dart';
 
 import '../extensions/benchmark_helper.dart';
 import '../extensions/color_profile.dart';
@@ -47,11 +47,10 @@ class Benchmark extends BenchmarkBase {
     required void Function() run,
     void Function() setup = doNothing,
     void Function() teardown = doNothing,
-    ColorPrintEmitter emitter = const ColorPrintEmitter(),
   })  : _run = run,
         _setup = setup,
         _teardown = teardown,
-        super(description, emitter: emitter);
+        super(description, emitter: const ColorPrintEmitter());
 
   final void Function() _run;
   final void Function() _setup;
@@ -153,10 +152,10 @@ class Benchmark extends BenchmarkBase {
   @override
   void report() {
     final watch = Stopwatch()..start();
-    final score = measure();
+    final value = measure();
     watch.stop();
     final runtime = watch.elapsed.msus.style(ColorProfile.dim);
-    emitter.emit('$runtime $description', score);
+    emitter.emit('$runtime $description', value);
     print(' ');
   }
 }
@@ -188,7 +187,6 @@ void benchmark<E extends ColorPrintEmitter>(
     run: run,
     setup: setup,
     teardown: teardown,
-    emitter: emitter ?? ColorPrintEmitter(),
   );
   final watch = Stopwatch()..start();
 
@@ -211,7 +209,25 @@ void benchmark<E extends ColorPrintEmitter>(
     () {
       try {
         if (emitter == null) {
-          reportStats(instance, instance.emitter as ColorPrintEmitter);
+          switch (report) {
+            case reportStats:
+              reportStats(
+                instance,
+                instance.emitter as ColorPrintEmitter,
+              );
+              break;
+            case reportLegacyStyle:
+              reportLegacyStyle(
+                instance,
+                instance.emitter as ColorPrintEmitter,
+              );
+            default:
+              throw ErrorOf<Reporter<E>>(
+                message: 'Could not run benchmark.',
+                invalidState: 'Emitter is missing.',
+                expectedState: 'Please specify an emitter of type <$E>.'
+              );
+          }
         } else {
           report(instance, emitter);
         }
