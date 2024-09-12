@@ -28,28 +28,36 @@ class ReportCommand extends Command {
 
     // Reading flags
     final isVerbose = globalResults!.flag(BenchmarkRunner.verbose);
-    final isMonochrome = !globalResults!.flag(BenchmarkRunner.color);
+    final noColor = !globalResults!.flag(BenchmarkRunner.color);
 
-    Ansi.status = isMonochrome ? AnsiOutput.disabled : AnsiOutput.enabled;
+    Ansi.status = noColor ? AnsiOutput.disabled : AnsiOutput.enabled;
 
     final searchDirectory =
-        globalResults!.rest.isEmpty ? 'benchmark' : argResults!.rest.first;
+        argResults!.rest.isEmpty ? 'benchmark' : argResults!.rest.first;
 
     // Resolving test files.
-    final benchmarkFiles = await resolveBenchmarkFiles(searchDirectory);
+    final (benchmarkFiles: benchmarkFiles, entityType: entityType) = await resolveBenchmarkFiles(searchDirectory);
     if (benchmarkFiles.isEmpty) {
       print('');
       print('Could not resolve any benchmark files using path: '
           '${searchDirectory.style(ColorProfile.highlight)}\n');
       print(
-        'Please specify directory '
+        'Please specify a directory '
         'containing benchmark files: \n'
         '\$  ${'dart run benchmark_exporter'.style(ColorProfile.emphasize)} '
         '${'benchmark_directory'.style(ColorProfile.highlight)}',
       );
       exit(ExitCode.noBenchmarkFilesFound.index);
     } else {
-      print('\nFinding benchmark files... '.style(ColorProfile.dim));
+      if (entityType == FileSystemEntityType.directory) {
+        print(
+          '\nFinding benchmark files in '.style(ColorProfile.dim) +
+              searchDirectory +
+              ' ...'.style(ColorProfile.dim),
+        );
+      } else {
+        print('\nFinding benchmark files ... '.style(ColorProfile.dim));
+      }
       for (final file in benchmarkFiles) {
         print('  ${file.path}');
       }
@@ -64,7 +72,7 @@ class ReportCommand extends Command {
         arguments: [
           '--define=isBenchmarkProcess=true',
           if (isVerbose) '--define=isVerbose=true',
-          if (isMonochrome) '--define=isMonochrome=true',
+          if (noColor) '--define=noColor=true',
         ],
         benchmarkFile: file,
       ));
@@ -85,7 +93,7 @@ class ReportCommand extends Command {
     // Printing benchmark scores.
     for (final fResult in fResults) {
       fResult.then((result) {
-        print('\$ '.style(ColorProfile.dim) + result.command());
+        print('\n\n\$ '.style(ColorProfile.dim) + result.command());
         print(result.stdout.indentLines(2, indentMultiplierFirstLine: 2));
         print('\n');
         if (isVerbose) {
