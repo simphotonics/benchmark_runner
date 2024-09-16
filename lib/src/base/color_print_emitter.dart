@@ -1,9 +1,9 @@
 import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
-import '../extensions/histogram.dart';
-import '../extensions/precision.dart';
-import '../extensions/duration_formatter.dart';
-import '../extensions/color_profile.dart';
+import '../extension/histogram.dart';
+import '../extension/precision.dart';
+import '../extension/duration_formatter.dart';
+import '../extension/color_profile.dart';
 import 'score.dart';
 
 const plusMinus = '\u00B1';

@@ -9,11 +9,10 @@ void main() {
         ['run', 'benchmark_runner'],
       );
 
-      final rest = process.stdout.rest;
-      final result = await rest.join('\n');
+      final usage = await process.stdout.rest.join('\n');
 
       expect(
-        result,
+        usage,
         'Runs benchmarks. Prints and exports score reports.\n'
         '\n'
         'Usage: dart run benchmark_runner <command> [arguments] <path to directory|file>\n'
@@ -47,13 +46,13 @@ void main() {
       final usage = await process.stdout.rest.join('\n');
 
       expect(
-          usage,
+          usage,equals(
           'Runs benchmarks and prints a score report to stdout.\n'
           '\n'
           'Usage: benchmark_runner report [arguments] <path to directory|file>\n'
           '-h, --help    Print this usage information.\n'
           '\n'
-          'Run "benchmark_runner help" to see global options.');
+          'Run "benchmark_runner help" to see global options.'));
 
       // Assert that the process exits with code 0.
       await process.shouldExit(0);

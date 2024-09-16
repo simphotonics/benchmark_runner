@@ -1,6 +1,7 @@
 import 'dart:io';
 
-/// Returns a list of resolved benchmark files.
+/// Returns a list of resolved benchmark files. If [path] represents
+/// a directory, the directory
 /// * Benchmark files must end with `_benchmark.dart`.
 /// * Returns an empty list if no benchmark files were found.
 Future<({List<File> benchmarkFiles, FileSystemEntityType entityType})>

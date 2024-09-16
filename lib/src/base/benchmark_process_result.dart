@@ -3,10 +3,10 @@ import 'dart:convert' show Encoding, Utf8Codec;
 import 'dart:io' show File, Process, ProcessResult;
 
 import 'package:ansi_modifier/ansi_modifier.dart';
-import '../enums/exit_code.dart';
-import '../extensions/color_profile.dart';
-import '../extensions/duration_formatter.dart';
-import '../extensions/string_utils.dart';
+import '../enum/exit_code.dart';
+import '../extension/color_profile.dart';
+import '../extension/duration_formatter.dart';
+import '../extension/string_utils.dart';
 
 /// A class holding:
 /// * the name of the executable that was used to run the benchmark,

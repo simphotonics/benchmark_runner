@@ -12,14 +12,6 @@ class BenchmarkRunner extends CommandRunner {
 
   static BenchmarkRunner? _instance;
 
-  /// Name of the command option
-  /// that enables displaying error messages.
-  static const verbose = 'verbose';
-
-  /// Name of the command option that enables colorized
-  /// outout.
-  static const color = 'color';
-
   @override
   String? get usageFooter =>
       '\nNote: Benchmark files are dart files ending with \'_benchmark.dart\'.';
@@ -29,17 +21,17 @@ class BenchmarkRunner extends CommandRunner {
       ..addCommand(ExportCommand())
       ..addCommand(ReportCommand())
       ..argParser.addFlag(
-        verbose,
+        'verbose',
         abbr: 'v',
         defaultsTo: false,
         negatable: false,
         help: 'Enable to show more info and error messages.',
       )
       ..argParser.addFlag(
-        color,
-        abbr: 'c',
-        defaultsTo: true,
-        help: 'Enables colorized reporting.',
+        'isMonochrome',
+        abbr: 'm',
+        negatable: false,
+        help: 'Disables colorized reporting.',
       );
   }
 

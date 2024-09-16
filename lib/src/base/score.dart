@@ -1,4 +1,4 @@
-import '../utils/stats.dart';
+import '../util/stats.dart';
 
 /// Object holding sample stats and the sample generation runtime.
 class Score<T extends num> {

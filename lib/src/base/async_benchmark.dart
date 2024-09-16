@@ -6,11 +6,11 @@ import 'package:benchmark_harness/benchmark_harness.dart'
     show AsyncBenchmarkBase;
 import 'package:exception_templates/exception_templates.dart';
 
-import '../extensions/benchmark_helper.dart';
-import '../extensions/color_profile.dart';
-import '../extensions/duration_formatter.dart';
-import '../extensions/string_utils.dart';
-import '../utils/stats.dart';
+import '../extension/benchmark_helper.dart';
+import '../extension/color_profile.dart';
+import '../extension/duration_formatter.dart';
+import '../extension/string_utils.dart';
+import '../util/stats.dart';
 import 'color_print_emitter.dart';
 import 'group.dart';
 import 'score.dart';

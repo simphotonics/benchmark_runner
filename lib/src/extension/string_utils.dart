@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:ansi_modifier/ansi_modifier.dart';
 
-import '../utils/environment.dart';
+import '../util/environment.dart';
 import 'color_profile.dart';
 import 'duration_formatter.dart';
 

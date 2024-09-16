@@ -1,6 +1,6 @@
-import '../utils/stats.dart';
-import '../extensions/root.dart';
-import '../extensions/color_profile.dart';
+import '../util/stats.dart';
+import 'root.dart';
+import 'color_profile.dart';
 import 'dart:math' as math show min, max;
 import 'package:ansi_modifier/ansi_modifier.dart';
 

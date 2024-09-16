@@ -1,37 +1,48 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
-
+import 'dart:async';
 import 'dart:io';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:args/command_runner.dart';
 
-import '../../benchmark_runner.dart';
+import '../base/benchmark_process_result.dart';
+import '../enum/exit_code.dart';
+import '../extension/color_profile.dart';
+import '../extension/duration_formatter.dart';
+import '../extension/string_utils.dart';
+import '../util/file_utils.dart';
 
 class ReportCommand extends Command {
   @override
-  final name = 'report';
-
-  // @override
-  // final category = 'benchmark';
+  String get name => 'report';
 
   @override
   String get invocation => super.invocation + ' <path to directory|file>';
 
   @override
-  final description = 'Runs benchmarks and prints a score report to stdout.';
+  String get description =>
+      'Runs benchmarks and prints a score report to stdout.';
 
-  ReportCommand();
+  StreamSubscription<String> progressIndicatorSubscription() {
+    final stream = Stream<String>.periodic(
+      const Duration(milliseconds: 250),
+      (i) =>
+          'Progress timer: '.style(ColorProfile.dim) +
+          Duration(milliseconds: i * 250).ssms.style(Ansi.green),
+    );
+    const cursorToStartOfLine = Ansi.cursorToColumn(1);
 
-  @override
-  Future<void> run() async {
-    final clock = Stopwatch()..start();
+    return stream.listen((event) {
+      stdout.write(cursorToStartOfLine);
+      stdout.write(event);
+      stdout.write(cursorToStartOfLine);
+    });
+  }
 
-    // Reading flags
-    final isVerbose = globalResults!.flag(BenchmarkRunner.verbose);
-    final noColor = !globalResults!.flag(BenchmarkRunner.color);
-
-    Ansi.status = noColor ? AnsiOutput.disabled : AnsiOutput.enabled;
-
+  /// Attempts to find benchmark files and prints an error/success message.
+  /// * Uses `argResults!.rest.first` as path.
+  /// * If no path is provided, the directory `benchmark` is used.
+  Future<List<File>> findBenchmarkFiles() async {
     final searchDirectory =
         argResults!.rest.isEmpty ? 'benchmark' : argResults!.rest.first;
 
@@ -42,12 +53,6 @@ class ReportCommand extends Command {
       print('');
       print('Could not resolve any benchmark files using path: '
           '${searchDirectory.style(ColorProfile.highlight)}\n');
-      print(
-        'Please specify a directory '
-        'containing benchmark files: \n'
-        '\$  ${'dart run benchmark_exporter'.style(ColorProfile.emphasize)} '
-        '${'benchmark_directory'.style(ColorProfile.highlight)}',
-      );
       exit(ExitCode.noBenchmarkFilesFound.index);
     } else {
       if (entityType == FileSystemEntityType.directory) {
@@ -64,6 +69,20 @@ class ReportCommand extends Command {
       }
       print('');
     }
+    return benchmarkFiles;
+  }
+
+  @override
+  Future<void> run() async {
+    final clock = Stopwatch()..start();
+
+    // Reading flags
+    final isVerbose = globalResults!.flag('verbose');
+    final isMonochrome = globalResults!.flag('isMonochrome');
+
+    Ansi.status = isMonochrome ? AnsiOutput.disabled : AnsiOutput.enabled;
+
+    final benchmarkFiles = await findBenchmarkFiles();
 
     // Starting processes.
     final fResults = <Future<BenchmarkProcessResult>>[];
@@ -73,28 +92,19 @@ class ReportCommand extends Command {
         arguments: [
           '--define=isBenchmarkProcess=true',
           if (isVerbose) '--define=isVerbose=true',
-          if (noColor) '--define=noColor=true',
+          if (isMonochrome) '--define=isMonochrome=true',
         ],
         benchmarkFile: file,
       ));
     }
 
-    final stream = Stream<String>.periodic(
-        const Duration(milliseconds: 500),
-        (i) =>
-            'Progress timer: '.style(ColorProfile.dim) +
-            Duration(milliseconds: i * 500).ssms.style(Ansi.green));
-    const cursorToStartOfLine = Ansi.cursorToColumn(1);
-
-    final subscription = stream.listen((event) {
-      stdout.write(event);
-      stdout.write(cursorToStartOfLine);
-    });
+    // Start subscription to progress indicator.
+    final progressIndicator = progressIndicatorSubscription();
 
     // Printing benchmark scores.
     for (final fResult in fResults) {
       fResult.then((result) {
-        print('\n\n\$ '.style(ColorProfile.dim) + result.command());
+        print('\$ '.style(ColorProfile.dim) + result.command());
         print(result.stdout.indentLines(2, indentMultiplierFirstLine: 2));
         print('\n');
         if (isVerbose) {
@@ -103,9 +113,10 @@ class ReportCommand extends Command {
       });
     }
 
+    // Close subscription to progress indicator.
     final results = await Future.wait(fResults);
 
-    await subscription.cancel();
+    await progressIndicator.cancel();
 
     // Composing exit message.
     final exitStatus = BenchmarkUtils.aggregatedExitStatus(
