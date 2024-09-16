@@ -77,8 +77,7 @@ $ dart benchmark/example_async_benchmark.dart
 ```
 ![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_output_single.png)
 
-The console output is shown above. The following colours and coding
-are used:
+The console output is shown above. By default, the functions emit benchmark score statistics:
 * The first column shows the micro-benchmark runtime, followed by the group
   name and the benchmark name.
 * The labels of asynchronous groups and benchmarks are marked with an hour-glass
@@ -93,14 +92,14 @@ using <span style="color:#28B5D7">*cyan*</span> foreground.
 
 ### 2. Using the Benchmark Runner
 To run *several* benchmark files (with the format`*_benchmark.dart`)
-and print a report, invoke the subcommand `report`and specify a directory.
+and print a report, invoke the sub-command `report` and specify a directory.
 If no directory is specified, it defaults to `benchmark`:
 
 ```Console
 $ dart run benchmark_runner report
 ```
 
-![Console Output](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_output.png)
+![Runner Report](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/runner_report.gif)
 
 A typical console output is shown above. In this example, the benchmark_runner
 detected two benchmark files, ran the micro-benchmarks and produced a report.
@@ -116,13 +115,14 @@ a separate process.
 
 ### 3. Exporting Benchmark Scores
 
-To export benchmark scores use the subcommand `export`:
+To export benchmark scores use the sub-command `export`:
 ```
-$ dart run benchmark_runner export --outDir=out --extension=csv searchDirectory
+$ dart run benchmark_runner export --outputDir=scores --extension=csv searchDirectory
 ```
-In the example above, the `searchDirectory` is scanned for `*_benchmark.dart`
+In the example above, `searchDirectory` is scanned for `*_benchmark.dart`
 files. For each benchmark file a corresponding file `*_benchmark.csv` is
-written to the directory `out`.
+written to the directory `scores`. The directory must exist and the user
+must have write access.
 
 Note: When exporting benchmark scores to a file
 and the emitter output is colorized,
@@ -139,7 +139,7 @@ import 'package:benchmark_runner/benchmark_runner.dart';
 
 class CustomEmitter extends ColorPrintEmitter {
   void emitMean({required Score score}) {
-    print('Mean               Standard Deviation');
+    print('# Mean               Standard Deviation');
     print('${score.stats.mean}  ${score.stats.stdDev}');
   }
 }
