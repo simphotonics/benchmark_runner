@@ -11,7 +11,7 @@ import '../extension/color_profile.dart';
 import '../extension/duration_formatter.dart';
 import '../extension/string_utils.dart';
 import '../util/stats.dart';
-import 'color_print_emitter.dart';
+import '../emitter/color_print_emitter.dart';
 import 'group.dart';
 import 'score.dart';
 
