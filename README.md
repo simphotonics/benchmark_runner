@@ -77,7 +77,7 @@ A *single* benchmark file may be run as a Dart executable:
 The console output is shown above. By default,
 the functions [`benchmark`][benchmark] and
 [`asyncBenchmark`][asyncBenchmark]
-emit benchmark score statistics. 
+emit benchmark score statistics.
 * The first column shows the micro-benchmark runtime, followed by the group
   name and the benchmark name.
 * The labels of asynchronous groups and benchmarks are marked with an hour-glass
@@ -103,8 +103,7 @@ detected two benchmark files, ran the micro-benchmarks and produced a report.
 * The summary shows the total number of completed benchmarks, the number of
 benchmarks with errors and the number of groups with errors (that do not
 occur within the scope of a benchmark function).
-* To show a stack trace for each error, run the benchmark_runner using
-the option ``-v`` or `--verbose`.
+* To show a stack trace for each error, use the option ``-v`` or `--verbose`.
 * The total benchmark run time may be shorter than the sum of the
 micro-benchmark run times since each executable benchmark file is run in
 a separate process.
@@ -122,7 +121,7 @@ must have write access.
 
 Note: When exporting benchmark scores to a file
 and the emitter output is colorized,
-it is recommended to use the option `--no-color`, to
+it is recommended to use the option `--isMonochrome`, to
 avoid spurious characters due to the use of Ansi modifiers.
 
 Since version 0.2.0, the functions [`benchmark`][benchmark] and
@@ -175,9 +174,9 @@ score statistics.
 the report provided by [`benchmark_harness`][benchmark_harness] use the
 optional argument `report: reportMean`.
 
-- Color output can be switched off by using the option: `--no-color` when
-calling the benchmark runner. When executing a single benchmark file the
-corresponding option is `--define=noColor=true`.
+- Color output can be switched off by using the option: `--isMonochrome` or `-m`
+when calling the benchmark runner. When executing a single benchmark file the
+corresponding option is `--define=isMonochrome=true`.
 
 - The default colors used to style benchmark reports are best suited
 for a dark terminal background.
@@ -195,7 +194,7 @@ error messages and the mean value is altered.
 
   void main(List<String> args) {
     // Call function to apply the new custom color profile.
-    customProfile();
+    customColorProfile();
   }
   ```
 
