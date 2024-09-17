@@ -75,7 +75,7 @@ A *single* benchmark file may be run as a Dart executable:
 ```Console
 $ dart benchmark/example_async_benchmark.dart
 ```
-![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/console_output_single.png)
+![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/single_report.png)
 
 The console output is shown above. By default, the functions emit benchmark score statistics:
 * The first column shows the micro-benchmark runtime, followed by the group
@@ -99,7 +99,7 @@ If no directory is specified, it defaults to `benchmark`:
 $ dart run benchmark_runner report
 ```
 
-![Runner Report](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/runner_report.gif)
+![Runner Report](https://raw.githubusercontent.com/simphotonics/benchmark_runner/custom-emitter/images/runner_report.png)
 
 A typical console output is shown above. In this example, the benchmark_runner
 detected two benchmark files, ran the micro-benchmarks and produced a report.

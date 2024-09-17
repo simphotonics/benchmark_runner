@@ -1,6 +1,4 @@
 // ignore_for_file: unused_local_variable
-import 'dart:collection';
-
 import 'package:benchmark_runner/benchmark_runner.dart';
 
 void main(List<String> args) {
@@ -24,9 +22,5 @@ void main(List<String> args) {
     benchmark('construct', () {
       var list = <int>[for (var i = 0; i < 1000; ++i) i];
     }, report: reportMean);
-
-    benchmark('construct list view', () {
-      final listView = UnmodifiableListView(originalList);
-    });
   });
 }
