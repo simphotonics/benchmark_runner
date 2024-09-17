@@ -72,10 +72,7 @@ Write inline benchmarks using the functions:
   ```
 ### 1. Running a Single Benchmark File
 A *single* benchmark file may be run as a Dart executable:
-```Console
-$ dart benchmark/example_async_benchmark.dart
-```
-![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/single_report.png)
+![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/custom-emitter/images/single_report.png)
 
 The console output is shown above. By default, the functions emit benchmark score statistics:
 * The first column shows the micro-benchmark runtime, followed by the group
@@ -94,10 +91,6 @@ using <span style="color:#28B5D7">*cyan*</span> foreground.
 To run *several* benchmark files (with the format`*_benchmark.dart`)
 and print a report, invoke the sub-command `report` and specify a directory.
 If no directory is specified, it defaults to `benchmark`:
-
-```Console
-$ dart run benchmark_runner report
-```
 
 ![Runner Report](https://raw.githubusercontent.com/simphotonics/benchmark_runner/custom-emitter/images/runner_report.png)
 
