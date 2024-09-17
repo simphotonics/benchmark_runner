@@ -9,22 +9,14 @@ class CustomEmitter extends ColorPrintEmitter {
 }
 
 void main(List<String> args) {
-  group('List:', () {
-    final originalList = <int>[for (var i = 0; i < 1000; ++i) i];
-
-    benchmark(
-      'construct | Custom emitter',
-      () {
-        var list = <int>[for (var i = 0; i < 1000; ++i) i];
-      },
-      emitter: CustomEmitter(),
-      report: (instance, emitter) => emitter.emitMean(
-        score: instance.score(),
-      ),
-    );
-
-    benchmark('construct', () {
+  benchmark(
+    'construct | Custom emitter',
+    () {
       var list = <int>[for (var i = 0; i < 1000; ++i) i];
-    }, report: reportMean);
-  });
+    },
+    emitter: CustomEmitter(),
+    report: (instance, emitter) => emitter.emitMean(
+      score: instance.score(),
+    ),
+  );
 }
