@@ -9,7 +9,6 @@ class CustomEmitter extends ColorPrintEmitter {
 }
 
 void main(List<String> args) {
-
   group('List:', () {
     final originalList = <int>[for (var i = 0; i < 1000; ++i) i];
 
@@ -27,7 +26,5 @@ void main(List<String> args) {
     benchmark('construct', () {
       var list = <int>[for (var i = 0; i < 1000; ++i) i];
     }, report: reportMean);
-
-
   });
 }

@@ -79,7 +79,7 @@ class ExportCommand extends ReportCommand {
     final progressIndicator = progressIndicatorSubscription();
 
     final results = await Future.wait(fResults);
-    
+
     for (final result in results) {
       print('\$ '.style(ColorProfile.dim) + result.command());
       if (isVerbose) {

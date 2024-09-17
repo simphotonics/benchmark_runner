@@ -18,10 +18,9 @@ void main() {
         'Usage: dart run benchmark_runner <command> [arguments] <path to directory|file>\n'
         '\n'
         'Global options:\n'
-        '-h, --help          Print this usage information.\n'
-        '-v, --verbose       Enable to show more info and error messages.\n'
-        '-c, --[no-]color    Enables colorized reporting.\n'
-        '                    (defaults to on)\n'
+        '-h, --help            Print this usage information.\n'
+        '-v, --verbose         Enable to show more info and error messages.\n'
+        '-m, --isMonochrome    Disables colorized reporting.\n'
         '\n'
         'Available commands:\n'
         '  export   Exports benchmark scores. A custom file extension and directory may be specified.\n'
@@ -46,13 +45,13 @@ void main() {
       final usage = await process.stdout.rest.join('\n');
 
       expect(
-          usage,equals(
-          'Runs benchmarks and prints a score report to stdout.\n'
-          '\n'
-          'Usage: benchmark_runner report [arguments] <path to directory|file>\n'
-          '-h, --help    Print this usage information.\n'
-          '\n'
-          'Run "benchmark_runner help" to see global options.'));
+          usage,
+          equals('Runs benchmarks and prints a score report to stdout.\n'
+              '\n'
+              'Usage: benchmark_runner report [arguments] <path to directory|file>\n'
+              '-h, --help    Print this usage information.\n'
+              '\n'
+              'Run "benchmark_runner help" to see global options.'));
 
       // Assert that the process exits with code 0.
       await process.shouldExit(0);
@@ -90,7 +89,7 @@ void main() {
         usage,
         'Exports benchmark scores. A custom file extension and directory may be specified.\n'
         '\n'
-        'Usage: benchmark_runner export [arguments]\n'
+        'Usage: benchmark_runner export [arguments] <path to directory|file>\n'
         '-h, --help         Print this usage information.\n'
         '-e, --extension    Set file extension of exported files.\n'
         '                   (defaults to "txt")\n'
