@@ -1,11 +1,12 @@
 ## 0.2.0
 Breaking changes:
-- Command `benchmark_runner` now has subcommands `report` and `export`.
-- The command option `isMonochrome` has been replace with `--no-color`.
+- The command `benchmark_runner` now has subcommands `report` and `export`.
 - The functions `benchmark` and `asyncBenchmark` are now generic and
-  accept an optional parameter `E extents ColorPrintEmitter emitter`
-  and the callback `report(instance, emitter){}` that can be used to
-  pass benchmark scores to the emitter.
+  accept the optional parameters:
+    * `E extents ColorPrintEmitter emitter`,
+    * `report(instance, emitter){}`, where `instance` is an instance of
+       `Benchmark` or `AsyncBenchmark`, respectively.
+       The callback can be can be used to pass benchmark scores to the emitter.
 
 ## 0.1.9
 - Changed default encoding of standard output of benchmark processes

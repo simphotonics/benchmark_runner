@@ -22,7 +22,7 @@ environment:
   sdk: '^3.0.0'
 
 dependencies:
-  ansi_modifier: ^0.1.3
+  ansi_modifier: ^0.1.4
   args: ^2.5.0
   benchmark_harness: ^2.2.2
   exception_templates: ^0.3.1
