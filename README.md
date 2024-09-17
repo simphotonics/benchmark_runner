@@ -74,7 +74,10 @@ Write inline benchmarks using the functions:
 A *single* benchmark file may be run as a Dart executable:
 ![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/custom-emitter/images/single_report.png)
 
-The console output is shown above. By default, the functions emit benchmark score statistics:
+The console output is shown above. By default,
+the functions [`benchmark`][benchmark] and
+[`asyncBenchmark`][asyncBenchmark]
+emit benchmark score statistics. 
 * The first column shows the micro-benchmark runtime, followed by the group
   name and the benchmark name.
 * The labels of asynchronous groups and benchmarks are marked with an hour-glass
