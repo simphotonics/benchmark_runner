@@ -124,7 +124,7 @@ and the emitter output is colorized,
 it is recommended to use the option `--isMonochrome`, to
 avoid spurious characters due to the use of Ansi modifiers.
 
-Since version 0.2.0, the functions [`benchmark`][benchmark] and
+Since version 1.0.0, the functions [`benchmark`][benchmark] and
 [`asyncBenchmark`][asyncBenchmark] accept the optional parameters `emitter` and
 `report`. These parameters can be used to customize the score reports e.g.
 to make the score format more suitable for writing to a file:

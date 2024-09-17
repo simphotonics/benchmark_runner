@@ -3,7 +3,7 @@ name: benchmark_runner
 description: A library for writing inline micro-benchmarks, running sync/async
   benchmarks, reporting and exporting score statistics.
 
-version: 0.2.0
+version: 1.0.0
 
 homepage: https://github.com/simphotonics/benchmark_runner
 

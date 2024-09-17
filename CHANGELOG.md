@@ -1,4 +1,4 @@
-## 0.2.0
+## 1.0.0
 Breaking changes:
 - The command `benchmark_runner` now has subcommands `report` and `export`.
 - The functions `benchmark` and `asyncBenchmark` are now generic and
