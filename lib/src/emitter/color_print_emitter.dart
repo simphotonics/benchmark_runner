@@ -1,10 +1,12 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 import '../extension/histogram.dart';
 import '../extension/precision.dart';
 import '../extension/duration_formatter.dart';
 import '../extension/color_profile.dart';
-import 'score.dart';
+import '../base/score.dart';
 
 const plusMinus = '\u00B1';
 
@@ -14,7 +16,9 @@ class ColorPrintEmitter extends PrintEmitter {
   /// Prints a colorized benchmark score.
   @override
   void emit(String testName, double value) {
-    print('$testName(RunTime): ${'$value us.'.style(ColorProfile.mean)}\n');
+    print('$testName(RunTime): ' +
+        '${value.toStringAsFixedDigits()} us'.style(ColorProfile.mean) +
+        '\n');
   }
 
   /// Prints a colorized benchmark score report.
