@@ -27,15 +27,16 @@ void addSuccessMark([String mark = successMark]) {
 }
 
 /// Reports an error and adds an error mark
+/// [duration] refers to the measured benchmark duration. 
 void reportError(
   error,
   StackTrace stack, {
   required String description,
-  required Duration runtime,
+  required Duration duration,
   required String errorMark,
 }) {
   print(
-    '${runtime.ssms.style(ColorProfile.dim)} '
+    '${duration.ssms.style(ColorProfile.dim)} '
     '$description'
     '${errorMark == groupErrorMark ? ':' : ''} '
     '${error.toString().style(ColorProfile.error)}\n ',

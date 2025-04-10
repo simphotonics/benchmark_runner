@@ -1,13 +1,16 @@
 import '../util/stats.dart';
 
-/// Object holding sample stats and the sample generation runtime.
+/// Object holding sample stats and the duration it took to generate the
+/// score sample.
 class Score<T extends num> {
   Score(
-      {required this.runtime, required List<T> sample, required this.innerIter})
+      {required this.duration,
+      required List<T> sample,
+      required this.innerIter})
       : stats = Stats(sample);
 
-  /// Micro-benchmark duration
-  final Duration runtime;
+  /// Measured micro-benchmark duration
+  final Duration duration;
 
   /// Indicates if the a sample point was averaged over [iter] runs.
   final int innerIter;

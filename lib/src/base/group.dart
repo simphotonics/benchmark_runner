@@ -41,7 +41,7 @@ class Group {
             error,
             stack,
             description: description,
-            runtime: watch.elapsed,
+            duration: watch.elapsed,
             errorMark: groupErrorMark,
           );
         }
@@ -52,7 +52,7 @@ class Group {
           error,
           stack,
           description: description,
-          runtime: watch.elapsed,
+          duration: watch.elapsed,
           errorMark: groupErrorMark,
         );
       }),
@@ -71,7 +71,7 @@ class Group {
           error,
           stack,
           description: description,
-          runtime: watch.elapsed,
+          duration: watch.elapsed,
           errorMark: groupErrorMark,
         );
       }),

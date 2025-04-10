@@ -28,7 +28,7 @@ class ColorPrintEmitter extends PrintEmitter {
   }) {
     //final indentCharacters = score.runtime.msus.length;
     final indent = '  ';
-    final part1 = '${score.runtime.msus.style(ColorProfile.dim)} $description';
+    final part1 = '${score.duration.msus.style(ColorProfile.dim)} $description';
 
     final mean = score.stats.mean / score.timeScale.factor;
     final stdDev = score.stats.stdDev / score.timeScale.factor;

@@ -37,8 +37,8 @@ Future<void> asyncReportMean(
 ) async {
   final watch = Stopwatch()..start();
   final score = await instance.measure();
-  final runtime = watch.elapsed.msus.style(ColorProfile.dim);
-  emitter.emit('$runtime ${instance.description}', score);
+  final duration = watch.elapsed.msus.style(ColorProfile.dim);
+  emitter.emit('$duration ${instance.description}', score);
 }
 
 // Generic function that reports benchmark scores by calling an emitter [E].
@@ -88,7 +88,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
   /// Returns the benchmark description (corresponds to the getter name).
   String get description => name;
 
-  /// Runs [measure] and emits the score and benchmark runtime.
+  /// Runs [measure] and emits the score and measured benchmark duration.
   @override
   Future<void> report() async {
     await asyncReportMean(this, emitter as ColorPrintEmitter);
@@ -165,7 +165,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
     watch.stop();
     //stats.removeOutliers(10);
     return Score(
-      runtime: watch.elapsed,
+      duration: watch.elapsed,
       sample: sample.scores,
       innerIter: sample.innerIter,
     );
@@ -269,7 +269,7 @@ Future<void> asyncBenchmark<E extends ColorPrintEmitter>(
           error,
           stack,
           description: instance.description,
-          runtime: watch.elapsed,
+          duration: watch.elapsed,
           errorMark: benchmarkError,
         );
       }
@@ -280,7 +280,7 @@ Future<void> asyncBenchmark<E extends ColorPrintEmitter>(
         error,
         stack,
         description: instance.description,
-        runtime: watch.elapsed,
+        duration: watch.elapsed,
         errorMark: benchmarkError,
       );
     }),

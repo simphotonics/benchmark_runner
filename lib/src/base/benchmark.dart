@@ -30,8 +30,8 @@ void reportMean(Benchmark instance, ColorPrintEmitter emitter) {
   final watch = Stopwatch()..start();
   final value = instance.measure();
   watch.stop();
-  final runtime = watch.elapsed.msus.style(ColorProfile.dim);
-  emitter.emit('$runtime ${instance.description}', value);
+  final duration = watch.elapsed.msus.style(ColorProfile.dim);
+  emitter.emit('$duration ${instance.description}', value);
 }
 
 /// Generic function that reports benchmark scores by calling an emitter [E].
@@ -146,7 +146,7 @@ class Benchmark extends BenchmarkBase {
     final watch = Stopwatch()..start();
     final sample = this.sample();
     return Score(
-      runtime: watch.elapsed,
+      duration: watch.elapsed,
       sample: sample.scores,
       innerIter: sample.innerIter,
     );
@@ -196,7 +196,7 @@ void benchmark<E extends ColorPrintEmitter>(
       error,
       stack,
       description: instance.description,
-      runtime: watch.elapsed,
+      duration: watch.elapsed,
       errorMark: benchmarkError,
     );
     return;
@@ -233,7 +233,7 @@ void benchmark<E extends ColorPrintEmitter>(
           error,
           stack,
           description: instance.description,
-          runtime: watch.elapsed,
+          duration: watch.elapsed,
           errorMark: benchmarkError,
         );
       }
@@ -244,7 +244,7 @@ void benchmark<E extends ColorPrintEmitter>(
         error,
         stack,
         description: instance.description,
-        runtime: watch.elapsed,
+        duration: watch.elapsed,
         errorMark: benchmarkError,
       );
     }),
