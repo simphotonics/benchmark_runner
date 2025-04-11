@@ -1,7 +1,7 @@
 export 'src/base/async_benchmark.dart';
 export 'src/base/benchmark.dart';
 export 'src/base/benchmark_process_result.dart';
-export 'src/emitter/color_print_emitter.dart';
+export 'src/emitter/score_emitter.dart';
 export 'src/base/group.dart';
 export 'src/base/score.dart';
 export 'src/command/benchmark_runner.dart';

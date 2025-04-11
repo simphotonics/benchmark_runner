@@ -6,8 +6,7 @@
 
 Benchmarking is used to estimate and compare the execution speed of
 numerical algorithms and programs.
-The package [`benchmark_runner`][benchmark_runner] is based on
-[`benchmark_harness`][benchmark_harness] and includes helper
+The package [`benchmark_runner`][benchmark_runner] includes helper
 functions for writing *inline* micro-benchmarks with the option of
 printing a score **histogram** and reporting the score **mean** &#177;
 **standard deviation**, and score **median** &#177; **inter quartile range**.
@@ -36,8 +35,6 @@ Write inline benchmarks using the functions:
  asynchronous benchmarks.
 
   ```Dart
-  // ignore_for_file: unused_local_variable
-
   import 'package:benchmark_runner/benchmark_runner.dart';
 
   /// Returns the value [t] after waiting for [duration].
@@ -53,7 +50,7 @@ Write inline benchmarks using the functions:
 
       await asyncBenchmark('5ms', () async {
         await later<int>(27, Duration(milliseconds: 5));
-      }, emitStats: false);
+      }, scoreEmitter: MeanEmitter());
     });
 
     group('Set', () async {
@@ -115,25 +112,27 @@ To export benchmark scores use the sub-command `export`:
 $ dart run benchmark_runner export --outputDir=scores --extension=csv searchDirectory
 ```
 In the example above, `searchDirectory` is scanned for `*_benchmark.dart`
-files. For each benchmark file a corresponding file `*_benchmark.csv` is
-written to the directory `scores`. The directory must exist and the user
-must have write access.
+files. For each benchmark file, a corresponding file `*_benchmark.csv` is
+written to the directory `scores`.
 
-Note: When exporting benchmark scores to a file
+Note: The directory must exist and the user
+must have write access. When exporting benchmark scores to a file
 and the emitter output is colorized,
 it is recommended to use the option `--isMonochrome`, to
 avoid spurious characters due to the use of Ansi modifiers.
 
-Since version 1.0.0, the functions [`benchmark`][benchmark] and
-[`asyncBenchmark`][asyncBenchmark] accept the optional parameters `emitter` and
-`report`. These parameters can be used to customize the score reports e.g.
+The functions [`benchmark`][benchmark] and
+[`asyncBenchmark`][asyncBenchmark] accept the optional parameters `scoreEmitter`.
+The parameter expects an object of type `ScoreEmitter` and
+can be used to customize the score reports e.g.
 to make the score format more suitable for writing to a file:
 
 ```Dart
 import 'package:benchmark_runner/benchmark_runner.dart';
 
-class CustomEmitter extends ColorPrintEmitter {
-  void emitMean({required Score score}) {
+class CustomEmitter implements ScoreEmitter {
+  @override
+  void emit({required description, required Score score}) {
     print('# Mean               Standard Deviation');
     print('${score.stats.mean}  ${score.stats.stdDev}');
   }
@@ -145,11 +144,8 @@ void main(){
       () {
         var list = <int>[for (var i = 0; i < 1000; ++i) i];
       },
-      emitter: CustomEmitter(),
-      report: (instance, emitter) => emitter.emitMean(
-        score: instance.score(),
-      ),
-    );
+      scoreEmitter: CustomEmitter(),
+  );
 }
 ```
 
@@ -170,9 +166,10 @@ as reported by [`benchmark_harness`][benchmark_harness] and the
 score statistics.
 
 - By default, [`benchmark`][benchmark] and
-[`asyncBenchmark`][asyncBenchmark] report score statistics. In order to generate
-the report provided by [`benchmark_harness`][benchmark_harness] use the
-optional argument `report: reportMean`.
+[`asyncBenchmark`][asyncBenchmark] report score statistics. In order to print
+the report similar to that produced by
+[`benchmark_harness`][benchmark_harness], use the
+optional argument `emitter: MeanEmitter()`.
 
 - Color output can be switched off by using the option: `--isMonochrome` or `-m`
 when calling the benchmark runner. When executing a single benchmark file the
@@ -180,39 +177,43 @@ corresponding option is `--define=isMonochrome=true`.
 
 - The default colors used to style benchmark reports are best suited
 for a dark terminal background.
-They can, however, be altered by setting the static variables defined by
+They can, however, be altered by setting the *static* variables defined by
 the class [`ColorProfile`][ColorProfile]. In the example below, the styling of
 error messages and the mean value is altered.
   ```Dart
   import 'package:ansi_modifier/ansi_modifier.dart';
   import 'package:benchmark_runner/benchmark_runner.dart';
 
-  void customColorProfile() {
+  void adjustColorProfile() {
     ColorProfile.error = Ansi.red + Ansi.bold;
     ColorProfile.mean = Ansi.green + Ansi.italic;
   }
 
   void main(List<String> args) {
     // Call function to apply the new custom color profile.
-    customColorProfile();
+    adjustColorProfile();
   }
   ```
 
 - When running **asynchronous** benchmarks, the scores are printed in order of
-completion. The print the scores in sequential order (as they are listed in the
+completion. To print the scores in sequential order (as they are listed in the
 benchmark executable) it is required to *await* the completion
 of the async benchmark functions and
 the enclosing group.
 
 ## Score Sampling
 
-In order to calculate benchmark score statistics a sample of scores is
+In order to calculate benchmark score *statistics* a sample of scores is
 required. The question is how to generate the score sample while minimizing
 systematic errors (like overheads) and keeping the
-benchmark run times within acceptable limits.
+total benchmark run times within acceptable limits.
 
-To estimate the benchmark score the functions [`warmup`][warmup]
-or [`warmupAsync`][warmupAsync] are run for 200 milliseconds.
+<details> <summary> Click to show details. </summary>
+
+In a first step, benchmark scores are estimated using the
+functions [`warmup`][warmup]
+or [`warmupAsync`][warmupAsync]. The function [`BenchmarkHelper.sampleSize`][sampleSize]
+uses the score estimate to determine the sampling procedure.
 
 ### 1. Default Sampling Method
 The graph below shows the sample size (orange curve) as calculated by the function
@@ -234,9 +235,10 @@ averaged over (see the cyan curve in the graph above):
 * ticks > 1e5 => No preliminary averaging of sample scores.
 
 ### 2. Custom Sampling Method
-To amend the score sampling process the static function
+To custominze the score sampling process, the static function
 [`BenchmarkHelper.sampleSize`][sampleSize] can be replaced with a custom function:
 ```Dart
+/// Generates a sample containing 100 benchmark scores. 
 BenchmarkHelper.sampleSize = (int clockTicks) {
   return (outer: 100, inner: 1)
 }
@@ -256,6 +258,7 @@ The command above lauches a process and runs a [`gnuplot`][gnuplot] script.
 For this reason, the program [`gnuplot`][gnuplot] must be installed (with
 the `qt` terminal enabled).
 
+</details>
 
 ## Contributions
 

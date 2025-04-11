@@ -1,3 +1,13 @@
+## 2.0.0
+Breaking changes:
+- The classes `Benchmark` and `AsyncBenchmark` are now solely responsible for
+generating benchmark scores. The constructor parameters `description` and
+`emitter` have been removed. Generating reports is delegated to `ScoreEmitter`.
+- The functions `benchmark` and `asyncBenchmark` are not longer generic and
+the only optional parameter is: `scoreEmitter`. A custom `ScoreEmitter` can be
+used to generate a custom benchmark report.
+
+
 ## 1.0.0
 Breaking changes:
 - The command `benchmark_runner` now has subcommands `report` and `export`.
@@ -29,8 +39,9 @@ inter-quartile-range `iqr` of the score sample is zero.
 
 ## 0.1.5
 - Made [BenchmarkHelper.sampleSize][sampleSize] a variable assignable with
-defined function. This allows changing the benchmark runtime by customizing
-the relation between score estimate and score sample size.
+a user defined function. This allows changing the score sample generation
+customizing the relation between the single score estimate and the
+score sample size.
 
 ## 0.1.4
 - Fixed bugs in runner (results were listed twice, exit code was always 0).

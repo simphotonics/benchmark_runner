@@ -1,6 +1,10 @@
 import 'dart:math' show exp, log;
 
+import 'package:exception_templates/exception_templates.dart';
+
 typedef SampleSizeEstimator = ({int outer, int inner}) Function(int clockTicks);
+
+class TimeError extends ErrorType {}
 
 extension BenchmarkHelper on Stopwatch {
   /// Measures the runtime of [f] for [ticks] clock ticks and
@@ -19,7 +23,9 @@ extension BenchmarkHelper on Stopwatch {
   /// Measures the runtime of [f] for [ticks] clock ticks and
   /// reports the average runtime expressed as clock ticks.
   Future<({int ticks, int iter})> measureAsync(
-      Future<void> Function() f, int ticks) async {
+    Future<void> Function() f,
+    int ticks,
+  ) async {
     var iter = 0;
     reset();
     start();
@@ -97,29 +103,9 @@ extension BenchmarkHelper on Stopwatch {
   static int microsecondsToTicks(int microseconds) =>
       microseconds * frequency ~/ 1000000;
 
-  // /// Returns a record with type `({int outer, int inner})`
-  // /// holding the benchmark sample size `.outer` and the
-  // /// number of runs each score is averaged over: `.inner`.
-  // static ({int outer, int inner}) iterations(int clockTicks) =>
-  //     switch (clockTicks) {
-  //       < 1000 => (outer: 100, inner: 300),
-  //       < 10000 => (outer: 100, inner: 200),
-  //       < 100000 => (outer: 100, inner: 25),
-  //       < 1000000 => (outer: 100, inner: 10),
-  //       < 10000000 => (outer: 100, inner: 0),
-  //       < 100000000 => (outer: 20, inner: 0),
-  //       _ => (outer: 10, inner: 0),
-  //     };
-
   /// Returns the result of the linear interpolation between the
   /// points (x1,y1) and (x2, y2).
-  static double interpolateLin(
-    num x,
-    num x1,
-    num y1,
-    num x2,
-    num y2,
-  ) =>
+  static double interpolateLin(num x, num x1, num y1, num x2, num y2) =>
       y1 + ((y2 - y1) * (x - x1) / (x2 - x1));
 
   /// Returns the result of the exponential interpolation between the
@@ -138,10 +124,19 @@ extension BenchmarkHelper on Stopwatch {
   /// * number of runs each score is averaged over: `.inner`.
   ///
   /// Note: An estimate of the benchmark runtime in clock ticks is given by
-  /// `outer*inner*clockTicks`. The estimate does not include any setup, warmup, or
-  /// teardown functionality.
+  /// `outer*inner*clockTicks`. The estimate does not include any setup, warmup,
+  /// or teardown functionality.
   static ({int outer, int inner}) sampleSizeDefault(int clockTicks) {
     // Estimates for the averaging used within `measure` and `measureAsync.
+
+    if (clockTicks < 1) {
+      throw ErrorOfType<TimeError>(
+        message: 'Unsuitable duration detected.',
+        expectedState: 'clockTicks > 0',
+        invalidState: 'clockTicks: $clockTicks',
+      );
+    }
+
     const i1e3 = 200;
     const i1e4 = 100;
     const i1e5 = 15;
@@ -165,35 +160,44 @@ extension BenchmarkHelper on Stopwatch {
     const t1e7 = 10000000; // 10 ms;
     const t1e8 = 100000000; // 100 ms;
 
+    // Rescale clock ticks for other platforms. For example, on the web
+    // 1 clock tick corresponds to 1 microsecond.
+    if (frequency < 1e9) {
+      clockTicks = 1e9 ~/ frequency * clockTicks;
+    }
+
     return switch (clockTicks) {
-      <= t1e3 => (
-          outer: s1e3,
-          inner: i1e3,
-        ), // 1 us
+      <= t1e3 => (outer: s1e3, inner: i1e3), // 1 us
       > t1e3 && <= t1e4 => (
-          // 10 us
-          outer: interpolateExp(clockTicks, t1e3, s1e3, t1e4, s1e4).ceil(),
-          inner: interpolateExp(clockTicks, t1e3, i1e3, t1e4, i1e4).ceil()
-        ),
+        // 10 us
+        outer: interpolateExp(clockTicks, t1e3, s1e3, t1e4, s1e4).ceil(),
+        inner: interpolateExp(clockTicks, t1e3, i1e3, t1e4, i1e4).ceil(),
+      ),
       > t1e4 && <= t1e5 => (
-          // 100 us
-          outer: interpolateExp(clockTicks, t1e4, s1e4, t1e5, s1e5).ceil(),
-          inner: interpolateExp(clockTicks, t1e4, i1e4, t1e5, i1e5).ceil()
-        ),
+        // 100 us
+        outer: interpolateExp(clockTicks, t1e4, s1e4, t1e5, s1e5).ceil(),
+        inner: interpolateExp(clockTicks, t1e4, i1e4, t1e5, i1e5).ceil(),
+      ),
       > t1e5 && <= t1e6 => (
-          // 1ms
-          outer: interpolateExp(clockTicks, t1e5, s1e5 * i1e5 / 2, t1e6, s1e6)
-              .ceil(),
-          inner: i1e6,
-        ),
+        // 1ms
+        outer:
+            interpolateExp(
+              clockTicks,
+              t1e5,
+              s1e5 * i1e5 / 2,
+              t1e6,
+              s1e6,
+            ).ceil(),
+        inner: i1e6,
+      ),
       > t1e6 && <= t1e7 => (
-          outer: interpolateExp(clockTicks, t1e6, s1e6, t1e7, s1e7).ceil(),
-          inner: i1e7
-        ), // 10 ms
+        outer: interpolateExp(clockTicks, t1e6, s1e6, t1e7, s1e7).ceil(),
+        inner: i1e7,
+      ), // 10 ms
       > t1e7 && <= t1e8 => (
-          outer: interpolateExp(clockTicks, t1e7, s1e7, t1e8, s1e8).ceil(),
-          inner: i1e8
-        ), // 100 ms
+        outer: interpolateExp(clockTicks, t1e7, s1e7, t1e8, s1e8).ceil(),
+        inner: i1e8,
+      ), // 100 ms
       _ => (outer: s1e8, inner: i1e8),
     };
   }

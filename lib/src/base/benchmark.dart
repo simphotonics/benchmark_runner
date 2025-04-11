@@ -1,45 +1,21 @@
 import 'dart:async';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
-import 'package:benchmark_harness/benchmark_harness.dart' show BenchmarkBase;
-import 'package:exception_templates/exception_templates.dart';
 
+import '../emitter/score_emitter.dart';
 import '../extension/benchmark_helper.dart';
 import '../extension/color_profile.dart';
-import '../extension/duration_formatter.dart';
 import '../extension/string_utils.dart';
 import '../util/stats.dart';
-import '../emitter/color_print_emitter.dart';
 import 'group.dart';
 import 'score.dart';
 
 /// A synchronous function that does nothing.
 void doNothing() {}
 
-/// Generates a report that includes benchmark score statistics.
-void reportStats(Benchmark instance, ColorPrintEmitter emitter) {
-  emitter.emitStats(
-    description: instance.description,
-    score: instance.score(),
-  );
-}
-
-/// Generates a BenchmarkHarness style report. Score times refer to
-/// a single execution of the function `run`.
-void reportMean(Benchmark instance, ColorPrintEmitter emitter) {
-  final watch = Stopwatch()..start();
-  final value = instance.measure();
-  watch.stop();
-  final duration = watch.elapsed.msus.style(ColorProfile.dim);
-  emitter.emit('$duration ${instance.description}', value);
-}
-
-/// Generic function that reports benchmark scores by calling an emitter [E].
-typedef Reporter<E extends ColorPrintEmitter> = void Function(Benchmark, E);
-
 /// A class used to benchmark synchronous functions.
 /// The benchmarked function is provided as a constructor argument.
-class Benchmark extends BenchmarkBase {
+class Benchmark {
   /// Constructs a [Benchmark] object using the following arguments:
   /// * [description]: a [String] describing the benchmark,
   /// * [run]: the synchronous function to be benchmarked,
@@ -47,38 +23,33 @@ class Benchmark extends BenchmarkBase {
   /// * [teardown]: a function that is executed once after the benchmark has
   /// completed.
   const Benchmark({
-    required String description,
     required void Function() run,
     void Function() setup = doNothing,
     void Function() teardown = doNothing,
   })  : _run = run,
         _setup = setup,
-        _teardown = teardown,
-        super(description, emitter: const ColorPrintEmitter());
+        _teardown = teardown;
 
   final void Function() _run;
   final void Function() _setup;
   final void Function() _teardown;
 
   // The benchmark code.
-  @override
   void run() => _run();
 
   /// Not measured setup code executed prior to the benchmark runs.
-  @override
   void setup() => _setup();
 
   /// Not measures teardown code executed after the benchmark runs.
-  @override
   void teardown() => _teardown();
 
   /// To opt into the reporting the time per run() instead of per 10 run() calls.
-  @override
   void exercise() => _run();
 
-  /// Returns the benchmark description (corresponds to the getter name).
-  String get description => name;
-
+  /// Generates a sample of benchmark scores.
+  /// The benchmark scores represent the run time in microseconds. The integer
+  /// `innerIter` is larger than 1 if each score entry was averaged over
+  /// `innerIter` runs.
   ({List<double> scores, int innerIter}) sample() {
     _setup();
     final warmupRuns = 3;
@@ -142,6 +113,7 @@ class Benchmark extends BenchmarkBase {
 
   /// Returns a [Score] object holding the total benchmark duration
   /// and a [Stats] object created from the score samples.
+  /// Note: The run time entries represent microseconds. 
   Score score() {
     final watch = Stopwatch()..start();
     final sample = this.sample();
@@ -151,10 +123,6 @@ class Benchmark extends BenchmarkBase {
       innerIter: sample.innerIter,
     );
   }
-
-  /// Runs the method [measure] and emits the benchmark score.
-  @override
-  void report() => reportMean(this, emitter as ColorPrintEmitter);
 }
 
 /// Defines a benchmark for the synchronous function [run]. The benchmark
@@ -165,27 +133,24 @@ class Benchmark extends BenchmarkBase {
 /// * `report`: report to emit score as provided by benchmark_harness.
 /// * `emitter`: An emitter for generating a custom benchmark report.
 /// * `report`: A callback that can be used to call an emitter method.
-void benchmark<E extends ColorPrintEmitter>(
+void benchmark(
   String description,
   void Function() run, {
   void Function() setup = doNothing,
   void Function() teardown = doNothing,
-  E? emitter,
-  Reporter<E> report = reportStats,
+  ScoreEmitter scoreEmitter = const StatsEmitter(),
 }) {
   final group = Zone.current[#group] as Group?;
   var groupDescription =
       group == null ? '' : '${group.description.addSeparator(':')} ';
   final instance = Benchmark(
-    description: groupDescription +
-        description.style(
-          ColorProfile.benchmark,
-        ),
     run: run,
     setup: setup,
     teardown: teardown,
   );
   final watch = Stopwatch()..start();
+
+  description = groupDescription + description.style(ColorProfile.benchmark);
 
   try {
     if (run is Future<void> Function()) {
@@ -195,7 +160,7 @@ void benchmark<E extends ColorPrintEmitter>(
     reportError(
       error,
       stack,
-      description: instance.description,
+      description: description,
       duration: watch.elapsed,
       errorMark: benchmarkError,
     );
@@ -205,34 +170,13 @@ void benchmark<E extends ColorPrintEmitter>(
   runZonedGuarded(
     () {
       try {
-        if (emitter == null) {
-          switch (report) {
-            case reportStats:
-              reportStats(
-                instance,
-                instance.emitter as ColorPrintEmitter,
-              );
-              break;
-            case reportMean:
-              reportMean(
-                instance,
-                instance.emitter as ColorPrintEmitter,
-              );
-            default:
-              throw ErrorOf<Reporter<E>>(
-                  message: 'Could not run benchmark.',
-                  invalidState: 'Emitter is missing.',
-                  expectedState: 'Please specify an emitter of type <$E>.');
-          }
-        } else {
-          report(instance, emitter);
-        }
+        scoreEmitter.emit(description: description, score: instance.score());
         addSuccessMark();
       } catch (error, stack) {
         reportError(
           error,
           stack,
-          description: instance.description,
+          description: description,
           duration: watch.elapsed,
           errorMark: benchmarkError,
         );
@@ -243,7 +187,7 @@ void benchmark<E extends ColorPrintEmitter>(
       reportError(
         error,
         stack,
-        description: instance.description,
+        description: description,
         duration: watch.elapsed,
         errorMark: benchmarkError,
       );

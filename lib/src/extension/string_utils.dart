@@ -27,7 +27,7 @@ void addSuccessMark([String mark = successMark]) {
 }
 
 /// Reports an error and adds an error mark
-/// [duration] refers to the measured benchmark duration. 
+/// [duration] refers to the measured benchmark duration.
 void reportError(
   error,
   StackTrace stack, {

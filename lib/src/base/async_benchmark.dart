@@ -2,16 +2,12 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
-import 'package:benchmark_harness/benchmark_harness.dart'
-    show AsyncBenchmarkBase;
-import 'package:exception_templates/exception_templates.dart';
 
+import '../emitter/score_emitter.dart';
 import '../extension/benchmark_helper.dart';
 import '../extension/color_profile.dart';
-import '../extension/duration_formatter.dart';
 import '../extension/string_utils.dart';
 import '../util/stats.dart';
-import '../emitter/color_print_emitter.dart';
 import 'group.dart';
 import 'score.dart';
 
@@ -20,81 +16,45 @@ typedef AsyncFunction = Future<void> Function();
 /// An asynchronous function that does nothing.
 Future<void> futureDoNothing() async {}
 
-/// Generates a report that includes benchmark score statistics.
-Future<void> asyncReportStats(
-    AsyncBenchmark instance, ColorPrintEmitter emitter) async {
-  emitter.emitStats(
-    description: instance.description,
-    score: await instance.score(),
-  );
-}
-
-/// Generates a BenchmarkHarness style report. Score times refer to
-/// a single execution of function `run`.
-Future<void> asyncReportMean(
-  AsyncBenchmark instance,
-  ColorPrintEmitter emitter,
-) async {
-  final watch = Stopwatch()..start();
-  final score = await instance.measure();
-  final duration = watch.elapsed.msus.style(ColorProfile.dim);
-  emitter.emit('$duration ${instance.description}', score);
-}
-
-// Generic function that reports benchmark scores by calling an emitter [E].
-typedef AsyncReporter<E extends ColorPrintEmitter> = Future<void> Function(
-    AsyncBenchmark instance, E emitter);
-
 /// A class used to benchmark asynchronous functions.
 /// The benchmarked function is provided as a constructor argument.
-class AsyncBenchmark extends AsyncBenchmarkBase {
+class AsyncBenchmark {
   /// Constructs an [AsyncBenchmark] object using the following arguments:
-  /// * [description]: a [String] describing the benchmark,
+
   /// * [run]: the asynchronous function to be benchmarked,
   /// * [setup]: an asynchronous function that is executed
   ///   once before running the benchmark,
   /// * [teardown]: an asynchronous function that is executed once after
   ///   the benchmark has completed.
   const AsyncBenchmark({
-    required String description,
     required AsyncFunction run,
     AsyncFunction setup = futureDoNothing,
     AsyncFunction teardown = futureDoNothing,
   })  : _run = run,
         _setup = setup,
-        _teardown = teardown,
-        super(description, emitter: const ColorPrintEmitter());
+        _teardown = teardown;
 
   final AsyncFunction _run;
   final AsyncFunction _setup;
   final AsyncFunction _teardown;
 
   // The benchmark code.
-  @override
   Future<void> run() => _run();
 
   // Not measured setup code executed prior to the benchmark runs.
-  @override
   Future<void> setup() => _setup();
 
   // Not measures teardown code executed after the benchmark runs.
-  @override
   Future<void> teardown() => _teardown();
 
   // To opt into the reporting the time per run() instead of per 10 run() calls.
-  @override
   Future<void> exercise() => run();
 
-  /// Returns the benchmark description (corresponds to the getter name).
-  String get description => name;
-
-  /// Runs [measure] and emits the score and measured benchmark duration.
-  @override
-  Future<void> report() async {
-    await asyncReportMean(this, emitter as ColorPrintEmitter);
-  }
-
   /// Returns a sample of benchmark scores.
+  /// The benchmark scores represent the run time in microseconds. The integer
+  /// `innerIter` is larger than 1 if each score entry was averaged over
+  /// `innerIter` runs.
+  ///
   Future<({List<double> scores, int innerIter})> sample() async {
     await _setup();
     int warmupRuns = 3;
@@ -159,6 +119,7 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
 
   /// Returns an instance of [Score] holding the total benchmark duration
   /// and a [Stats] object created from the score samples.
+  /// Note: The run time entries represent microseconds.
   Future<Score> score() async {
     final watch = Stopwatch()..start();
     final sample = await this.sample();
@@ -178,15 +139,14 @@ class AsyncBenchmark extends AsyncBenchmarkBase {
 /// * [teardown]: executed once after the benchmark runs.
 /// * [runInIsolate]: Set to `true` to run benchmark in a
 ///    separate isolate.
-/// * [emitter]: A custom score emitter.
+/// * [scoreEmitter]: A custom score emitter.
 /// * [report]: A callback that calls the custom emitter.
-Future<void> asyncBenchmark<E extends ColorPrintEmitter>(
+Future<void> asyncBenchmark(
   String description,
   Future<void> Function() run, {
   Future<void> Function() setup = futureDoNothing,
   Future<void> Function() teardown = futureDoNothing,
-  E? emitter,
-  AsyncReporter<E> report = asyncReportStats,
+  ScoreEmitter scoreEmitter = const StatsEmitter(),
   bool runInIsolate = true,
 }) async {
   final group = Zone.current[#group] as Group?;
@@ -194,81 +154,32 @@ Future<void> asyncBenchmark<E extends ColorPrintEmitter>(
       group == null ? '' : '${group.description.addSeparator(':')} ';
 
   final instance = AsyncBenchmark(
-    description: groupDescription +
-        (hourGlass + description).style(
-          ColorProfile.asyncBenchmark,
-        ),
     run: run,
     setup: setup,
     teardown: teardown,
   );
 
+  description = groupDescription +
+      (hourGlass + description).style(ColorProfile.asyncBenchmark);
+
   final watch = Stopwatch()..start();
+
   await runZonedGuarded(
     () async {
       try {
-        switch ((emitter, runInIsolate)) {
-          case (null, true):
-            switch (report) {
-              case asyncReportStats:
-                await Isolate.run(
-                  () => asyncReportStats(
-                    instance,
-                    instance.emitter as ColorPrintEmitter,
-                  ),
-                );
-                break;
-              case asyncReportMean:
-                await Isolate.run(
-                  () => asyncReportMean(
-                    instance,
-                    instance.emitter as ColorPrintEmitter,
-                  ),
-                );
-              default:
-                throw ErrorOf<AsyncReporter<E>>(
-                  message: 'Could not run benchmark.',
-                  invalidState: 'Emitter is missing.',
-                  expectedState: 'Please specify an emitter of type <$E>.',
-                );
-            }
-            addSuccessMark();
-            break;
-          case (E emitter, false):
-            await report(instance, emitter);
-            addSuccessMark();
-            break;
-          case (E emitter, true):
-            await Isolate.run(() => report(instance, emitter));
-            addSuccessMark();
-            break;
-          case (null, false):
-            switch (report) {
-              case asyncReportStats:
-                await asyncReportStats(
-                  instance,
-                  instance.emitter as ColorPrintEmitter,
-                );
-                break;
-              case asyncReportMean:
-                await asyncReportMean(
-                  instance,
-                  instance.emitter as ColorPrintEmitter,
-                );
-              default:
-                throw ErrorOf<AsyncReporter<E>>(
-                  message: 'Could not run benchmark.',
-                  invalidState: 'Emitter is missing.',
-                  expectedState: 'Please specify an emitter of type <$E>.',
-                );
-            }
-            addSuccessMark();
+        if (runInIsolate) {
+          await Isolate.run(() async => scoreEmitter.emit(
+              description: description, score: await instance.score()));
+        } else {
+          scoreEmitter.emit(
+              description: description, score: await instance.score());
         }
+        addSuccessMark();
       } catch (error, stack) {
         reportError(
           error,
           stack,
-          description: instance.description,
+          description: description,
           duration: watch.elapsed,
           errorMark: benchmarkError,
         );
@@ -279,7 +190,7 @@ Future<void> asyncBenchmark<E extends ColorPrintEmitter>(
       reportError(
         error,
         stack,
-        description: instance.description,
+        description: description,
         duration: watch.elapsed,
         errorMark: benchmarkError,
       );

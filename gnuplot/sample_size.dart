@@ -6,6 +6,23 @@ import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:benchmark_runner/benchmark_runner.dart' show BenchmarkHelper;
 
 final ticksList = [
+  1,
+  2,
+  4,
+  6,
+  8,
+  10,
+  15,
+  25,
+  40,
+  70,
+  100,
+  180,
+  260,
+  380,
+  490,
+  600,
+  800,
   1001,
   1011,
   1070,
@@ -67,6 +84,10 @@ final ticksList = [
   194471590,
 ];
 
+final xAxisInMicroSeconds = ticksList.map(
+  (e) => (e * 1e6) / BenchmarkHelper.frequency,
+);
+
 final gnuplotScript = '''
 reset;
 set samples 1000;
@@ -74,17 +95,17 @@ set term qt size 1000, 500 font "Sans, 14";
 set grid lw 2;
 set logscale x;
 unset label;
-set xlabel "Clock ticks";
-set xrange [ 1000 : 1.9e8 ] noreverse writeback;
+set xlabel "Single Run time [us]";
+set xrange [ 0 : 1e6 ] noreverse writeback;
 set x2range [ * : * ] noreverse writeback;
-set yrange [ 0 : 500 ] noreverse writeback;
+set yrange [ 0 : 600 ] noreverse writeback;
 set y2range [ * : * ] noreverse writeback;
-plot "sample_size.dat" using 1:2 with line lw 3 lt 2 lc "#0000FFFF" title "averaged over" at 0.3, 0.85, \
-     "sample_size.dat" using 1:2 lw 3 lt 6 lc "#0000BBBB" title " " at 0.3, 0.85, \
-     "sample_size.dat" using 1:3 with lines lw 3 lt 2 lc "#00FF8800" title "sample size" at 0.3, 0.77, \
-     "sample_size.dat" using 1:3 lw 3 lt 6 lc "#00991100" title " " at 0.3, 0.77, \
-     "sample_size.dat" using 1:4 with lines lw 3 lt 2 lc "#0000C77E" title "run time [ms]" at 0.3, 0.69, \
-     "sample_size.dat" using 1:4 lw 3 lt 6 lc "#0000974e" title " " at 0.3, 0.69;
+plot "sample_size.dat" using 1:2 with line lw 3 lt 2 lc "#0000FFFF" title "averaged over" at 0.6, 0.85, \
+     "sample_size.dat" using 1:2 lw 3 lt 6 lc "#0000BBBB" title " " at 0.6, 0.85, \
+     "sample_size.dat" using 1:3 with lines lw 3 lt 2 lc "#00FF8800" title "sample size" at 0.6, 0.77, \
+     "sample_size.dat" using 1:3 lw 3 lt 6 lc "#00991100" title " " at 0.6, 0.77, \
+     "sample_size.dat" using 1:4 with lines lw 3 lt 2 lc "#0000C77E" title "total sample generation time [ms]" at 0.6, 0.69, \
+     "sample_size.dat" using 1:4 lw 3 lt 6 lc "#0000974e" title " " at 0.6, 0.69;
 #
 ''';
 
@@ -101,17 +122,22 @@ void main(List<String> args) async {
     return (inner: 10, outer: 10); // This is a stub!
   }
 
+  print(xAxisInMicroSeconds);
+
   // Uncomment the line below to use your custom function:
   // BenchmarkHelper.sampleSize = customSampleSize;
 
   final b = StringBuffer();
   b.writeln(
-      '# Ticks    Inner-Iterations Outer-Iterations      Run-Time [1 ms]');
+    '# Microseconds  Inner-Iterations Outer-Iterations      Run-Time [1 ms]',
+  );
 
   for (final ticks in ticksList) {
     final (inner: inner, outer: outer) = BenchmarkHelper.sampleSize(ticks);
-    b.writeln('$ticks               $inner            '
-        '$outer              ${ticks * inner * outer / 1000000}');
+    b.writeln(
+      '${ticks * 1e6 / BenchmarkHelper.frequency}     $inner            '
+      '$outer              ${ticks * inner * outer * 1000 / BenchmarkHelper.frequency}',
+    );
   }
 
   final file = await File('sample_size.dat').writeAsString(b.toString());
@@ -122,6 +148,8 @@ void main(List<String> args) async {
 
   print(result.stdout);
   print(result.stderr);
-  print('Returning with gnuplot exit code:'
-      ' ${result.exitCode.toString().style(Ansi.green)}');
+  print(
+    'Returning with gnuplot exit code:'
+    ' ${result.exitCode.toString().style(Ansi.green)}',
+  );
 }
