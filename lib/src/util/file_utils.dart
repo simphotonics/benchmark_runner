@@ -5,7 +5,7 @@ import 'dart:io';
 /// * Benchmark files must end with `_benchmark.dart`.
 /// * Returns an empty list if no benchmark files were found.
 Future<({List<File> benchmarkFiles, FileSystemEntityType entityType})>
-    resolveBenchmarkFiles(String path) async {
+resolveBenchmarkFiles(String path) async {
   final benchmarkFiles = <File>[];
   final entityType = await FileSystemEntity.type(path);
   if ((entityType == FileSystemEntityType.directory)) {
@@ -34,8 +34,8 @@ Future<File> writeTo({
   final entityType = await FileSystemEntity.type(path);
   switch (entityType) {
     case FileSystemEntityType.file ||
-          FileSystemEntityType.notFound ||
-          FileSystemEntityType.pipe:
+        FileSystemEntityType.notFound ||
+        FileSystemEntityType.pipe:
       final file = File(path);
       return await file.writeAsString(contents, mode: mode);
     case FileSystemEntityType.directory:

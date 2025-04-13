@@ -65,32 +65,32 @@ extension Histogram on Stats {
 
   static final blocks = switch (Ansi.status) {
     AnsiOutput.enabled => [
-        '_'.style(ColorProfile.dim),
-        '_',
-        // '\u2581'.colorize(AnsiModifier.grey),
-        '\u2581',
-        // '\u2582'.colorize(AnsiModifier.grey),
-        '\u2582',
-        '\u2583',
-        '\u2584',
-        '\u2585',
-        '\u2586',
-        '\u2587',
-        '\u2588',
-        '\u2589',
-      ],
+      '_'.style(ColorProfile.dim),
+      '_',
+      // '\u2581'.colorize(AnsiModifier.grey),
+      '\u2581',
+      // '\u2582'.colorize(AnsiModifier.grey),
+      '\u2582',
+      '\u2583',
+      '\u2584',
+      '\u2585',
+      '\u2586',
+      '\u2587',
+      '\u2588',
+      '\u2589',
+    ],
     AnsiOutput.disabled => [
-        '_',
-        '\u2581',
-        '\u2582',
-        '\u2583',
-        '\u2584',
-        '\u2585',
-        '\u2586',
-        '\u2587',
-        '\u2588',
-        '\u2589',
-      ],
+      '_',
+      '\u2581',
+      '\u2582',
+      '\u2583',
+      '\u2584',
+      '\u2585',
+      '\u2586',
+      '\u2587',
+      '\u2588',
+      '\u2589',
+    ],
   };
 
   /// Returns a block histogram in the form of a [String].
@@ -114,10 +114,7 @@ extension Histogram on Stats {
   /// ▉▂__________________ 177  ____________________
   ///
   ///
-  String blockHistogram({
-    bool normalize = false,
-    int intervalNumber = 0,
-  }) {
+  String blockHistogram({bool normalize = false, int intervalNumber = 0}) {
     intervalNumber =
         intervalNumber < 2 ? intervalNumberFreedman : intervalNumber;
 
@@ -142,8 +139,9 @@ extension Histogram on Stats {
       counts[i] = counts[i] / (sampleSize * intervalSize);
     }
 
-    final countsMax =
-        counts.reduce((value, element) => math.max(value, element));
+    final countsMax = counts.reduce(
+      (value, element) => math.max(value, element),
+    );
     final deltaCounts = countsMax / (blocks.length - 1);
     final result = List<String>.filled(gridPoints, ' ');
     final blockCount = blocks.length;

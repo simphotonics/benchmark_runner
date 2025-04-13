@@ -46,8 +46,10 @@ void main() {
         normalize: true,
       );
       var sum = hist.values.fold<num>(0.0, (sum, current) => sum + current);
-      expect(sum * (stats.max - stats.min) / numberOfIntervals,
-          closeTo(1.0, 1e-12));
+      expect(
+        sum * (stats.max - stats.min) / numberOfIntervals,
+        closeTo(1.0, 1e-12),
+      );
     });
     test('total count (non-normalized histograms)', () {
       final hist = stats.histogram(normalize: false);

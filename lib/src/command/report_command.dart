@@ -47,12 +47,16 @@ class ReportCommand extends Command {
         argResults!.rest.isEmpty ? 'benchmark' : argResults!.rest.first;
 
     // Resolving test files.
-    final (benchmarkFiles: benchmarkFiles, entityType: entityType) =
-        await resolveBenchmarkFiles(searchDirectory);
+    final (
+      benchmarkFiles: benchmarkFiles,
+      entityType: entityType,
+    ) = await resolveBenchmarkFiles(searchDirectory);
     if (benchmarkFiles.isEmpty) {
       print('');
-      print('Could not resolve any benchmark files using path: '
-          '${searchDirectory.style(ColorProfile.highlight)}\n');
+      print(
+        'Could not resolve any benchmark files using path: '
+        '${searchDirectory.style(ColorProfile.highlight)}\n',
+      );
       exit(ExitCode.noBenchmarkFilesFound.index);
     } else {
       if (entityType == FileSystemEntityType.directory) {
@@ -87,15 +91,17 @@ class ReportCommand extends Command {
     // Starting processes.
     final fResults = <Future<BenchmarkProcessResult>>[];
     for (final file in benchmarkFiles) {
-      fResults.add(BenchmarkProcess.runBenchmark(
-        executable: 'dart',
-        arguments: [
-          '--define=isBenchmarkProcess=true',
-          if (isVerbose) '--define=isVerbose=true',
-          if (isMonochrome) '--define=isMonochrome=true',
-        ],
-        benchmarkFile: file,
-      ));
+      fResults.add(
+        BenchmarkProcess.runBenchmark(
+          executable: 'dart',
+          arguments: [
+            '--define=isBenchmarkProcess=true',
+            if (isVerbose) '--define=isVerbose=true',
+            if (isMonochrome) '--define=isMonochrome=true',
+          ],
+          benchmarkFile: file,
+        ),
+      );
     }
 
     // Start subscription to progress indicator.

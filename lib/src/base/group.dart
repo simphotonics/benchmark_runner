@@ -20,11 +20,10 @@ class Group {
     final parentGroup = Zone.current[#group] as Group?;
     if (parentGroup != null) {
       throw UnsupportedError(
-          '${'Nested groups detected! '.style(ColorProfile.error)}'
-          'Group ${description.style(ColorProfile.emphasize)} defined '
-          'within group ${parentGroup.description.style(
-        ColorProfile.emphasize,
-      )}');
+        '${'Nested groups detected! '.style(ColorProfile.error)}'
+        'Group ${description.style(ColorProfile.emphasize)} defined '
+        'within group ${parentGroup.description.style(ColorProfile.emphasize)}',
+      );
     }
   }
 
@@ -64,39 +63,29 @@ class Group {
   void run() {
     _throwIfNested();
     final watch = Stopwatch()..start();
-    runZonedGuarded(
-      body,
-      ((error, stack) {
-        reportError(
-          error,
-          stack,
-          description: description,
-          duration: watch.elapsed,
-          errorMark: groupErrorMark,
-        );
-      }),
-      zoneValues: {#group: this},
-    );
+    runZonedGuarded(body, ((error, stack) {
+      reportError(
+        error,
+        stack,
+        description: description,
+        duration: watch.elapsed,
+        errorMark: groupErrorMark,
+      );
+    }), zoneValues: {#group: this});
   }
 }
 
 /// Defines a benchmark group.
 ///
 /// Note: Groups may not be nested.
-FutureOr<void> group(
-  String description,
-  FutureOr<void> Function() body,
-) async {
+FutureOr<void> group(String description, FutureOr<void> Function() body) async {
   final isAsync = (body is Future<void> Function());
 
   if (isAsync) {
     description = hourGlass + description;
   }
 
-  final instance = Group(
-    description.style(ColorProfile.group),
-    body,
-  );
+  final instance = Group(description.style(ColorProfile.group), body);
   if (isAsync) {
     return instance.runAsync();
   } else {

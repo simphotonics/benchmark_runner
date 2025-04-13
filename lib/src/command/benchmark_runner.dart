@@ -5,10 +5,10 @@ import 'report_command.dart';
 
 class BenchmarkRunner extends CommandRunner {
   BenchmarkRunner._()
-      : super(
-          'benchmark_runner',
-          'Runs benchmarks. Prints and exports score reports.',
-        );
+    : super(
+        'benchmark_runner',
+        'Runs benchmarks. Prints and exports score reports.',
+      );
 
   static BenchmarkRunner? _instance;
 

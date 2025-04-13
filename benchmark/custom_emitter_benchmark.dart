@@ -10,11 +10,7 @@ class CustomEmitter implements ScoreEmitter {
 }
 
 void main(List<String> args) {
-  benchmark(
-    'construct | Custom emitter',
-    () {
-      var list = <int>[for (var i = 0; i < 1000; ++i) i];
-    },
-    scoreEmitter: CustomEmitter(),
-  );
+  benchmark('construct | Custom emitter', () {
+    var list = <int>[for (var i = 0; i < 1000; ++i) i];
+  }, scoreEmitter: CustomEmitter());
 }

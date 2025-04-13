@@ -18,9 +18,10 @@ extension Root on num {
   double root(num n) {
     if (isNegative) {
       throw ErrorOf<num>(
-          message: 'Error in extension function root($this).',
-          invalidState: '$this < 0',
-          expectedState: 'A positive function argument.');
+        message: 'Error in extension function root($this).',
+        invalidState: '$this < 0',
+        expectedState: 'A positive function argument.',
+      );
     }
     return pow(this, 1 / n).toDouble();
   }

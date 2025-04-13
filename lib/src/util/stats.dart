@@ -113,7 +113,8 @@ class Stats<T extends num> {
   double get quartile3 => _quartile3();
 
   late final _iqr = Lazy<double>(
-      () => _quartile3(updateCache: true) - _quartile1(updateCache: true));
+    () => _quartile3(updateCache: true) - _quartile1(updateCache: true),
+  );
 
   /// Returns the inter quartile range.
   double get iqr => _iqr();

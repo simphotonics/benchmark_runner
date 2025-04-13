@@ -34,7 +34,7 @@ class BenchmarkProcessResult {
       true => arguments
           .where((arg) => arg != '--define=isBenchmarkProcess=true')
           .join(' '),
-      false => arguments.join(' ')
+      false => arguments.join(' '),
     };
     return executable +
         (args.isEmpty
@@ -64,14 +64,16 @@ extension BenchmarkProcess on Process {
     Encoding? stdoutEncoding = const Utf8Codec(), // Enables histogram output
     Encoding? stderrEncoding = const Utf8Codec(), //               on windows.
   }) {
-    return Process.run(executable, [...arguments, benchmarkFile.path],
-            workingDirectory: workingDirectory,
-            environment: environment,
-            includeParentEnvironment: includeParentEnvironment,
-            runInShell: runInShell,
-            stdoutEncoding: stdoutEncoding,
-            stderrEncoding: stderrEncoding)
-        .then<BenchmarkProcessResult>((processResult) {
+    return Process.run(
+      executable,
+      [...arguments, benchmarkFile.path],
+      workingDirectory: workingDirectory,
+      environment: environment,
+      includeParentEnvironment: includeParentEnvironment,
+      runInShell: runInShell,
+      stdoutEncoding: stdoutEncoding,
+      stderrEncoding: stderrEncoding,
+    ).then<BenchmarkProcessResult>((processResult) {
       return BenchmarkProcessResult(
         executable: executable,
         arguments: arguments,
@@ -128,9 +130,7 @@ extension BenchmarkUtils on BenchmarkProcessResult {
     final out = StringBuffer();
 
     out.writeln('-------      Summary     -------- '.style(ColorProfile.dim));
-    out.writeln('Total run time: ${duration.ssms.style(
-      ColorProfile.success,
-    )}');
+    out.writeln('Total run time: ${duration.ssms.style(ColorProfile.success)}');
 
     for (final result in results) {
       numberOfFailedBenchmarks += result.numberOfFailedBenchmarks;
@@ -138,50 +138,58 @@ extension BenchmarkUtils on BenchmarkProcessResult {
       numberOfCompletedBenchmarks += result.numberOfCompletedBenchmarks;
     }
 
-    out.writeln('Completed benchmarks: '
-        '${numberOfCompletedBenchmarks.toString().style(
-              ColorProfile.success,
-            )}.');
+    out.writeln(
+      'Completed benchmarks: '
+      '${numberOfCompletedBenchmarks.toString().style(ColorProfile.success)}.',
+    );
 
     if (numberOfFailedBenchmarks > 0) {
-      out.writeln('Benchmarks with errors: '
-          '${numberOfFailedBenchmarks.toString().style(ColorProfile.error)}.');
+      out.writeln(
+        'Benchmarks with errors: '
+        '${numberOfFailedBenchmarks.toString().style(ColorProfile.error)}.',
+      );
       exitCode = ExitCode.someBenchmarksFailed;
     }
 
     if (numberOfFailedGroups > 0) {
-      out.writeln('Groups with errors: '
-          '${numberOfFailedGroups.toString().style(ColorProfile.error)}.\n'
-          'Some benchmarks may have been skipped!');
+      out.writeln(
+        'Groups with errors: '
+        '${numberOfFailedGroups.toString().style(ColorProfile.error)}.\n'
+        'Some benchmarks may have been skipped!',
+      );
       exitCode = ExitCode.someGroupsFailed;
     }
 
     if ((numberOfFailedBenchmarks > 0 || numberOfFailedGroups > 0) &&
         !isVerbose) {
-      out.writeln('Try using the option '
-          '${'--verbose'.style(ColorProfile.emphasize + Ansi.yellow)} or '
-          '${'-v'.style(ColorProfile.emphasize + Ansi.yellow)} '
-          'for more details.');
+      out.writeln(
+        'Try using the option '
+        '${'--verbose'.style(ColorProfile.emphasize + Ansi.yellow)} or '
+        '${'-v'.style(ColorProfile.emphasize + Ansi.yellow)} '
+        'for more details.',
+      );
     }
 
     switch (exitCode) {
       case ExitCode.someBenchmarksFailed:
-        out.writeln('Exiting with code '
-            '${ExitCode.someBenchmarksFailed.code}: '
-            '${ExitCode.someBenchmarksFailed.description.style(
-          ColorProfile.error,
-        )}');
+        out.writeln(
+          'Exiting with code '
+          '${ExitCode.someBenchmarksFailed.code}: '
+          '${ExitCode.someBenchmarksFailed.description.style(ColorProfile.error)}',
+        );
         break;
       case ExitCode.allBenchmarksExecuted:
-        out.writeln('${'Completed successfully.'.style(ColorProfile.success)}\n'
-            'Exiting with code: 0.');
+        out.writeln(
+          '${'Completed successfully.'.style(ColorProfile.success)}\n'
+          'Exiting with code: 0.',
+        );
         break;
       case ExitCode.someGroupsFailed:
-        out.writeln('Exiting with code '
-            '${ExitCode.someGroupsFailed.code}: '
-            '${ExitCode.someGroupsFailed.description.style(
-          ColorProfile.error,
-        )}');
+        out.writeln(
+          'Exiting with code '
+          '${ExitCode.someGroupsFailed.code}: '
+          '${ExitCode.someGroupsFailed.description.style(ColorProfile.error)}',
+        );
         break;
       default:
     }

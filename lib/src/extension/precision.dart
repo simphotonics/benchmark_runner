@@ -25,7 +25,5 @@ extension Precision on double {
   /// print(d.toStringAsFixedDigits(4)) // Prints: 0.000007899
   /// ```
   String toStringAsFixedDigits([int nonZeroFractionalDigits = 2]) =>
-      toStringAsFixed(
-        leadingZeros + nonZeroFractionalDigits,
-      );
+      toStringAsFixed(leadingZeros + nonZeroFractionalDigits);
 }

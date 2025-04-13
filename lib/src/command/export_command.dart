@@ -21,7 +21,8 @@ class ExportCommand extends ReportCommand {
   // final category = 'benchmark';
 
   @override
-  String get description => 'Exports benchmark scores. A custom file extension '
+  String get description =>
+      'Exports benchmark scores. A custom file extension '
       'and directory may be specified.';
 
   static const _extension = 'extension';
@@ -64,15 +65,17 @@ class ExportCommand extends ReportCommand {
     // Starting processes.
     final fResults = <Future<BenchmarkProcessResult>>[];
     for (final file in benchmarkFiles) {
-      fResults.add(BenchmarkProcess.runBenchmark(
-        executable: 'dart',
-        arguments: [
-          '--define=isBenchmarkProcess=true',
-          if (isVerbose) '--define=isVerbose=true',
-          if (isMonochrome) '--define=isMonochrome=true',
-        ],
-        benchmarkFile: file,
-      ));
+      fResults.add(
+        BenchmarkProcess.runBenchmark(
+          executable: 'dart',
+          arguments: [
+            '--define=isBenchmarkProcess=true',
+            if (isVerbose) '--define=isVerbose=true',
+            if (isMonochrome) '--define=isMonochrome=true',
+          ],
+          benchmarkFile: file,
+        ),
+      );
     }
 
     // Start subscription to progress indicator.
@@ -94,9 +97,7 @@ class ExportCommand extends ReportCommand {
 
       final outputPath = outputDirectory.join(outputFileName);
 
-      print(
-        'Writing scores to: '.style(ColorProfile.dim) + outputPath + '\n',
-      );
+      print('Writing scores to: '.style(ColorProfile.dim) + outputPath + '\n');
 
       await writeTo(path: outputPath, contents: result.stdout);
 
