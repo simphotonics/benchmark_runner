@@ -22,10 +22,13 @@ class MeanEmitter implements ScoreEmitter {
   /// Prints a colorized benchmark score.
   @override
   void emit({required String description, required Score score}) {
-    print('$description(RunTime): ' +
-        '${score.stats.mean.toStringAsFixedDigits()} us'
-            .style(ColorProfile.mean) +
-        '\n');
+    print(
+      '$description(RunTime): ' +
+          '${score.stats.mean.toStringAsFixedDigits()} us'.style(
+            ColorProfile.mean,
+          ) +
+          '\n',
+    );
   }
 }
 
@@ -36,10 +39,7 @@ class StatsEmitter implements ScoreEmitter {
 
   /// Prints a colorized benchmark score report.
   @override
-  void emit({
-    required String description,
-    required Score score,
-  }) {
+  void emit({required String description, required Score score}) {
     //final indentCharacters = score.runtime.msus.length;
     final indent = '  ';
     final part1 = '${score.duration.msus.style(ColorProfile.dim)} $description';
@@ -50,14 +50,16 @@ class StatsEmitter implements ScoreEmitter {
     final iqr = score.stats.iqr / score.timeScale.factor;
     final unit = score.timeScale.unit;
 
-    final part2 = '${indent}mean: ${mean.toStringAsFixedDigits()} $plusMinus '
+    final part2 =
+        '${indent}mean: ${mean.toStringAsFixedDigits()} $plusMinus '
                 '${stdDev.toStringAsFixedDigits()} $unit, '
             .style(ColorProfile.mean) +
         'median: ${median.toStringAsFixedDigits()} $plusMinus '
                 '${iqr.toStringAsFixedDigits()} $unit'
             .style(ColorProfile.median);
 
-    final part3 = '$indent${score.stats.blockHistogram()} '
+    final part3 =
+        '$indent${score.stats.blockHistogram()} '
         'sample size: ${score.stats.sortedSample.length}';
     final part4 =
         score.innerIter > 1 ? ' (averaged over ${score.innerIter} runs)' : '';
