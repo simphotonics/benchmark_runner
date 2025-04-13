@@ -211,9 +211,10 @@ total benchmark run times within acceptable limits.
 <details> <summary> Click to show details. </summary>
 
 In a first step, benchmark scores are estimated using the
-functions [`warmup`][warmup]
-or [`warmupAsync`][warmupAsync]. The function [`BenchmarkHelper.sampleSize`][sampleSize]
-uses the score estimate to determine the sampling procedure.
+functions [`warmUp`][warmUp]
+or [`warmUpAsync`][warmUpAsync]. The function [`BenchmarkHelper.sampleSize`][sampleSize]
+uses the score estimate to determine the sample size and the number of inner
+iterations (for short run times each sample entry is averaged).
 
 ### 1. Default Sampling Method
 The graph below shows the sample size (orange curve) as calculated by the function
@@ -221,7 +222,7 @@ The graph below shows the sample size (orange curve) as calculated by the functi
 The green curve shows the lower limit of the total microbenchmark duration and
 represents the value: `clockTicks * sampleSize * innerIterations`.
 
-![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/sample_size.png)
+![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/custom-emitter/images/sample_size.png)
 
 For short run times below 100000 clock ticks each sample score is generated
 using the functions [`measure`][measure] or the equivalent asynchronous method [`measureAsync`][measureAsync].
@@ -238,7 +239,7 @@ averaged over (see the cyan curve in the graph above):
 To custominze the score sampling process, the static function
 [`BenchmarkHelper.sampleSize`][sampleSize] can be replaced with a custom function:
 ```Dart
-/// Generates a sample containing 100 benchmark scores. 
+/// Generates a sample containing 100 benchmark scores.
 BenchmarkHelper.sampleSize = (int clockTicks) {
   return (outer: 100, inner: 1)
 }
@@ -300,6 +301,6 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 
 [sampleSize]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/sampleSize.html
 
-[warmup]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/warmup.html
+[warmUp]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/warmUp.html
 
-[warmupAsync]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/warmupAsync.html
+[warmUpAsync]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/warmUpAsync.html

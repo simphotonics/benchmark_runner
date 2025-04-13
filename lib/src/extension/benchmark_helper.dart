@@ -38,14 +38,14 @@ extension BenchmarkHelper on Stopwatch {
 
   /// Measures the runtime of [f] for [duration] and
   /// reports the average runtime expressed as clock ticks.
-  ({int ticks, int iter}) warmup(
+  ({int ticks, int iter}) warmUp(
     void Function() f, {
     Duration duration = const Duration(milliseconds: 200),
-    int preRuns = 3,
+    int warmUpRuns = 3,
   }) {
-    var ticks = microsecondsToTicks(duration.inMicroseconds);
-    var iter = 0;
-    for (var i = 0; i < preRuns; i++) {
+    int ticks = durationToTicks(duration);
+    int iter = 0;
+    for (var i = 0; i < warmUpRuns; i++) {
       f();
     }
     reset();
@@ -59,15 +59,15 @@ extension BenchmarkHelper on Stopwatch {
 
   /// Measures the runtime of [f] for [duration] and
   /// reports the average runtime expressed as clock ticks.
-  Future<({int ticks, int iter})> warmupAsync(
+  Future<({int ticks, int iter})> warmUpAsync(
     Future<void> Function() f, {
     Duration duration = const Duration(milliseconds: 200),
-    int preRuns = 3,
+    int warmUpRuns = 3,
   }) async {
-    var ticks = microsecondsToTicks(duration.inMicroseconds);
-    var iter = 0;
+    int ticks = durationToTicks(duration);
+    int iter = 0;
     reset();
-    for (var i = 0; i < preRuns; i++) {
+    for (var i = 0; i < warmUpRuns; i++) {
       await f();
     }
     start();
@@ -83,6 +83,10 @@ extension BenchmarkHelper on Stopwatch {
 
   /// Converts clock [ticks] to seconds.
   static double ticksToSeconds(int ticks) => ticks / BenchmarkHelper.frequency;
+
+  /// Convert [duration] to clock ticks.
+  static int durationToTicks(Duration duration) =>
+      microsecondsToTicks(duration.inMicroseconds);
 
   /// Converts clock [ticks] to microseconds.
   static double ticksToMicroseconds(int ticks) =>
@@ -124,8 +128,8 @@ extension BenchmarkHelper on Stopwatch {
   /// * number of runs each score is averaged over: `.inner`.
   ///
   /// Note: An estimate of the benchmark runtime in clock ticks is given by
-  /// `outer*inner*clockTicks`. The estimate does not include any setup, warmup,
-  /// or teardown functionality.
+  /// `outer*inner*clockTicks`. The estimate does not include any setup,
+  /// warm-up, or teardown functionality.
   static ({int outer, int inner}) sampleSizeDefault(int clockTicks) {
     // Estimates for the averaging used within `measure` and `measureAsync.
 
