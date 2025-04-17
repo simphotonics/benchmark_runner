@@ -94,6 +94,18 @@ extension Histogram on Stats {
   };
 
   /// Returns a block histogram in the form of a [String].
+  /// * The single block containing the *mean and median* is colored cyan.
+  /// * To disable color output set:
+  /// `AnsiModifier.colorOutput = ColoOutput.off;`
+  /// Sample output (with color output disabled):
+  ///
+  /// ▉
+  String _singleBlockHistogram() =>
+      '${blocks.first}'
+      '${blocks.last.style(ColorProfile.meanMedianHistogramBlock)}'
+      '${blocks.first}';
+
+  /// Returns a block histogram in the form of a [String].
   /// * The block containing the *mean* value is colored green.
   /// * The block containing the *median* is colored blue.
   /// * The block containing the *mean and median* is colored cyan.
@@ -124,6 +136,11 @@ extension Histogram on Stats {
     }
 
     final intervalSize = (max - min) / intervalNumber;
+
+    if (intervalSize == 0.0) {
+      return _singleBlockHistogram();
+    }
+
     final gridPoints = intervalNumber + 1;
     final counts = List<double>.filled(gridPoints, 0);
     final leftBorder = min - intervalSize / 2;
