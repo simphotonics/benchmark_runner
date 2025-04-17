@@ -69,7 +69,7 @@ Write inline benchmarks using the functions:
   ```
 ### 1. Running a Single Benchmark File
 A *single* benchmark file may be run as a Dart executable:
-![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/custom-emitter/images/single_report.png)
+![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/single_report.png)
 
 The console output is shown above. By default,
 the functions [`benchmark`][benchmark] and
@@ -92,7 +92,7 @@ To run *several* benchmark files (with the format`*_benchmark.dart`)
 and print a report, invoke the sub-command `report` and specify a directory.
 If no directory is specified, it defaults to `benchmark`:
 
-![Runner Report](https://raw.githubusercontent.com/simphotonics/benchmark_runner/custom-emitter/images/runner_report.png)
+![Runner Report](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/runner_report.png)
 
 A typical console output is shown above. In this example, the benchmark_runner
 detected two benchmark files, ran the micro-benchmarks and produced a report.
@@ -200,7 +200,6 @@ completion. To print the scores in sequential order (as they are listed in the
 benchmark executable) it is required to *await* the completion
 of the async benchmark functions and
 the enclosing group.
-
 ## Score Sampling
 
 In order to calculate benchmark score *statistics* a sample of scores is
@@ -211,32 +210,34 @@ total benchmark run times within acceptable limits.
 <details> <summary> Click to show details. </summary>
 
 In a first step, benchmark scores are estimated using the
-functions [`warmUp`][warmUp]
-or [`warmUpAsync`][warmUpAsync]. The function [`BenchmarkHelper.sampleSize`][sampleSize]
+functions [`estimate`][estimate]
+or [`estimateAsync`][estimateAsync]. The function [`BenchmarkHelper.sampleSize`][sampleSize]
 uses the score estimate to determine the sample size and the number of inner
 iterations (for short run times each sample entry is averaged).
 
 ### 1. Default Sampling Method
 The graph below shows the sample size (orange curve) as calculated by the function
-[`BenchmarkHelper.sampleSize`][sampleSize].
-The green curve shows the lower limit of the total microbenchmark duration and
-represents the value: `clockTicks * sampleSize * innerIterations`.
+[`BenchmarkHelper.sampleSize`][sampleSize] (the of the list containing the
+benchmark scores).
 
-![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/custom-emitter/images/sample_size.png)
+The green curve shows the lower limit of the total microbenchmark duration
+in microseconds.
 
-For short run times below 100000 clock ticks each sample score is generated
-using the functions [`measure`][measure] or the equivalent asynchronous method [`measureAsync`][measureAsync].
-The parameter
-`ticks` used when calling the functions [`measure`][measure] and
-[`measureAsync`][measureAsync] is chosen such that the benchmark score is
-averaged over (see the cyan curve in the graph above):
-* ticks < 1000 => 200 runs,
-* 1000 < ticks < 1e4 => 200 ... 100 runs (exponentialy interpolated),
-* 1e4 < ticks < 1e5 => 100 ... 20 runs (exponentially interpolated),
-* ticks > 1e5 => No preliminary averaging of sample scores.
+![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/sample_size.png)
+
+For short run times below 1 microsecond each score sample is generated
+using the functions [`measure`][measure] or the equivalent
+asynchronous method [`measureAsync`][measureAsync]. The cyan curve shows
+approx. over how many runs a score entry is averaged.
 
 ### 2. Custom Sampling Method
-To custominze the score sampling process, the static function
+The parameter `sampleSize` of the functions [`benchmark`][benchmark] and
+[`asyncBenchmark`][asyncBenchmark]  can be used to specify the lenght of the score
+sample list and the number of inner iterations used to generate each entry.
+
+To customize the score sampling process, without having to specify the parameter
+`sampleSize` for each call of [`benchmark`][benchmark] and
+[`asyncBenchmark`][asyncBenchmark], the static function
 [`BenchmarkHelper.sampleSize`][sampleSize] can be replaced with a custom function:
 ```Dart
 /// Generates a sample containing 100 benchmark scores.
@@ -301,6 +302,6 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 
 [sampleSize]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/sampleSize.html
 
-[warmUp]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/warmUp.html
+[estimate]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/estimate.html
 
-[warmUpAsync]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/warmUpAsync.html
+[estimateAsync]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/estimateUpAsync.html
