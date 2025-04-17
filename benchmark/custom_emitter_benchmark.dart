@@ -5,7 +5,7 @@ class CustomEmitter implements ScoreEmitter {
   @override
   void emit({required description, required Score score}) {
     print('Mean               Standard Deviation');
-    print('${score.stats.mean}  ${score.stats.stdDev}');
+    print('${score.scoreStats.mean}  ${score.scoreStats.stdDev}');
   }
 }
 

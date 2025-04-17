@@ -6,23 +6,29 @@ import '../emitter/score_emitter.dart';
 import '../extension/color_profile.dart';
 import '../extension/string_utils.dart';
 import 'group.dart';
+import 'sample_size.dart';
 import 'score_generator.dart';
 
 /// Runs a benchmark for the synchronous function [run].
 /// The benchmark scores are emitted to stdout.
-/// * `run`: the benchmarked function,
-/// * `setup`: exectued once before the benchmark,
-/// * `teardown`: executed once after the benchmark runs.
-/// * `report`: report to emit score as provided by benchmark_harness.
-/// * `emitter`: An emitter for generating a custom benchmark report.
-/// * `report`: A callback that can be used to call an emitter method.
+/// * [run]: the benchmarked function,
+/// * [setup]: exectued once before the benchmark,
+/// * [teardown]: executed once after the benchmark runs.
+/// * [scoreEmitter]: An emitter for generating a custom benchmark report.
+/// * [warmUpRuns]: The number of times [run] is called before the measurement.
+/// * [warmUpDuration]: The duration used to create a score estimate.
+/// * [sampleSize]: An object of type [SampleSize] that is used to specify the
+/// `length` of the benchmark score list and the `innerIterations` (the number
+/// of time [run] is averaged over to generate a score entry).
 void benchmark(
   String description,
   void Function() run, {
   void Function() setup = doNothing,
   void Function() teardown = doNothing,
   ScoreEmitter scoreEmitter = const StatsEmitter(),
-  warmUpDuration = const Duration(),
+  final int warmUpRuns = 3,
+  final Duration warmUpDuration = const Duration(milliseconds: 200),
+  SampleSize? sampleSize,
 }) {
   final group = Zone.current[#group] as Group?;
   var groupDescription =
@@ -56,7 +62,11 @@ void benchmark(
       try {
         scoreEmitter.emit(
           description: description,
-          score: scoreGenerator.score(),
+          score: scoreGenerator.score(
+            warmUpDuration: warmUpDuration,
+            warmUpRuns: warmUpRuns,
+            sampleSize: sampleSize,
+          ),
         );
         addSuccessMark();
       } catch (error, stack) {

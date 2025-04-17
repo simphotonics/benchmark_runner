@@ -5,21 +5,23 @@ import '../util/stats.dart';
 class Score<T extends num> {
   Score({
     required this.duration,
-    required List<T> sample,
-    required this.innerIter,
-  }) : stats = Stats(sample);
+    required List<T> scoreSample,
+    required List<int> innerLoopCounters,
+  }) : scoreStats = Stats(scoreSample),
+       innerLoopCounterStats = Stats(innerLoopCounters);
 
   /// Measured micro-benchmark duration
   final Duration duration;
 
-  /// Indicates if the a sample entry was averaged over [iter] runs.
-  final int innerIter;
+  /// The number of times the benchmarked function was executed to generate a
+  /// benchmark sample entry.
+  final Stats<int> innerLoopCounterStats;
 
   /// Scores and score stats (in microseconds).
-  final Stats<T> stats;
+  final Stats<T> scoreStats;
 
   /// Time-scale when scores are divided by factor.
-  late final ({String unit, int factor}) timeScale = switch (stats.mean) {
+  late final ({String unit, int factor}) timeScale = switch (scoreStats.mean) {
     > 1000000 => (unit: 's', factor: 1000000),
     > 1000 => (unit: 'ms', factor: 1000),
     _ => (unit: 'us', factor: 1),

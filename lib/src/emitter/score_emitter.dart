@@ -24,7 +24,7 @@ class MeanEmitter implements ScoreEmitter {
   void emit({required String description, required Score score}) {
     print(
       '$description(RunTime): ' +
-          '${score.stats.mean.toStringAsFixedDigits()} us'.style(
+          '${score.scoreStats.mean.toStringAsFixedDigits()} us'.style(
             ColorProfile.mean,
           ) +
           '\n',
@@ -44,10 +44,10 @@ class StatsEmitter implements ScoreEmitter {
     final indent = '  ';
     final part1 = '${score.duration.msus.style(ColorProfile.dim)} $description';
 
-    final mean = score.stats.mean / score.timeScale.factor;
-    final stdDev = score.stats.stdDev / score.timeScale.factor;
-    final median = score.stats.median / score.timeScale.factor;
-    final iqr = score.stats.iqr / score.timeScale.factor;
+    final mean = score.scoreStats.mean / score.timeScale.factor;
+    final stdDev = score.scoreStats.stdDev / score.timeScale.factor;
+    final median = score.scoreStats.median / score.timeScale.factor;
+    final iqr = score.scoreStats.iqr / score.timeScale.factor;
     final unit = score.timeScale.unit;
 
     final part2 =
@@ -59,10 +59,13 @@ class StatsEmitter implements ScoreEmitter {
             .style(ColorProfile.median);
 
     final part3 =
-        '$indent${score.stats.blockHistogram()} '
-        'sample size: ${score.stats.sortedSample.length}';
+        '$indent${score.scoreStats.blockHistogram()} '
+        'sample size: ${score.scoreStats.sortedSample.length}';
     final part4 =
-        score.innerIter > 1 ? ' (averaged over ${score.innerIter} runs)' : '';
+        score.innerLoopCounterStats.mean > 1
+            ? ' (averaged over ${score.innerLoopCounterStats.mean.toInt()} $plusMinus '
+                '${score.innerLoopCounterStats.stdDev.toInt()} runs)'
+            : '';
     print(part1);
     print(part2);
     print(part3 + part4.style(ColorProfile.dim));

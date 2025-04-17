@@ -1,12 +1,13 @@
 ## 2.0.0
 Breaking changes:
-- The classes `Benchmark` and `AsyncBenchmark` are now solely responsible for
+- The classes `Benchmark` and `AsyncBenchmark` were renamed `ScoreGenerator`
+and `AsyncScoreGenerator`,respectively, They are now solely responsible for
 generating benchmark scores. The constructor parameters `description` and
-`emitter` have been removed. Generating reports is delegated to `ScoreEmitter`.
-- The functions `benchmark` and `asyncBenchmark` are not longer generic and
-the only optional parameter is: `scoreEmitter`. A custom `ScoreEmitter` can be
-used to generate a custom benchmark report.
-
+`emitter` have been removed. Generating the benchmark reports
+is delegated to `ScoreEmitter`.
+- The functions `benchmark` and `asyncBenchmark` are not longer generic and now
+have the optional parameters: `warmUpDuration`, `warmUpRuns`.
+`sampleSize`, `customEmitter`. 
 
 ## 1.0.0
 Breaking changes:

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import '../collection/single_value_list.dart';
 import '../extension/benchmark_helper.dart';
 import '../util/stats.dart';
+import 'sample_size.dart';
 import 'score.dart';
 
 typedef AsyncFunction = Future<void> Function();
@@ -48,51 +50,50 @@ class AsyncScoreGenerator {
   /// `innerIter` is larger than 1 if each score entry was averaged over
   /// `innerIter` runs.
   ///
-  Future<({List<double> scores, int innerIter})> sample({
+  Future<({List<double> scores, List<int> innerLoopCounters})> sample({
     final int warmUpRuns = 3,
     final Duration warmUpDuration = const Duration(milliseconds: 200),
+    SampleSize? sampleSize,
   }) async {
     await _setup();
     final sample = <int>[];
-    final innerIters = <int>[];
-    final overhead = <int>[];
+    final innerLoopCounters = <int>[];
     final watch = Stopwatch();
-    int innerIterMean = 1;
-
+    watch.prime();
     try {
-      // Warmup (Default: For 200 ms with 3 pre-runs).
-      final scoreEstimate = await watch.warmUpAsync(
+      final scoreEstimate = await watch.estimateAsync(
         _run,
         duration: warmUpDuration,
         warmUpRuns: warmUpRuns,
       );
-      final sampleSize = BenchmarkHelper.sampleSize(scoreEstimate.ticks);
 
-      if (sampleSize.inner > 1) {
-        final durationAsTicks = sampleSize.inner * scoreEstimate.ticks;
-        for (var i = 0; i < sampleSize.outer + warmUpRuns; i++) {
+      sampleSize ??= BenchmarkHelper.sampleSize(scoreEstimate.elapsedTicks);
+
+      if (sampleSize.innerIterations > 1) {
+        final durationAsTicks =
+            sampleSize.innerIterations * scoreEstimate.elapsedTicks;
+        for (var i = 0; i < sampleSize.length; i++) {
           // Averaging each score over approx. sampleSize.inner runs.
           // For details see function BenchmarkHelper.sampleSize.
-          final score = await watch.measureAsync(_run, durationAsTicks);
-          sample.add(score.ticks);
-          innerIters.add(score.iter);
+          final score = await watch.measureAsync(
+            _run,
+            durationAsTicks,
+            warmUpRuns: warmUpRuns,
+          );
+          sample.add(score.elapsedTicks);
+          innerLoopCounters.add(score.loopCounter);
         }
-        innerIterMean =
-            innerIters.reduce((sum, element) => sum + element) ~/
-            innerIters.length;
       } else {
-        for (var i = 0; i < sampleSize.outer + warmUpRuns; i++) {
+        // Warmup
+        for (var i = 0; i < warmUpRuns; i++) {
+          await _run();
+        }
+        for (var i = 0; i < sampleSize.length; i++) {
           watch.reset();
+          watch.start();
           await _run();
           // These scores are not averaged.
           sample.add(watch.elapsedTicks);
-          watch.reset();
-          overhead.add(watch.elapsedTicks);
-        }
-        for (var i = 0; i < sampleSize.outer; i++) {
-          // Removing overhead of calling elapsedTicks and adding list element.
-          // overhead scores are of the order of 0.1 us.
-          sample[i] = sample[i] - overhead[i];
         }
       }
 
@@ -101,10 +102,14 @@ class AsyncScoreGenerator {
       return (
         scores:
             sample
-                .map<double>((e) => e * (1000000 / watch.frequency))
-                .skip(warmUpRuns)
+                .map<double>(
+                  (e) => e * (Duration.microsecondsPerSecond / watch.frequency),
+                )
                 .toList(),
-        innerIter: innerIterMean,
+        innerLoopCounters:
+            (sampleSize.innerIterations > 1)
+                ? innerLoopCounters
+                : SingleValueList(value: 1, length: sample.length),
       );
     } finally {
       await _teardown();
@@ -117,18 +122,20 @@ class AsyncScoreGenerator {
   Future<Score> score({
     final int warmUpRuns = 3,
     final Duration warmUpDuration = const Duration(microseconds: 200),
+    SampleSize? sampleSize,
   }) async {
     final watch = Stopwatch()..start();
     final sample = await this.sample(
       warmUpDuration: warmUpDuration,
       warmUpRuns: warmUpRuns,
+      sampleSize: sampleSize,
     );
     watch.stop();
     //stats.removeOutliers(10);
     return Score(
       duration: watch.elapsed,
-      sample: sample.scores,
-      innerIter: sample.innerIter,
+      scoreSample: sample.scores,
+      innerLoopCounters: sample.innerLoopCounters,
     );
   }
 }

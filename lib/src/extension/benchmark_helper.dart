@@ -2,80 +2,117 @@ import 'dart:math' show exp, log;
 
 import 'package:exception_templates/exception_templates.dart';
 
-typedef SampleSizeEstimator = ({int outer, int inner}) Function(int clockTicks);
+import '../base/sample_size.dart';
+import 'duration_to_ticks.dart';
+
+typedef SampleSizeEstimator = SampleSize Function(int scoreEstimateAsTicks);
 
 class TimeError extends ErrorType {}
 
 extension BenchmarkHelper on Stopwatch {
-  /// Measures the runtime of [f] for [ticks] clock ticks and
-  /// reports the average runtime expressed as clock ticks.
-  ({int ticks, int iter}) measure(void Function() f, int ticks) {
-    var iter = 0;
-    reset();
+  /// Starts, stops, and resets the [Stopwatch].
+  void prime() {
     start();
-    do {
-      f();
-      iter++;
-    } while (elapsedTicks < ticks);
-    return (ticks: elapsedTicks ~/ iter, iter: iter);
+    stop();
+    reset();
   }
 
   /// Measures the runtime of [f] for [ticks] clock ticks and
   /// reports the average runtime expressed as clock ticks.
-  Future<({int ticks, int iter})> measureAsync(
+  ({int elapsedTicks, int loopCounter}) measure(
+    void Function() f,
+    int ticks, {
+    int warumRuns = 3,
+  }) {
+    var loopCounter = 0;
+    prime();
+    for (var i = 0; i < 3; i++) {
+      f();
+    }
+    start();
+    do {
+      f();
+      loopCounter++;
+    } while (elapsedTicks < ticks);
+    stop();
+    return (
+      elapsedTicks: elapsedTicks ~/ loopCounter,
+      loopCounter: loopCounter,
+    );
+  }
+
+  /// Measures the runtime of [f] for [ticks] clock ticks and
+  /// reports the average runtime expressed as clock ticks.
+  Future<({int elapsedTicks, int loopCounter})> measureAsync(
     Future<void> Function() f,
-    int ticks,
-  ) async {
-    var iter = 0;
-    reset();
+    int ticks, {
+    int warmUpRuns = 3,
+  }) async {
+    var loopCounter = 0;
+    prime();
+    for (var i = 0; i < warmUpRuns; i++) {
+      f();
+    }
     start();
     do {
       await f();
-      iter++;
+      loopCounter++;
     } while (elapsedTicks < ticks);
-    return (ticks: elapsedTicks ~/ iter, iter: iter);
+    stop();
+    return (
+      elapsedTicks: elapsedTicks ~/ loopCounter,
+      loopCounter: loopCounter,
+    );
   }
 
   /// Measures the runtime of [f] for [duration] and
   /// reports the average runtime expressed as clock ticks.
-  ({int ticks, int iter}) warmUp(
+  ({int elapsedTicks, int loopCounter}) estimate(
     void Function() f, {
     Duration duration = const Duration(milliseconds: 200),
     int warmUpRuns = 3,
   }) {
-    int ticks = durationToTicks(duration);
-    int iter = 0;
+    prime();
+    int warmUpTicks = duration.inTicks;
+    int loopCounter = 0;
     for (var i = 0; i < warmUpRuns; i++) {
       f();
     }
-    reset();
     start();
     do {
       f();
-      iter++;
-    } while (elapsedTicks < ticks);
-    return (ticks: elapsedTicks ~/ iter, iter: iter);
+      loopCounter++;
+    } while (loopCounter < 10000 && elapsedTicks < warmUpTicks);
+    stop();
+    return (
+      elapsedTicks: elapsedTicks ~/ loopCounter,
+      loopCounter: loopCounter,
+    );
   }
 
   /// Measures the runtime of [f] for [duration] and
   /// reports the average runtime expressed as clock ticks.
-  Future<({int ticks, int iter})> warmUpAsync(
+  Future<({int elapsedTicks, int loopCounter})> estimateAsync(
     Future<void> Function() f, {
     Duration duration = const Duration(milliseconds: 200),
     int warmUpRuns = 3,
   }) async {
-    int ticks = durationToTicks(duration);
-    int iter = 0;
-    reset();
+    int warmUpTicks = duration.inTicks;
+    int loopCounter = 0;
     for (var i = 0; i < warmUpRuns; i++) {
-      await f();
+      f();
     }
+    prime();
     start();
     do {
       await f();
-      iter++;
-    } while (elapsedTicks < ticks);
-    return (ticks: elapsedTicks ~/ iter, iter: iter);
+      loopCounter++;
+    } while (loopCounter < 10000 && elapsedTicks < warmUpTicks);
+    stop();
+    return (
+      elapsedTicks: elapsedTicks ~/ loopCounter,
+      loopCounter: loopCounter,
+    );
   }
 
   /// Stopwatch frequency: ticks per second.
@@ -83,10 +120,6 @@ extension BenchmarkHelper on Stopwatch {
 
   /// Converts clock [ticks] to seconds.
   static double ticksToSeconds(int ticks) => ticks / BenchmarkHelper.frequency;
-
-  /// Convert [duration] to clock ticks.
-  static int durationToTicks(Duration duration) =>
-      microsecondsToTicks(duration.inMicroseconds);
 
   /// Converts clock [ticks] to microseconds.
   static double ticksToMicroseconds(int ticks) =>
@@ -97,7 +130,7 @@ extension BenchmarkHelper on Stopwatch {
       ticks / (BenchmarkHelper.frequency / 1000);
 
   /// Converts [seconds] to clock ticks.
-  static int secondsToTicks(int seconds) => seconds * BenchmarkHelper.frequency;
+  static int secondsToTicks(int seconds) => seconds * frequency;
 
   /// Converts [milliseconds] to clock  ticks.
   static int millisecondsToTicks(int milliseconds) =>
@@ -122,87 +155,85 @@ extension BenchmarkHelper on Stopwatch {
 
   static SampleSizeEstimator sampleSize = sampleSizeDefault;
 
-  /// Returns a record with type `({int outer, int inner})`
+  /// Returns a record with type `({int length, int innerIterations})`
   /// holding the:
-  /// * benchmark sample size `.outer`,
-  /// * number of runs each score is averaged over: `.inner`.
+  /// * benchmark sample size `.length`,
+  /// * number of runs each score is averaged over: `.innerIterations`.
   ///
-  /// Note: An estimate of the benchmark runtime in clock ticks is given by
-  /// `outer*inner*clockTicks`. The estimate does not include any setup,
+  /// Note: An estimate of the total benchmark runtime in clock ticks is given by
+  /// `length*innerIterations*clockTicks`. The estimate does not include any setup,
   /// warm-up, or teardown functionality.
-  static ({int outer, int inner}) sampleSizeDefault(int clockTicks) {
+  static SampleSize sampleSizeDefault(int scoreEstimateAsTicks) {
     // Estimates for the averaging used within `measure` and `measureAsync.
+    const i1n1 = 400; // 0.1 us
+    const i1e0 = 250; // 1 us
+    const i1e1 = 100; // 10 us
+    const i1e2 = 30; // 100 us
+    const i1e3 = 1; // 1 ms
+    const i1e4 = 1; // 10 ms
+    const i1e5 = 1; // 100 ms
 
-    if (clockTicks < 1) {
-      throw ErrorOfType<TimeError>(
-        message: 'Unsuitable duration detected.',
-        expectedState: 'clockTicks > 0',
-        invalidState: 'clockTicks: $clockTicks',
-      );
-    }
+    // Sample size: length
+    const s1n1 = 300; // 0.1 us
+    const s1e0 = 200; // 1 us
+    const s1e1 = 100; // 10 us
+    const s1e2 = 70; // 100 us
+    const s1e3 = 120; // 1 ms
+    const s1e4 = 40; // 10 ms
+    const s1e5 = 10; // 100 ms
 
-    const i1e3 = 200;
-    const i1e4 = 100;
-    const i1e5 = 15;
-    const i1e6 = 1;
-    const i1e7 = 1;
-    const i1e8 = 1;
+    // Duration in us
+    const t1n1 = 0.1; // 0.1 us
+    const t1e0 = 1.0; // 1 us
+    const t1e1 = 10.0; // 10 us
+    const t1e2 = 100.0; // 100 us
+    const t1e3 = 1000.0; // 1000 us = 1ms
+    const t1e4 = 10000.0; // 10 ms
+    const t1e5 = 100000.0; // 100 ms
 
-    // Sample size
-    const s1e3 = 100;
-    const s1e4 = 30;
-    const s1e5 = 25;
-    const s1e6 = 60;
-    const s1e7 = 50;
-    const s1e8 = 10;
+    // Note: Of type double, to handle scoreEstimates < 1us.
+    final scoreInMicroseconds =
+        scoreEstimateAsTicks /
+        BenchmarkHelper.frequency *
+        Duration.microsecondsPerSecond;
 
-    // Clock ticks
-    const t1e3 = 1000; // 1 us
-    const t1e4 = 10000; // 10 us
-    const t1e5 = 100000; // 100 us
-    const t1e6 = 1000000; // 1000 us = 1ms
-    const t1e7 = 10000000; // 10 ms;
-    const t1e8 = 100000000; // 100 ms;
-
-    // Rescale clock ticks for other platforms. For example, on the web
-    // 1 clock tick corresponds to 1 microsecond.
-    if (frequency < 1e9) {
-      clockTicks = 1e9 ~/ frequency * clockTicks;
-    }
-
-    return switch (clockTicks) {
-      <= t1e3 => (outer: s1e3, inner: i1e3), // 1 us
-      > t1e3 && <= t1e4 => (
-        // 10 us
-        outer: interpolateExp(clockTicks, t1e3, s1e3, t1e4, s1e4).ceil(),
-        inner: interpolateExp(clockTicks, t1e3, i1e3, t1e4, i1e4).ceil(),
-      ),
-      > t1e4 && <= t1e5 => (
-        // 100 us
-        outer: interpolateExp(clockTicks, t1e4, s1e4, t1e5, s1e5).ceil(),
-        inner: interpolateExp(clockTicks, t1e4, i1e4, t1e5, i1e5).ceil(),
-      ),
-      > t1e5 && <= t1e6 => (
-        // 1ms
-        outer:
-            interpolateExp(
-              clockTicks,
-              t1e5,
-              s1e5 * i1e5 / 2,
-              t1e6,
-              s1e6,
-            ).ceil(),
-        inner: i1e6,
-      ),
-      > t1e6 && <= t1e7 => (
-        outer: interpolateExp(clockTicks, t1e6, s1e6, t1e7, s1e7).ceil(),
-        inner: i1e7,
+    return switch (scoreInMicroseconds) {
+      < t1n1 => SampleSize(length: s1n1, innerIterations: i1n1), // 1 us
+      > t1n1 && <= t1e0 => SampleSize(
+        length:
+            interpolateExp(scoreInMicroseconds, t1n1, s1n1, t1e0, s1e0).ceil(),
+        innerIterations:
+            interpolateExp(scoreInMicroseconds, t1n1, i1n1, t1e0, i1e0).ceil(),
+      ), // 1 us
+      > t1e0 && <= t1e1 => SampleSize(
+        length:
+            interpolateExp(scoreInMicroseconds, t1e0, s1e0, t1e1, s1e1).ceil(),
+        innerIterations:
+            interpolateExp(scoreInMicroseconds, t1e0, i1e0, t1e1, i1e1).ceil(),
+      ), // 10 us
+      > t1e1 && <= t1e2 => SampleSize(
+        length:
+            interpolateExp(scoreInMicroseconds, t1e1, s1e1, t1e2, s1e2).ceil(),
+        innerIterations:
+            interpolateExp(scoreInMicroseconds, t1e1, i1e1, t1e2, i1e2).ceil(),
+      ), // 100 us
+      > t1e2 && <= t1e3 => SampleSize(
+        length:
+            interpolateExp(scoreInMicroseconds, t1e2, s1e2, t1e3, s1e3).ceil(),
+        innerIterations:
+            interpolateExp(scoreInMicroseconds, t1e2, i1e2, t1e3, i1e3).ceil(),
+      ), // 1ms
+      > t1e3 && <= t1e4 => SampleSize(
+        length:
+            interpolateExp(scoreInMicroseconds, t1e3, s1e3, t1e4, s1e4).ceil(),
+        innerIterations: i1e4,
       ), // 10 ms
-      > t1e7 && <= t1e8 => (
-        outer: interpolateExp(clockTicks, t1e7, s1e7, t1e8, s1e8).ceil(),
-        inner: i1e8,
+      > t1e4 && <= t1e5 => SampleSize(
+        length:
+            interpolateExp(scoreInMicroseconds, t1e4, s1e4, t1e5, s1e5).ceil(),
+        innerIterations: i1e5,
       ), // 100 ms
-      _ => (outer: s1e8, inner: i1e8),
+      _ => SampleSize(length: s1e5, innerIterations: i1e5),
     };
   }
 }

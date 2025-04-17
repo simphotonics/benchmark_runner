@@ -1,11 +1,13 @@
 export 'src/base/async_benchmark.dart';
 export 'src/base/benchmark.dart';
 export 'src/base/benchmark_process_result.dart';
-export 'src/emitter/score_emitter.dart';
 export 'src/base/group.dart';
+export 'src/base/sample_size.dart';
 export 'src/base/score.dart';
+export 'src/collection/single_value_list.dart';
 export 'src/command/benchmark_runner.dart';
 export 'src/command/export_command.dart';
+export 'src/emitter/score_emitter.dart';
 export 'src/enum/exit_code.dart';
 export 'src/extension/benchmark_helper.dart';
 export 'src/extension/color_profile.dart';
