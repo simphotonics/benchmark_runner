@@ -4,7 +4,6 @@ export 'src/base/benchmark_process_result.dart';
 export 'src/base/group.dart';
 export 'src/base/sample_size.dart';
 export 'src/base/score.dart';
-export 'src/collection/single_value_list.dart';
 export 'src/command/benchmark_runner.dart';
 export 'src/command/export_command.dart';
 export 'src/emitter/score_emitter.dart';

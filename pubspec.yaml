@@ -25,6 +25,7 @@ dependencies:
   ansi_modifier: ^0.1.4
   args: ^2.7.0
   exception_templates: ^0.3.1
+  identical_items_list: ^1.0.1
   lazy_memo: ^0.2.3
   path: ^1.9.0
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import '../collection/single_value_list.dart';
+import 'package:identical_items_list/identical_items_list.dart';
+
 import '../extension/benchmark_helper.dart';
 import '../util/stats.dart';
 import 'sample_size.dart';
@@ -109,7 +110,10 @@ class AsyncScoreGenerator {
         innerLoopCounters:
             (sampleSize.innerIterations > 1)
                 ? innerLoopCounters
-                : SingleValueList(value: 1, length: sample.length),
+                : IdenticalItemsList(
+                  value: sampleSize.innerIterations,
+                  length: sample.length,
+                ),
       );
     } finally {
       await _teardown();
