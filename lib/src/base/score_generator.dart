@@ -18,28 +18,19 @@ class ScoreGenerator {
   /// * [teardown]: a function that is executed once after the benchmark has
   /// completed.
   const ScoreGenerator({
-    required void Function() run,
-    void Function() setup = doNothing,
-    void Function() teardown = doNothing,
-  }) : _run = run,
-       _setup = setup,
-       _teardown = teardown;
+    required this.run,
+    this.setup = doNothing,
+     this.teardown = doNothing,
+  });
 
-  final void Function() _run;
-  final void Function() _setup;
-  final void Function() _teardown;
+  // The benchmarked function.
+  final void Function() run;
 
-  // The benchmark code.
-  void run() => _run();
+  /// Setup function executed prior to the benchmark runs before [warmUp].
+  final void Function() setup;
 
-  /// Not measured setup code executed prior to the benchmark runs.
-  void setup() => _setup();
-
-  /// Not measures teardown code executed after the benchmark runs.
-  void teardown() => _teardown();
-
-  /// To opt into the reporting the time per run() instead of per 10 run() calls.
-  void exercise() => _run();
+  /// Teardown function executed after the benchmark runs.
+  final void Function() teardown;
 
   /// Generates a sample of benchmark scores.
   /// * The benchmark score entries represent the run time in microseconds.
@@ -47,47 +38,31 @@ class ScoreGenerator {
   ///  if each score entry was averaged over
   /// `innerIter` runs.
   ({List<double> scores, List<int> innerLoopCounters}) sample({
-    final int warmUpRuns = 3,
     final Duration warmUpDuration = const Duration(milliseconds: 200),
     SampleSize? sampleSize,
   }) {
-    _setup();
+    setup();
     final sample = <int>[];
     final innerLoopCounters = <int>[];
     final watch = Stopwatch();
     watch.prime();
     try {
-      final scoreEstimate = watch.estimate(
-        _run,
-        duration: warmUpDuration,
-        warmUpRuns: warmUpRuns,
-      );
-
-      sampleSize ??= BenchmarkHelper.sampleSize(scoreEstimate.elapsedTicks);
-
+      final scoreEstimate = watch.estimate(run, duration: warmUpDuration);
+      sampleSize ??= BenchmarkHelper.sampleSize(scoreEstimate);
       if (sampleSize.innerIterations > 1) {
-        final durationAsTicks =
-            sampleSize.innerIterations * scoreEstimate.elapsedTicks;
+        final durationAsTicks = sampleSize.innerIterations * scoreEstimate;
         for (var i = 0; i < sampleSize.length; i++) {
           // Averaging each score over approx. sampleSize.inner runs.
           // For details see function BenchmarkHelper.sampleSize.
-          final score = watch.measure(
-            _run,
-            durationAsTicks,
-            warumRuns: warmUpRuns,
-          );
+          final score = watch.measure(run, durationAsTicks);
           sample.add(score.elapsedTicks);
           innerLoopCounters.add(score.loopCounter);
         }
       } else {
-        // Warmup
-        for (var i = 0; i < warmUpRuns; i++) {
-          _run();
-        }
         for (var i = 0; i < sampleSize.length; i++) {
           watch.reset();
           watch.start();
-          _run();
+          run();
           // These scores are not averaged.
           sample.add(watch.elapsedTicks);
         }
@@ -125,14 +100,12 @@ class ScoreGenerator {
   /// * Before the measurement the function is exercised repeatedly at least
   /// [warmUpRuns] times.
   Score score({
-    final int warmUpRuns = 3,
     final Duration warmUpDuration = const Duration(microseconds: 200),
     SampleSize? sampleSize,
   }) {
     final watch = Stopwatch()..start();
     final sample = this.sample(
       warmUpDuration: warmUpDuration,
-      warmUpRuns: warmUpRuns,
       sampleSize: sampleSize,
     );
     return Score(

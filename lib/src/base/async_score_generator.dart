@@ -23,28 +23,19 @@ class AsyncScoreGenerator {
   /// * [teardown]: an asynchronous function that is executed once after
   ///   the benchmark has completed.
   const AsyncScoreGenerator({
-    required AsyncFunction run,
-    AsyncFunction setup = futureDoNothing,
-    AsyncFunction teardown = futureDoNothing,
-  }) : _run = run,
-       _setup = setup,
-       _teardown = teardown;
+    required this.run,
+    this.setup = futureDoNothing,
+    this.teardown = futureDoNothing,
+  });
 
-  final AsyncFunction _run;
-  final AsyncFunction _setup;
-  final AsyncFunction _teardown;
+  // The benchmarked function.
+  final AsyncFunction run;
 
-  // The benchmark code.
-  Future<void> run() => _run();
+  // Function executed prior to the benchmark runs.
+  final AsyncFunction setup;
 
-  // Not measured setup code executed prior to the benchmark runs.
-  Future<void> setup() => _setup();
-
-  // Not measures teardown code executed after the benchmark runs.
-  Future<void> teardown() => _teardown();
-
-  // To opt into the reporting the time per run() instead of per 10 run() calls.
-  Future<void> exercise() => run();
+  // Function executed after the benchmark runs.
+  final AsyncFunction teardown;
 
   /// Returns a sample of benchmark scores.
   /// The benchmark scores represent the run time in microseconds. The integer
@@ -52,20 +43,18 @@ class AsyncScoreGenerator {
   /// `innerIter` runs.
   ///
   Future<({List<double> scores, List<int> innerLoopCounters})> sample({
-    final int warmUpRuns = 3,
     final Duration warmUpDuration = const Duration(milliseconds: 200),
     SampleSize? sampleSize,
   }) async {
-    await _setup();
+    await setup();
     final sample = <int>[];
     final innerLoopCounters = <int>[];
     final watch = Stopwatch();
     watch.prime();
     try {
       final scoreEstimate = await watch.estimateAsync(
-        _run,
+        run,
         duration: warmUpDuration,
-        warmUpRuns: warmUpRuns,
       );
 
       sampleSize ??= BenchmarkHelper.sampleSize(scoreEstimate.elapsedTicks);
@@ -76,23 +65,15 @@ class AsyncScoreGenerator {
         for (var i = 0; i < sampleSize.length; i++) {
           // Averaging each score over approx. sampleSize.inner runs.
           // For details see function BenchmarkHelper.sampleSize.
-          final score = await watch.measureAsync(
-            _run,
-            durationAsTicks,
-            warmUpRuns: warmUpRuns,
-          );
+          final score = await watch.measureAsync(run, durationAsTicks);
           sample.add(score.elapsedTicks);
           innerLoopCounters.add(score.loopCounter);
         }
       } else {
-        // Warmup
-        for (var i = 0; i < warmUpRuns; i++) {
-          await _run();
-        }
         for (var i = 0; i < sampleSize.length; i++) {
           watch.reset();
           watch.start();
-          await _run();
+          await run();
           // These scores are not averaged.
           sample.add(watch.elapsedTicks);
         }
@@ -116,7 +97,7 @@ class AsyncScoreGenerator {
                 ),
       );
     } finally {
-      await _teardown();
+      await teardown();
     }
   }
 
@@ -131,8 +112,7 @@ class AsyncScoreGenerator {
     final watch = Stopwatch()..start();
     final sample = await this.sample(
       warmUpDuration: warmUpDuration,
-      warmUpRuns: warmUpRuns,
-      sampleSize: sampleSize,
+       sampleSize: sampleSize,
     );
     watch.stop();
     //stats.removeOutliers(10);
