@@ -1,6 +1,7 @@
 import '../util/stats.dart';
 
-/// Object holding sample stats and the duration it took to generate the
+/// Object aggreggating the score sample, score stats
+/// and the duration it took to generate the
 /// score sample.
 class Score<T extends num> {
   Score({
@@ -17,7 +18,7 @@ class Score<T extends num> {
   /// benchmark sample entry.
   final Stats<int> innerLoopCounterStats;
 
-  /// Scores and score stats (in microseconds).
+  /// Scores (in microseconds) and score stats.
   final Stats<T> scoreStats;
 
   /// Time-scale when scores are divided by factor.
