@@ -17,21 +17,17 @@ extension BenchmarkHelper on Stopwatch {
     reset();
   }
 
-  /// Measures the runtime of [f] for [ticks] clock ticks and
+  /// Measures the runtime of [run] for [ticks] clock ticks and
   /// reports the average runtime expressed as clock ticks.
   ({int elapsedTicks, int loopCounter}) measure(
-    void Function() f,
-    int ticks, {
-    int warumRuns = 3,
-  }) {
+    void Function() run,
+    int ticks,
+  ) {
     var loopCounter = 0;
     prime();
-    for (var i = 0; i < 3; i++) {
-      f();
-    }
     start();
     do {
-      f();
+      run();
       loopCounter++;
     } while (elapsedTicks < ticks);
     stop();
@@ -45,14 +41,10 @@ extension BenchmarkHelper on Stopwatch {
   /// reports the average runtime expressed as clock ticks.
   Future<({int elapsedTicks, int loopCounter})> measureAsync(
     Future<void> Function() f,
-    int ticks, {
-    int warmUpRuns = 3,
-  }) async {
+    int ticks,
+  ) async {
     var loopCounter = 0;
     prime();
-    for (var i = 0; i < warmUpRuns; i++) {
-      f();
-    }
     start();
     do {
       await f();
@@ -65,47 +57,36 @@ extension BenchmarkHelper on Stopwatch {
     );
   }
 
-  /// Measures the runtime of [f] for [duration] and
+  /// Measures the runtime of [run] for [duration] and
   /// reports the average runtime expressed as clock ticks.
-  ({int elapsedTicks, int loopCounter}) estimate(
-    void Function() f, {
+  int estimate(
+    void Function() run, {
     Duration duration = const Duration(milliseconds: 200),
-    int warmUpRuns = 3,
   }) {
     prime();
-    int warmUpTicks = duration.inTicks;
+    int warmUpTicks = duration.inTicks.abs();
     int loopCounter = 0;
-    for (var i = 0; i < warmUpRuns; i++) {
-      f();
-    }
     start();
     do {
-      f();
+      run();
       loopCounter++;
     } while (loopCounter < 10000 && elapsedTicks < warmUpTicks);
     stop();
-    return (
-      elapsedTicks: elapsedTicks ~/ loopCounter,
-      loopCounter: loopCounter,
-    );
+    return elapsedTicks ~/ loopCounter;
   }
 
-  /// Measures the runtime of [f] for [duration] and
+  /// Measures the runtime of [run] for [duration] and
   /// reports the average runtime expressed as clock ticks.
   Future<({int elapsedTicks, int loopCounter})> estimateAsync(
-    Future<void> Function() f, {
+    Future<void> Function() run, {
     Duration duration = const Duration(milliseconds: 200),
-    int warmUpRuns = 3,
   }) async {
-    int warmUpTicks = duration.inTicks;
+    int warmUpTicks = duration.inTicks.abs();
     int loopCounter = 0;
-    for (var i = 0; i < warmUpRuns; i++) {
-      f();
-    }
     prime();
     start();
     do {
-      await f();
+      await run();
       loopCounter++;
     } while (loopCounter < 10000 && elapsedTicks < warmUpTicks);
     stop();
