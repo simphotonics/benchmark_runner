@@ -30,7 +30,6 @@ Future<void> asyncBenchmark(
   Future<void> Function() setup = futureDoNothing,
   Future<void> Function() teardown = futureDoNothing,
   ScoreEmitter scoreEmitter = const StatsEmitter(),
-  final int warmUpRuns = 3,
   final Duration warmUpDuration = const Duration(milliseconds: 200),
   SampleSize? sampleSize,
   bool runInIsolate = true,
@@ -60,7 +59,6 @@ Future<void> asyncBenchmark(
               description: description,
               score: await scoreGenerator.score(
                 warmUpDuration: warmUpDuration,
-                warmUpRuns: warmUpRuns,
                 sampleSize: sampleSize,
               ),
             ),
@@ -68,7 +66,10 @@ Future<void> asyncBenchmark(
         } else {
           scoreEmitter.emit(
             description: description,
-            score: await scoreGenerator.score(),
+            score: await scoreGenerator.score(
+              warmUpDuration: warmUpDuration,
+              sampleSize: sampleSize,
+            ),
           );
         }
         addSuccessMark();
