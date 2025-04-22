@@ -1,13 +1,19 @@
 ## 2.0.0
 Breaking changes:
-- The classes `Benchmark` and `AsyncBenchmark` were renamed `ScoreGenerator`
-and `AsyncScoreGenerator`,respectively, They are now solely responsible for
-generating benchmark scores. The constructor parameters `description` and
-`emitter` have been removed. Generating the benchmark reports
-is delegated to `ScoreEmitter`.
 - The functions `benchmark` and `asyncBenchmark` are not longer generic and now
-have the optional parameters: `warmUpDuration`, `warmUpRuns`.
-`sampleSize`, `customEmitter`. 
+have the optional parameters: `warmUpDuration`, `sampleSize`, `customEmitter`.
+- The classes `Benchmark` and `AsyncBenchmark` were renamed `ScoreGenerator`
+and `AsyncScoreGenerator`,respectively,
+They no longer inherit from `BenchmarkBase` and `AsyncBenchmarkBase` and are
+now solely responsible for
+generating benchmark scores. As such, the constructor parameters `description` and
+`emitter` have been removed.
+- Generating the benchmark reports
+is delegated to `ScoreEmitter`.
+- The function `sampleSize` now returns an object of type `SampleSize` instead
+of a record.
+- The default score emitter is now `StatsEmitter`. To emit a report that is
+similar to that printed by `benchmark_harness` use `MeanEmitter`.
 
 ## 1.0.0
 Breaking changes:
