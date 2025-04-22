@@ -31,6 +31,20 @@ Write inline benchmarks using the functions:
  * Benchmark files must end with `_benchmark.dart` in order to be detected
    by the `benchmark_runner`.
 
+
+The functions [`benchmark`][benchmark] and [`asyncBenchmark`][asyncBenchmark]
+   accept the following optional parameters:
+   * setup: A function that is executed *before* the benchmark runs.
+   * teardown: A function that is executed *after* the benchmark runs,
+   * scoreEmitter: An object responsible for formatting the score results
+     (default to `StatsEmitter`).
+   * warmUpDuration: The time expended on warm up runs used to generate a
+   preliminary score estimate (defaults to `Duration(milliseconds: 200)`).
+   * sampleSize: Used to manually specify the score sample size and
+   over how many runs each score entry should be averaged.
+   If this parameter is omitted,
+   it will be calculated using [`sampleSize`][sampleSize].
+
  The example below shows a benchmark file containing synchronous and
  asynchronous benchmarks.
 
