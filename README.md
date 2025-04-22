@@ -12,7 +12,9 @@ printing a score **histogram** and reporting the score **mean** &#177;
 **standard deviation**, and score **median** &#177; **inter quartile range**.
 
 The benchmark runner allows executing several benchmark files and reports if
-uncaught exceptions/errors were encountered.
+uncaught exceptions/errors were encountered. It has two sub-commands:
+* [report](#2-using-the-benchmark-runner): Used to print a benchmark report to stdout,
+* [export](#3-exporting-benchmark-scores): Used to write benchmark reports to a file.
 
 ## Usage
 
@@ -99,6 +101,8 @@ are printed using <span style="color:#11A874">*green*</span> foreground.
 using <span style="color:#2370C4">*blue*</span> foreground.
 * If the same block contains mean and median then it is printed
 using <span style="color:#28B5D7">*cyan*</span> foreground.
+* The number of data points used to calculate the score statistics is printed
+below the histogram.
 * Errors are printed using <span style="color:#CB605E"> *red* </span> foreground.
 
 ### 2. Using the Benchmark Runner
@@ -137,8 +141,8 @@ avoid spurious characters due to the use of Ansi modifiers.
 
 The functions [`benchmark`][benchmark] and
 [`asyncBenchmark`][asyncBenchmark] accept the optional parameters `scoreEmitter`.
-The parameter expects an object of type `ScoreEmitter` and
-can be used to customize the score reports e.g.
+The parameter expects an object of a type that implements the interface
+`ScoreEmitter` and can be used to customize the score reports e.g.
 to make the score format more suitable for writing to a file:
 
 ```Dart
@@ -214,6 +218,8 @@ completion. To print the scores in sequential order (as they are listed in the
 benchmark executable) it is required to *await* the completion
 of the async benchmark functions and
 the enclosing group.
+
+
 ## Score Sampling
 
 In order to calculate benchmark score *statistics* a sample of scores is
@@ -228,6 +234,7 @@ functions [`estimate`][estimate]
 or [`estimateAsync`][estimateAsync]. The function [`BenchmarkHelper.sampleSize`][sampleSize]
 uses the score estimate to determine the sample size and the number of inner
 iterations (for short run times each sample entry is averaged).
+
 
 ### 1. Default Sampling Method
 The graph below shows the sample size (orange curve) as calculated by the function
