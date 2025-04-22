@@ -112,7 +112,7 @@ class AsyncScoreGenerator {
     final watch = Stopwatch()..start();
     final sample = await this.sample(
       warmUpDuration: warmUpDuration,
-       sampleSize: sampleSize,
+      sampleSize: sampleSize,
     );
     watch.stop();
     //stats.removeOutliers(10);

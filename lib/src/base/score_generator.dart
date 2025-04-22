@@ -20,7 +20,7 @@ class ScoreGenerator {
   const ScoreGenerator({
     required this.run,
     this.setup = doNothing,
-     this.teardown = doNothing,
+    this.teardown = doNothing,
   });
 
   // The benchmarked function.
