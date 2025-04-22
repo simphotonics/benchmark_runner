@@ -58,17 +58,20 @@ class StatsEmitter implements ScoreEmitter {
                 '${iqr.toStringAsFixedDigits()} $unit'
             .style(ColorProfile.median);
 
-    final part3 =
-        '$indent${score.scoreStats.blockHistogram()} '
-        'sample size: ${score.scoreStats.sortedSample.length}';
+    final part3 = '$indent${score.scoreStats.blockHistogram()} ';
+
     final part4 =
-        score.innerLoopCounterStats.mean > 1
-            ? ' (averaged over ${score.innerLoopCounterStats.mean.toInt()} $plusMinus '
-                '${score.innerLoopCounterStats.stdDev.toInt()} runs)'
-            : '';
+        '${indent}sample size: ${score.scoreStats.sortedSample.length}' +
+        (score.innerLoopCounterStats.mean > 1
+                ? ' (averaged over ${score.innerLoopCounterStats.mean.toInt()} '
+                    '$plusMinus '
+                    '${score.innerLoopCounterStats.stdDev.toInt()} runs)'
+                : '')
+            .style(ColorProfile.dim);
     print(part1);
     print(part2);
-    print(part3 + part4.style(ColorProfile.dim));
+    print(part3);
+    print(part4);
     print('');
   }
 }
