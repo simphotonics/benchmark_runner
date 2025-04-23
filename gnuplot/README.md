@@ -69,13 +69,16 @@ To restore the default score sampling settings use:
 BenchmarkHelper.sampleSize = BenchmarkHelper.sampleSizeDefault;
 ```
 ----
-The graph shown above may be re-generated using the custom `sampleSize`
-function by copying and amending the file `gnuplot/sample_size.dart`
-and using the command:
+The graph shown above may be re-generated using a user defined
+custom `sampleSize` function by
+amending the file `gnuplot/sample_size.dart`. For more instruction see
+the comments in the function `main()`.
+
+To print the graph use the command:
 ```Console
 dart sample_size.dart
 ```
-The command above lauches a process and runs a [`gnuplot`][gnuplot] script.
+Note: The command above lauches a process and runs a [`gnuplot`][gnuplot] script.
 For this reason, the program [`gnuplot`][gnuplot] must be installed (with
 the `qt` terminal enabled).
 

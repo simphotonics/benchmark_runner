@@ -119,7 +119,7 @@ void main(List<String> args) async {
     // Use the number of clock ticks to calculate the number of entries in the
     // score sample (.outer) and the number of runs each score point is averaged
     // over (inner).
-    return (inner: 10, outer: 10); // This is a stub!
+    return (inner: 10, outer: 10); // <=======  This is a stub!
   }
 
   // Uncomment the line below to use your custom function:
