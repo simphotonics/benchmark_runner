@@ -36,16 +36,17 @@ Write inline benchmarks using the functions:
 
 The functions [`benchmark`][benchmark] and [`asyncBenchmark`][asyncBenchmark]
    accept the following optional parameters:
-   * setup: A function that is executed *before* the benchmark runs.
-   * teardown: A function that is executed *after* the benchmark runs,
-   * scoreEmitter: An object responsible for formatting the score results
-     (defaults value: `StatsEmitter`).
-   * warmUpDuration: The time expended on warm up runs used to generate a
-   preliminary score estimate (defaults to `Duration(milliseconds: 200)`).
-   * sampleSize: Used to manually specify the score sample size and
+   * `setup`: A function that is executed *before* the benchmark runs.
+   * `teardown`: A function that is executed *after* the benchmark runs,
+   * `scoreEmitter`: An object responsible for formatting the score results.
+     Its default value is: `StatsEmitter()`.
+   * `warmUpDuration`: The time expended on warm-up runs used to generate a
+   preliminary score estimate. The default warm-up duration is:
+      `Duration(milliseconds: 200)`.
+   * `sampleSize`: Used to manually specify the score sample size and
    over how many runs each score entry should be averaged.
    If this parameter is omitted,
-   it will be calculated using [`sampleSize`][sampleSize].
+   it will be calculated using the function [`sampleSize`][sampleSize].
 
  The example below shows a benchmark file containing synchronous benchmarks
  and two benchmark groups:
