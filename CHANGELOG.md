@@ -1,3 +1,7 @@
+## 2.0.1
+- Simplified methods `measure` and `measureAsync`.
+- Added `README.md` to folder `gnuplot`. 
+
 ## 2.0.0
 Breaking changes:
 - The functions `benchmark` and `asyncBenchmark` are not longer generic and now
