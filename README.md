@@ -217,7 +217,7 @@ the enclosing group.
 ## Score Sampling
 
 For more information about benchmark score sampling see the dedicated [section](
-  https://github.com/simphotonics/benchmark_runner/gnuplot
+   https://github.com/simphotonics/benchmark_runner/tree/main/gnuplot
 ).
 
 

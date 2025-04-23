@@ -5,7 +5,7 @@
 ## Introduction
 
 When benchmarking a function, one has to take into consideration that
-the test is not performed on an isolated system that is only handling the
+the benchmark is not performed on an isolated system that is only handling the
 instructions provided by our piece of code. Instead, the CPUs is very likely
 busy performing other tasks before eventually executing the benchmarked code.
 This introduces latency that is typically larger for the first few runs
@@ -15,9 +15,8 @@ where the first few runs are discarded.
 
 A second factor to consider are systematic measuring errors due to the fact
 that it takes (a small amount of) time to increment loop counters, perform
-loop checks, or access the elapsed time.
-
-The overhead introduced by repeatedly accessing the
+loop checks, or access the elapsed time. The overhead introduced by
+repeatedly accessing the
 elapsed time can be reduced by averaging the
 benchmark score over many runs.
 
@@ -47,7 +46,7 @@ in microseconds.
 For short run times below 1 microsecond each score sample is generated
 using the functions [`measure`][measure] or the equivalent
 asynchronous method [`measureAsync`][measureAsync]. The cyan curve shows
-approx. over how many runs a score entry is averaged.
+over how many runs each score entry is averaged.
 
 ### Custom Sampling Method
 

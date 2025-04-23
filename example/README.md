@@ -22,8 +22,6 @@ Write inline benchmarks using the functions:
  asynchronous benchmarks.
 
   ```Dart
-  // ignore_for_file: unused_local_variable
-
   import 'package:benchmark_runner/benchmark_runner.dart';
 
   /// Returns the value [t] after waiting for [duration].
@@ -32,14 +30,15 @@ Write inline benchmarks using the functions:
   }
 
   void main(List<String> args) async {
-    await group('Wait for duration', () async {
+
+   await group('Wait for duration', () async {
       await asyncBenchmark('10ms', () async {
         await later<int>(39, Duration(milliseconds: 10));
       });
 
       await asyncBenchmark('5ms', () async {
         await later<int>(27, Duration(milliseconds: 5));
-      }, emitStats: false);
+      }, scoreEmitter: MeanEmitter());
     });
 
     group('Set', () async {
@@ -50,11 +49,8 @@ Write inline benchmarks using the functions:
       benchmark('construct', () {
         final set = {for (var i = 0; i < 1000; ++i) i};
       });
-
-      throw 'Error in group';
     });
   }
-
   ```
 Run a *single* benchmark file as an executable:
 ```Console
@@ -66,7 +62,7 @@ by calling the benchmark_runner and specifying a directory.
 If no directory or file name is specified, then it defaults to `benchmark`:
 
 ```Console
-$ dart run benchmark_runner
+$ dart run benchmark_runner report
 ```
 
 ## Features and bugs
