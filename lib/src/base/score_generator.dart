@@ -1,5 +1,3 @@
-import 'package:identical_items_list/identical_items_list.dart';
-
 import '../extension/benchmark_helper.dart';
 import '../util/stats.dart';
 import 'sample_size.dart';
@@ -37,26 +35,25 @@ class ScoreGenerator {
   /// * The integer `innerIter` is larger than 1
   ///  if each score entry was averaged over
   /// `innerIter` runs.
-  ({List<double> scores, List<int> innerLoopCounters}) sample({
+  ({List<double> scores, int innerIterations}) sample({
     final Duration warmUpDuration = const Duration(milliseconds: 200),
     SampleSize? sampleSize,
   }) {
     setup();
     final sample = <int>[];
-    final innerLoopCounters = <int>[];
+
     final watch = Stopwatch();
     watch.prime();
     try {
       final scoreEstimate = watch.estimate(run, duration: warmUpDuration);
-      sampleSize ??= BenchmarkHelper.sampleSize(scoreEstimate);
+      sampleSize ??= BenchmarkHelper.sampleSize(scoreEstimate.elapsedTicks);
       if (sampleSize.innerIterations > 1) {
-        final durationAsTicks = sampleSize.innerIterations * scoreEstimate;
+        final runs = sampleSize.innerIterations;
         for (var i = 0; i < sampleSize.length; i++) {
-          // Averaging each score over approx. sampleSize.inner runs.
+          // Averaging each score over sampleSize.innerIteration runs.
           // For details see function BenchmarkHelper.sampleSize.
-          final score = watch.measure(run, durationAsTicks);
-          sample.add(score.elapsedTicks);
-          innerLoopCounters.add(score.loopCounter);
+          final score = watch.measure(run, runs);
+          sample.add(score);
         }
       } else {
         for (var i = 0; i < sampleSize.length; i++) {
@@ -77,13 +74,7 @@ class ScoreGenerator {
                   (e) => e * (Duration.microsecondsPerSecond / watch.frequency),
                 )
                 .toList(),
-        innerLoopCounters:
-            (sampleSize.innerIterations > 1)
-                ? innerLoopCounters
-                : IdenticalItemsList(
-                  value: sampleSize.innerIterations,
-                  length: sample.length,
-                ),
+        innerIterations: sampleSize.innerIterations,
       );
     } finally {
       teardown();
@@ -111,7 +102,7 @@ class ScoreGenerator {
     return Score(
       duration: watch.elapsed,
       scoreSample: sample.scores,
-      innerLoopCounters: sample.innerLoopCounters,
+      innerIterations: sample.innerIterations,
     );
   }
 }

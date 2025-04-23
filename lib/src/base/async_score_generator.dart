@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:identical_items_list/identical_items_list.dart';
-
 import '../extension/benchmark_helper.dart';
 import '../util/stats.dart';
 import 'sample_size.dart';
@@ -42,13 +40,12 @@ class AsyncScoreGenerator {
   /// `innerIter` is larger than 1 if each score entry was averaged over
   /// `innerIter` runs.
   ///
-  Future<({List<double> scores, List<int> innerLoopCounters})> sample({
+  Future<({List<double> scores, int innerIterations})> sample({
     final Duration warmUpDuration = const Duration(milliseconds: 200),
     SampleSize? sampleSize,
   }) async {
     await setup();
     final sample = <int>[];
-    final innerLoopCounters = <int>[];
     final watch = Stopwatch();
     watch.prime();
     try {
@@ -66,8 +63,7 @@ class AsyncScoreGenerator {
           // Averaging each score over approx. sampleSize.inner runs.
           // For details see function BenchmarkHelper.sampleSize.
           final score = await watch.measureAsync(run, durationAsTicks);
-          sample.add(score.elapsedTicks);
-          innerLoopCounters.add(score.loopCounter);
+          sample.add(score);
         }
       } else {
         for (var i = 0; i < sampleSize.length; i++) {
@@ -88,13 +84,7 @@ class AsyncScoreGenerator {
                   (e) => e * (Duration.microsecondsPerSecond / watch.frequency),
                 )
                 .toList(),
-        innerLoopCounters:
-            (sampleSize.innerIterations > 1)
-                ? innerLoopCounters
-                : IdenticalItemsList(
-                  value: sampleSize.innerIterations,
-                  length: sample.length,
-                ),
+        innerIterations: sampleSize.innerIterations,
       );
     } finally {
       await teardown();
@@ -119,7 +109,7 @@ class AsyncScoreGenerator {
     return Score(
       duration: watch.elapsed,
       scoreSample: sample.scores,
-      innerLoopCounters: sample.innerLoopCounters,
+      innerIterations: sample.innerIterations,
     );
   }
 }

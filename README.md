@@ -216,66 +216,10 @@ the enclosing group.
 
 ## Score Sampling
 
-In order to calculate benchmark score *statistics* a sample of scores is
-required. The question is how to generate the score sample while minimizing
-systematic errors (like overheads) and keeping the
-total benchmark run times within acceptable limits.
+For more information about benchmark score sampling see the dedicated [section](
+  https://github.com/simphotonics/benchmark_runner/gnuplot
+).
 
-<details> <summary> Click to show details. </summary>
-
-In a first step, benchmark scores are estimated using the
-functions [`estimate`][estimate]
-or [`estimateAsync`][estimateAsync]. The function [`BenchmarkHelper.sampleSize`][sampleSize]
-uses the score estimate to determine the sample size and the number of inner
-iterations (for short run times each sample entry is averaged).
-
-
-### 1. Default Sampling Method
-The graph below shows the sample size (orange curve) as calculated by the function
-[`BenchmarkHelper.sampleSize`][sampleSize] (the of the list containing the
-benchmark scores).
-
-The green curve shows the lower limit of the total microbenchmark duration
-in microseconds.
-
-![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/sample_size.png)
-
-For short run times below 1 microsecond each score sample is generated
-using the functions [`measure`][measure] or the equivalent
-asynchronous method [`measureAsync`][measureAsync]. The cyan curve shows
-approx. over how many runs a score entry is averaged.
-
-### 2. Custom Sampling Method
-The parameter `sampleSize` of the functions [`benchmark`][benchmark] and
-[`asyncBenchmark`][asyncBenchmark]  can be used to specify the lenght of the score
-sample list and the number of inner iterations used to generate each entry.
-
-To customize the score sampling process, without having to specify the parameter
-`sampleSize` for each call of [`benchmark`][benchmark] and
-[`asyncBenchmark`][asyncBenchmark], the static function
-[`BenchmarkHelper.sampleSize`][sampleSize] can be replaced with a custom function:
-```Dart
-/// Generates a sample containing 100 benchmark scores.
-BenchmarkHelper.sampleSize = (int clockTicks) {
-  return (outer: 100, inner: 1)
-}
-```
-To restore the default score sampling settings use:
-```Dart
-BenchmarkHelper.sampleSize = BenchmarkHelper.sampleSizeDefault;
-```
-----
-The graph shown above may be re-generated using the custom `sampleSize`
-function by copying and amending the file `gnuplot/sample_size.dart`
-and using the command:
-```Console
-dart sample_size.dart
-```
-The command above lauches a process and runs a [`gnuplot`][gnuplot] script.
-For this reason, the program [`gnuplot`][gnuplot] must be installed (with
-the `qt` terminal enabled).
-
-</details>
 
 ## Contributions
 

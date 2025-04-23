@@ -17,49 +17,29 @@ extension BenchmarkHelper on Stopwatch {
     reset();
   }
 
-  /// Measures the runtime of [run] for [ticks] clock ticks and
-  /// reports the average runtime expressed as clock ticks.
-  ({int elapsedTicks, int loopCounter}) measure(
-    void Function() run,
-    int ticks,
-  ) {
-    var loopCounter = 0;
+  /// Returns the average runtime of [run] expressed as clock ticks.
+  int measure(void Function() run, int runs) {
     prime();
     start();
-    do {
+    for (var i = 0; i < runs; i++) {
       run();
-      loopCounter++;
-    } while (elapsedTicks < ticks);
-    stop();
-    return (
-      elapsedTicks: elapsedTicks ~/ loopCounter,
-      loopCounter: loopCounter,
-    );
+    }
+    return elapsedTicks ~/ runs;
   }
 
-  /// Measures the runtime of [f] for [ticks] clock ticks and
-  /// reports the average runtime expressed as clock ticks.
-  Future<({int elapsedTicks, int loopCounter})> measureAsync(
-    Future<void> Function() f,
-    int ticks,
-  ) async {
-    var loopCounter = 0;
+  /// Returns the average runtime of [run] expressed as clock ticks.
+  Future<int> measureAsync(Future<void> Function() run, int runs) async {
     prime();
     start();
-    do {
-      await f();
-      loopCounter++;
-    } while (elapsedTicks < ticks);
-    stop();
-    return (
-      elapsedTicks: elapsedTicks ~/ loopCounter,
-      loopCounter: loopCounter,
-    );
+    for (var i = 0; i < runs; i++) {
+      await run();
+    }
+    return elapsedTicks ~/ runs;
   }
 
   /// Measures the runtime of [run] for [duration] and
   /// reports the average runtime expressed as clock ticks.
-  int estimate(
+  ({int elapsedTicks, int loopCounter}) estimate(
     void Function() run, {
     Duration duration = const Duration(milliseconds: 200),
   }) {
@@ -72,7 +52,10 @@ extension BenchmarkHelper on Stopwatch {
       loopCounter++;
     } while (loopCounter < 10000 && elapsedTicks < warmUpTicks);
     stop();
-    return elapsedTicks ~/ loopCounter;
+    return (
+      elapsedTicks: elapsedTicks ~/ loopCounter,
+      loopCounter: loopCounter,
+    );
   }
 
   /// Measures the runtime of [run] for [duration] and

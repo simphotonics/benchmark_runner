@@ -62,10 +62,8 @@ class StatsEmitter implements ScoreEmitter {
 
     final part4 =
         '${indent}sample size: ${score.scoreStats.sortedSample.length}' +
-        (score.innerLoopCounterStats.mean > 1
-                ? ' (averaged over ${score.innerLoopCounterStats.mean.toInt()} '
-                    '$plusMinus '
-                    '${score.innerLoopCounterStats.stdDev.toInt()} runs)'
+        (score.innerIterations > 1
+                ? ' (averaged over ${score.innerIterations} runs)'
                 : '')
             .style(ColorProfile.dim);
     print(part1);

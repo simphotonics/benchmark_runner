@@ -6,17 +6,16 @@ import '../util/stats.dart';
 class Score<T extends num> {
   Score({
     required this.duration,
+    required this.innerIterations,
     required List<T> scoreSample,
-    required List<int> innerLoopCounters,
-  }) : scoreStats = Stats(scoreSample),
-       innerLoopCounterStats = Stats(innerLoopCounters);
+  }) : scoreStats = Stats(scoreSample);
 
   /// Measured micro-benchmark duration
   final Duration duration;
 
-  /// The number of times the benchmarked function was executed to generate a
+  /// The number of times the benchmarked function was executed to generate one
   /// benchmark sample entry.
-  final Stats<int> innerLoopCounterStats;
+  final int innerIterations;
 
   /// Scores (in microseconds) and score stats.
   final Stats<T> scoreStats;
