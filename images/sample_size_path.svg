@@ -1,318 +1,321 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="353.48mm" height="177.09mm" version="1.2" viewBox="0 0 1002 502" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<svg width="1336" height="670" version="1.2" viewBox="0 0 1002 502.5" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
  <title>Qt SVG Document</title>
  <desc>Generated with Qt</desc>
- <g fill="none" fill-rule="evenodd" font-weight="400">
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+ <rect x=".54449" y=".54532" width="1000.9" height="501.41" fill="#333" stroke="#e6e6e6" stroke-width="1.0906"/>
+ <g fill-rule="evenodd" font-weight="400">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 413.5 966.5 413.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 413.5 93.5 413.5"/>
    <polyline points="966.5 413.5 956.5 413.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 57.114 422.34)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 0</text>
+  <g transform="matrix(1.002 0 0 1.002 57.114 422.34)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 0</text>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 362.5 966.5 362.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 362.5 93.5 362.5"/>
    <polyline points="966.5 362.5 956.5 362.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 35.07 370.24)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 200</text>
+  <g transform="matrix(1.002 0 0 1.002 35.07 370.24)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 200</text>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 310.5 966.5 310.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 310.5 93.5 310.5"/>
    <polyline points="966.5 310.5 956.5 310.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 35.07 318.14)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 400</text>
+  <g transform="matrix(1.002 0 0 1.002 35.07 318.14)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 400</text>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 258.5 966.5 258.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 258.5 93.5 258.5"/>
    <polyline points="966.5 258.5 956.5 258.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 35.07 267.03)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 600</text>
+  <g transform="matrix(1.002 0 0 1.002 35.07 267.03)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 600</text>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 207.5 966.5 207.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 207.5 93.5 207.5"/>
    <polyline points="966.5 207.5 956.5 207.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 35.07 214.93)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 800</text>
+  <g transform="matrix(1.002 0 0 1.002 35.07 214.93)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 800</text>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 155.5 966.5 155.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 155.5 93.5 155.5"/>
    <polyline points="966.5 155.5 956.5 155.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 24.048 163.83)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1000</text>
+  <g transform="matrix(1.002 0 0 1.002 24.048 163.83)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1000</text>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 104.5 966.5 104.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 104.5 93.5 104.5"/>
    <polyline points="966.5 104.5 956.5 104.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 24.048 111.72)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1200</text>
+  <g transform="matrix(1.002 0 0 1.002 24.048 111.72)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1200</text>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 52.5 966.5 52.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 52.5 93.5 52.5"/>
    <polyline points="966.5 52.5 956.5 52.5"/>
   </g>
-  <g transform="matrix(1.002,0,0,1.002,24.048,60.621)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1400</text>
+  <g transform="matrix(1.002,0,0,1.002,24.048,60.621)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1400</text>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
    <polyline points="82.5 413.5 82.5 27.5" fill="none"/>
   </g>
-  <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
    <polyline points="82.5 413.5 82.5 402.5"/>
    <polyline points="82.5 27.5 82.5 37.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 69.138 449.4)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 0.1</text>
+  <g transform="matrix(1.002 0 0 1.002 69.138 449.4)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+   <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 0.1</text>
   </g>
-  <g font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="120.5 413.5 120.5 408.5"/>
-    <polyline points="120.5 27.5 120.5 32.5"/>
-    <polyline points="142.5 413.5 142.5 408.5"/>
-    <polyline points="142.5 27.5 142.5 32.5"/>
-    <polyline points="158.5 413.5 158.5 408.5"/>
-    <polyline points="158.5 27.5 158.5 32.5"/>
-    <polyline points="170.5 413.5 170.5 408.5"/>
-    <polyline points="170.5 27.5 170.5 32.5"/>
-    <polyline points="180.5 413.5 180.5 408.5"/>
-    <polyline points="180.5 27.5 180.5 32.5"/>
-    <polyline points="189.5 413.5 189.5 408.5"/>
-    <polyline points="189.5 27.5 189.5 32.5"/>
-    <polyline points="196.5 413.5 196.5 408.5"/>
-    <polyline points="196.5 27.5 196.5 32.5"/>
-    <polyline points="203.5 413.5 203.5 408.5"/>
-    <polyline points="203.5 27.5 203.5 32.5"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
-    <polyline points="208.5 413.5 208.5 27.5" fill="none"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="208.5 413.5 208.5 402.5"/>
-    <polyline points="208.5 27.5 208.5 37.5"/>
-   </g>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-family="'Ubuntu Medium'" font-size="15px" font-weight="400" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" stroke="#ccc">
+   <polyline points="120.5 413.5 120.5 408.5"/>
+   <polyline points="120.5 27.5 120.5 32.5"/>
+   <polyline points="142.5 413.5 142.5 408.5"/>
+   <polyline points="142.5 27.5 142.5 32.5"/>
+   <polyline points="158.5 413.5 158.5 408.5"/>
+   <polyline points="158.5 27.5 158.5 32.5"/>
+   <polyline points="170.5 413.5 170.5 408.5"/>
+   <polyline points="170.5 27.5 170.5 32.5"/>
+   <polyline points="180.5 413.5 180.5 408.5"/>
+   <polyline points="180.5 27.5 180.5 32.5"/>
+   <polyline points="189.5 413.5 189.5 408.5"/>
+   <polyline points="189.5 27.5 189.5 32.5"/>
+   <polyline points="196.5 413.5 196.5 408.5"/>
+   <polyline points="196.5 27.5 196.5 32.5"/>
+   <polyline points="203.5 413.5 203.5 408.5"/>
+   <polyline points="203.5 27.5 203.5 32.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 203.41 449.4)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1</text>
+  <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
+   <polyline points="208.5 413.5 208.5 27.5" fill="none"/>
   </g>
-  <g font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="246.5 413.5 246.5 408.5"/>
-    <polyline points="246.5 27.5 246.5 32.5"/>
-    <polyline points="269.5 413.5 269.5 408.5"/>
-    <polyline points="269.5 27.5 269.5 32.5"/>
-    <polyline points="284.5 413.5 284.5 408.5"/>
-    <polyline points="284.5 27.5 284.5 32.5"/>
-    <polyline points="297.5 413.5 297.5 408.5"/>
-    <polyline points="297.5 27.5 297.5 32.5"/>
-    <polyline points="307.5 413.5 307.5 408.5"/>
-    <polyline points="307.5 27.5 307.5 32.5"/>
-    <polyline points="315.5 413.5 315.5 408.5"/>
-    <polyline points="315.5 27.5 315.5 32.5"/>
-    <polyline points="322.5 413.5 322.5 408.5"/>
-    <polyline points="322.5 27.5 322.5 32.5"/>
-    <polyline points="329.5 413.5 329.5 408.5"/>
-    <polyline points="329.5 27.5 329.5 32.5"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
-    <polyline points="335.5 413.5 335.5 27.5" fill="none"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="335.5 413.5 335.5 402.5"/>
-    <polyline points="335.5 27.5 335.5 37.5"/>
-   </g>
+  <g transform="scale(1.002)" stroke="#000">
+   <polyline points="208.5 413.5 208.5 402.5"/>
+   <polyline points="208.5 27.5 208.5 37.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 322.64 449.4)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 10</text>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 203.41 449.4)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1</text>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-family="'Ubuntu Medium'" font-size="15px" font-weight="400" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" stroke="#ccc">
+   <polyline points="246.5 413.5 246.5 408.5"/>
+   <polyline points="246.5 27.5 246.5 32.5"/>
+   <polyline points="269.5 413.5 269.5 408.5"/>
+   <polyline points="269.5 27.5 269.5 32.5"/>
+   <polyline points="284.5 413.5 284.5 408.5"/>
+   <polyline points="284.5 27.5 284.5 32.5"/>
+   <polyline points="297.5 413.5 297.5 408.5"/>
+   <polyline points="297.5 27.5 297.5 32.5"/>
+   <polyline points="307.5 413.5 307.5 408.5"/>
+   <polyline points="307.5 27.5 307.5 32.5"/>
+   <polyline points="315.5 413.5 315.5 408.5"/>
+   <polyline points="315.5 27.5 315.5 32.5"/>
+   <polyline points="322.5 413.5 322.5 408.5"/>
+   <polyline points="322.5 27.5 322.5 32.5"/>
+   <polyline points="329.5 413.5 329.5 408.5"/>
+   <polyline points="329.5 27.5 329.5 32.5"/>
   </g>
-  <g font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="373.5 413.5 373.5 408.5"/>
-    <polyline points="373.5 27.5 373.5 32.5"/>
-    <polyline points="395.5 413.5 395.5 408.5"/>
-    <polyline points="395.5 27.5 395.5 32.5"/>
-    <polyline points="411.5 413.5 411.5 408.5"/>
-    <polyline points="411.5 27.5 411.5 32.5"/>
-    <polyline points="423.5 413.5 423.5 408.5"/>
-    <polyline points="423.5 27.5 423.5 32.5"/>
-    <polyline points="433.5 413.5 433.5 408.5"/>
-    <polyline points="433.5 27.5 433.5 32.5"/>
-    <polyline points="442.5 413.5 442.5 408.5"/>
-    <polyline points="442.5 27.5 442.5 32.5"/>
-    <polyline points="449.5 413.5 449.5 408.5"/>
-    <polyline points="449.5 27.5 449.5 32.5"/>
-    <polyline points="455.5 413.5 455.5 408.5"/>
-    <polyline points="455.5 27.5 455.5 32.5"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
-    <polyline points="461.5 413.5 461.5 27.5" fill="none"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="461.5 413.5 461.5 402.5"/>
-    <polyline points="461.5 27.5 461.5 37.5"/>
-   </g>
+  <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
+   <polyline points="335.5 413.5 335.5 27.5" fill="none"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 444.39 449.4)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 100</text>
+  <g transform="scale(1.002)" stroke="#000">
+   <polyline points="335.5 413.5 335.5 402.5"/>
+   <polyline points="335.5 27.5 335.5 37.5"/>
   </g>
-  <g font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="499.5 413.5 499.5 408.5"/>
-    <polyline points="499.5 27.5 499.5 32.5"/>
-    <polyline points="521.5 413.5 521.5 408.5"/>
-    <polyline points="521.5 27.5 521.5 32.5"/>
-    <polyline points="537.5 413.5 537.5 408.5"/>
-    <polyline points="537.5 27.5 537.5 32.5"/>
-    <polyline points="549.5 413.5 549.5 408.5"/>
-    <polyline points="549.5 27.5 549.5 32.5"/>
-    <polyline points="559.5 413.5 559.5 408.5"/>
-    <polyline points="559.5 27.5 559.5 32.5"/>
-    <polyline points="568.5 413.5 568.5 408.5"/>
-    <polyline points="568.5 27.5 568.5 32.5"/>
-    <polyline points="575.5 413.5 575.5 408.5"/>
-    <polyline points="575.5 27.5 575.5 32.5"/>
-    <polyline points="582.5 413.5 582.5 408.5"/>
-    <polyline points="582.5 27.5 582.5 32.5"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
-    <polyline points="587.5 413.5 587.5 27.5" fill="none"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="587.5 413.5 587.5 402.5"/>
-    <polyline points="587.5 27.5 587.5 37.5"/>
-   </g>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 322.64 449.4)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 10</text>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-family="'Ubuntu Medium'" font-size="15px" font-weight="400" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" stroke="#ccc">
+   <polyline points="373.5 413.5 373.5 408.5"/>
+   <polyline points="373.5 27.5 373.5 32.5"/>
+   <polyline points="395.5 413.5 395.5 408.5"/>
+   <polyline points="395.5 27.5 395.5 32.5"/>
+   <polyline points="411.5 413.5 411.5 408.5"/>
+   <polyline points="411.5 27.5 411.5 32.5"/>
+   <polyline points="423.5 413.5 423.5 408.5"/>
+   <polyline points="423.5 27.5 423.5 32.5"/>
+   <polyline points="433.5 413.5 433.5 408.5"/>
+   <polyline points="433.5 27.5 433.5 32.5"/>
+   <polyline points="442.5 413.5 442.5 408.5"/>
+   <polyline points="442.5 27.5 442.5 32.5"/>
+   <polyline points="449.5 413.5 449.5 408.5"/>
+   <polyline points="449.5 27.5 449.5 32.5"/>
+   <polyline points="455.5 413.5 455.5 408.5"/>
+   <polyline points="455.5 27.5 455.5 32.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 565.13 449.4)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1000</text>
+  <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
+   <polyline points="461.5 413.5 461.5 27.5" fill="none"/>
   </g>
-  <g font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="625.5 413.5 625.5 408.5"/>
-    <polyline points="625.5 27.5 625.5 32.5"/>
-    <polyline points="648.5 413.5 648.5 408.5"/>
-    <polyline points="648.5 27.5 648.5 32.5"/>
-    <polyline points="663.5 413.5 663.5 408.5"/>
-    <polyline points="663.5 27.5 663.5 32.5"/>
-    <polyline points="676.5 413.5 676.5 408.5"/>
-    <polyline points="676.5 27.5 676.5 32.5"/>
-    <polyline points="686.5 413.5 686.5 408.5"/>
-    <polyline points="686.5 27.5 686.5 32.5"/>
-    <polyline points="694.5 413.5 694.5 408.5"/>
-    <polyline points="694.5 27.5 694.5 32.5"/>
-    <polyline points="702.5 413.5 702.5 408.5"/>
-    <polyline points="702.5 27.5 702.5 32.5"/>
-    <polyline points="708.5 413.5 708.5 408.5"/>
-    <polyline points="708.5 27.5 708.5 32.5"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
-    <polyline points="714.5 413.5 714.5 27.5" fill="none"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="714.5 413.5 714.5 402.5"/>
-    <polyline points="714.5 27.5 714.5 37.5"/>
-   </g>
+  <g transform="scale(1.002)" stroke="#000">
+   <polyline points="461.5 413.5 461.5 402.5"/>
+   <polyline points="461.5 27.5 461.5 37.5"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 685.87 449.4)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 10000</text>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 444.39 449.4)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 100</text>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-family="'Ubuntu Medium'" font-size="15px" font-weight="400" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" stroke="#ccc">
+   <polyline points="499.5 413.5 499.5 408.5"/>
+   <polyline points="499.5 27.5 499.5 32.5"/>
+   <polyline points="521.5 413.5 521.5 408.5"/>
+   <polyline points="521.5 27.5 521.5 32.5"/>
+   <polyline points="537.5 413.5 537.5 408.5"/>
+   <polyline points="537.5 27.5 537.5 32.5"/>
+   <polyline points="549.5 413.5 549.5 408.5"/>
+   <polyline points="549.5 27.5 549.5 32.5"/>
+   <polyline points="559.5 413.5 559.5 408.5"/>
+   <polyline points="559.5 27.5 559.5 32.5"/>
+   <polyline points="568.5 413.5 568.5 408.5"/>
+   <polyline points="568.5 27.5 568.5 32.5"/>
+   <polyline points="575.5 413.5 575.5 408.5"/>
+   <polyline points="575.5 27.5 575.5 32.5"/>
+   <polyline points="582.5 413.5 582.5 408.5"/>
+   <polyline points="582.5 27.5 582.5 32.5"/>
   </g>
-  <g font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="752.5 413.5 752.5 408.5"/>
-    <polyline points="752.5 27.5 752.5 32.5"/>
-    <polyline points="774.5 413.5 774.5 408.5"/>
-    <polyline points="774.5 27.5 774.5 32.5"/>
-    <polyline points="790.5 413.5 790.5 408.5"/>
-    <polyline points="790.5 27.5 790.5 32.5"/>
-    <polyline points="802.5 413.5 802.5 408.5"/>
-    <polyline points="802.5 27.5 802.5 32.5"/>
-    <polyline points="812.5 413.5 812.5 408.5"/>
-    <polyline points="812.5 27.5 812.5 32.5"/>
-    <polyline points="821.5 413.5 821.5 408.5"/>
-    <polyline points="821.5 27.5 821.5 32.5"/>
-    <polyline points="828.5 413.5 828.5 408.5"/>
-    <polyline points="828.5 27.5 828.5 32.5"/>
-    <polyline points="834.5 413.5 834.5 408.5"/>
-    <polyline points="834.5 27.5 834.5 32.5"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
-    <polyline points="840.5 413.5 840.5 27.5" fill="none"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="840.5 413.5 840.5 402.5"/>
-    <polyline points="840.5 27.5 840.5 37.5"/>
-   </g>
+  <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
+   <polyline points="587.5 413.5 587.5 27.5" fill="none"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 807.61 449.4)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 100000</text>
+  <g transform="scale(1.002)" stroke="#000">
+   <polyline points="587.5 413.5 587.5 402.5"/>
+   <polyline points="587.5 27.5 587.5 37.5"/>
   </g>
-  <g font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="878.5 413.5 878.5 408.5"/>
-    <polyline points="878.5 27.5 878.5 32.5"/>
-    <polyline points="900.5 413.5 900.5 408.5"/>
-    <polyline points="900.5 27.5 900.5 32.5"/>
-    <polyline points="916.5 413.5 916.5 408.5"/>
-    <polyline points="916.5 27.5 916.5 32.5"/>
-    <polyline points="928.5 413.5 928.5 408.5"/>
-    <polyline points="928.5 27.5 928.5 32.5"/>
-    <polyline points="938.5 413.5 938.5 408.5"/>
-    <polyline points="938.5 27.5 938.5 32.5"/>
-    <polyline points="947.5 413.5 947.5 408.5"/>
-    <polyline points="947.5 27.5 947.5 32.5"/>
-    <polyline points="954.5 413.5 954.5 408.5"/>
-    <polyline points="954.5 27.5 954.5 32.5"/>
-    <polyline points="961.5 413.5 961.5 408.5"/>
-    <polyline points="961.5 27.5 961.5 32.5"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
-    <polyline points="966.5 413.5 966.5 27.5" fill="none"/>
-   </g>
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="966.5 413.5 966.5 402.5"/>
-    <polyline points="966.5 27.5 966.5 37.5"/>
-   </g>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 565.13 449.4)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1000</text>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-family="'Ubuntu Medium'" font-size="15px" font-weight="400" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" stroke="#ccc">
+   <polyline points="625.5 413.5 625.5 408.5"/>
+   <polyline points="625.5 27.5 625.5 32.5"/>
+   <polyline points="648.5 413.5 648.5 408.5"/>
+   <polyline points="648.5 27.5 648.5 32.5"/>
+   <polyline points="663.5 413.5 663.5 408.5"/>
+   <polyline points="663.5 27.5 663.5 32.5"/>
+   <polyline points="676.5 413.5 676.5 408.5"/>
+   <polyline points="676.5 27.5 676.5 32.5"/>
+   <polyline points="686.5 413.5 686.5 408.5"/>
+   <polyline points="686.5 27.5 686.5 32.5"/>
+   <polyline points="694.5 413.5 694.5 408.5"/>
+   <polyline points="694.5 27.5 694.5 32.5"/>
+   <polyline points="702.5 413.5 702.5 408.5"/>
+   <polyline points="702.5 27.5 702.5 32.5"/>
+   <polyline points="708.5 413.5 708.5 408.5"/>
+   <polyline points="708.5 27.5 708.5 32.5"/>
   </g>
+  <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
+   <polyline points="714.5 413.5 714.5 27.5" fill="none"/>
+  </g>
+  <g transform="scale(1.002)" stroke="#000">
+   <polyline points="714.5 413.5 714.5 402.5"/>
+   <polyline points="714.5 27.5 714.5 37.5"/>
+  </g>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 685.87 449.4)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 10000</text>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-family="'Ubuntu Medium'" font-size="15px" font-weight="400" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" stroke="#ccc">
+   <polyline points="752.5 413.5 752.5 408.5"/>
+   <polyline points="752.5 27.5 752.5 32.5"/>
+   <polyline points="774.5 413.5 774.5 408.5"/>
+   <polyline points="774.5 27.5 774.5 32.5"/>
+   <polyline points="790.5 413.5 790.5 408.5"/>
+   <polyline points="790.5 27.5 790.5 32.5"/>
+   <polyline points="802.5 413.5 802.5 408.5"/>
+   <polyline points="802.5 27.5 802.5 32.5"/>
+   <polyline points="812.5 413.5 812.5 408.5"/>
+   <polyline points="812.5 27.5 812.5 32.5"/>
+   <polyline points="821.5 413.5 821.5 408.5"/>
+   <polyline points="821.5 27.5 821.5 32.5"/>
+   <polyline points="828.5 413.5 828.5 408.5"/>
+   <polyline points="828.5 27.5 828.5 32.5"/>
+   <polyline points="834.5 413.5 834.5 408.5"/>
+   <polyline points="834.5 27.5 834.5 32.5"/>
+  </g>
+  <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
+   <polyline points="840.5 413.5 840.5 27.5" fill="none"/>
+  </g>
+  <g transform="scale(1.002)" stroke="#000">
+   <polyline points="840.5 413.5 840.5 402.5"/>
+   <polyline points="840.5 27.5 840.5 37.5"/>
+  </g>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 807.61 449.4)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 100000</text>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-family="'Ubuntu Medium'" font-size="15px" font-weight="400" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="scale(1.002)" stroke="#ccc">
+   <polyline points="878.5 413.5 878.5 408.5"/>
+   <polyline points="878.5 27.5 878.5 32.5"/>
+   <polyline points="900.5 413.5 900.5 408.5"/>
+   <polyline points="900.5 27.5 900.5 32.5"/>
+   <polyline points="916.5 413.5 916.5 408.5"/>
+   <polyline points="916.5 27.5 916.5 32.5"/>
+   <polyline points="928.5 413.5 928.5 408.5"/>
+   <polyline points="928.5 27.5 928.5 32.5"/>
+   <polyline points="938.5 413.5 938.5 408.5"/>
+   <polyline points="938.5 27.5 938.5 32.5"/>
+   <polyline points="947.5 413.5 947.5 408.5"/>
+   <polyline points="947.5 27.5 947.5 32.5"/>
+   <polyline points="954.5 413.5 954.5 408.5"/>
+   <polyline points="954.5 27.5 954.5 32.5"/>
+   <polyline points="961.5 413.5 961.5 408.5"/>
+   <polyline points="961.5 27.5 961.5 32.5"/>
+  </g>
+  <g transform="scale(1.002)" stroke="#a0a0a4" stroke-dasharray="2, 4" stroke-width="2">
+   <polyline points="966.5 413.5 966.5 27.5" fill="none"/>
+  </g>
+  <g transform="scale(1.002)" stroke="#000">
+   <polyline points="966.5 413.5 966.5 402.5"/>
+   <polyline points="966.5 27.5 966.5 37.5"/>
+  </g>
+ </g>
+ <g fill-rule="evenodd" font-weight="400">
   <g stroke="#000">
-   <g transform="matrix(1.002 0 0 1.002 941.1 446.89)" font-family="Sans" font-size="14px" stroke-linecap="square" stroke-linejoin="bevel">
-    <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1x10</text>
+   <g transform="matrix(1.002 0 0 1.002 941.1 446.89)" fill="#e6e6e6" font-family="Sans" font-size="14px" stroke-linecap="square" stroke-linejoin="bevel">
+    <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve"> 1x10</text>
    </g>
-   <g transform="matrix(1.002 0 0 1.002 988.76 439.88)" font-family="Sans" font-size="11px" stroke-linecap="square" stroke-linejoin="bevel">
-    <text fill="#000000" font-family="Sans" font-size="11px" font-weight="400" stroke="none" xml:space="preserve">6</text>
+   <g transform="matrix(1.002 0 0 1.002 988.76 439.88)" fill="#e6e6e6" font-family="Sans" font-size="11px" stroke-linecap="square" stroke-linejoin="bevel">
+    <text fill="#e6e6e6" font-family="Sans" font-size="11px" font-weight="400" stroke="none" xml:space="preserve">6</text>
    </g>
-   <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
+   <g transform="scale(1.002)" fill="none" font-family="'Ubuntu Medium'" font-size="15px" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="82.5 27.5 82.5 413.5 966.5 413.5 966.5 27.5 82.5 27.5" fill="none"/>
    </g>
   </g>
+  <text x="476.436" y="82.665001" fill="#e6e6e6" font-family="Sans" font-size="14.028px" stroke-linecap="square" stroke-linejoin="bevel" stroke-width="1.002" xml:space="preserve">averaged over</text>
  </g>
- <text x="476.436" y="82.665001" fill="#000000" fill-rule="evenodd" font-family="Sans" font-size="14.028px" font-weight="400" stroke-linecap="square" stroke-linejoin="bevel" stroke-width="1.002" xml:space="preserve">averaged over</text>
  <g fill="none" fill-rule="evenodd" font-weight="400">
   <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#0ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
    <path d="m610.5 75.5h55" fill-rule="evenodd"/>
@@ -392,9 +395,11 @@
    <circle cx="858.5" cy="413.5" r="3"/>
    <circle cx="877.5" cy="413.5" r="3"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 494.73 132.76)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve">sample size</text>
-  </g>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 494.73 132.76)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve">sample size</text>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-weight="400">
   <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#f80" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
    <path d="m610.5 125.5h55" fill-rule="evenodd"/>
    <path d="m82.5 336.2 32.3 2.6 20.1 2.6 20.9 3.8 13.9 3.4 11.1 3.1 15.8 5.4 12.3 4.9h0.5l3.2 0.2 3.4 0.3h2.7l3.5 0.5 4.6 0.3 5.8 0.7 7.3 0.8 8.7 1 10.3 1.6 11.8 2 13.2 2.9 14.3 3.6 15.3 4.4 16.1 5.4 5.6 2h11.1l17.2 0.5 17.5 0.8 17.8 0.8 17.9 1 18.2 1.6 18.2 1.8 8.4 1.3 5.3-0.3h4.5l18.4-0.5 18.3-0.8 18.4-1.3 18.5-1.5 18.4-2.6 18.4-4.1 6.2-1.8 5.2 0.2 7.1 0.6 18.4 1.8 18.5 2.3 18.4 2.8 18.5 3.6 18.4 4.1 18.5 4.4 3.3 0.8h5.2l10 0.3 18.4 0.7 18.5 1.1 18.4 1.2 18.5 1.3 9.3 0.8 8.5 0.8 7.3 0.5 6.5 0.5 2.9 0.3 2.9 0.2h36.5"/>
@@ -473,9 +478,11 @@
    <circle cx="858.5" cy="410.5" r="3"/>
    <circle cx="877.5" cy="410.5" r="3"/>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 347.81 182.86)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve">total sample generation time [ms]</text>
-  </g>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 347.81 182.86)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve">total sample generation time [ms]</text>
+ </g>
+ <g fill="none" fill-rule="evenodd" font-weight="400">
   <g transform="scale(1.002)" font-family="'Ubuntu Medium'" font-size="15px" stroke="#00c77e" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
    <path d="m610.5 175.5h55" fill-rule="evenodd"/>
    <path d="m82.5 410.4 32.3-2.1 20.1-1.7 20.9-2.1 13.9-1.4 11.1-1.1 15.8-1 12.3-0.4 0.5-0.1 3.2-0.7 3.4-0.7 2.7-0.6 3.5-0.7 4.6-1.1 5.8-1.3 7.3-1.8 8.7-2.2 10.3-2.6 11.8-2.9 13.2-2.5 14.3-1.5 15.3 0.2 16.1 3.5 5.6 2.1 5.2-2.3 5.9-2.8 17.2-8 17.5-8.5 17.8-9.3 17.9-7.5 18.2-2.1 18.2 5 8.4 7.2 5.3-4.3 4.5-2.9 18.4-14.1 18.3-11.5 18.4-1.7 18.5 6.7 18.4 18 18.4 11.8 6.2 21.2 5.2-2.8 7.1-4 18.4-11.9 18.5-14.2 18.4-15.8 18.5-14.5 18.4-9.9 18.5-0.3 3.3 1.2 5.2-10.3 10-19 18.4-38.7 18.5-41.9 18.4-38.6 18.5-35.4 9.3-6.7 8.5 5.1h7.3l6.5 10.3 2.9 9 2.9 11.6 5.2-25.7 12.8-74.5 3.6-28.6"/>
@@ -554,13 +561,13 @@
     <circle cx="845.5" cy="130.5" r="3"/>
     <circle cx="858.5" cy="55.5" r="3"/>
    </g>
-   <g transform="scale(1.002)" stroke="#000">
-    <polyline points="82.5 27.5 82.5 413.5 966.5 413.5 966.5 27.5 82.5 27.5" fill="none"/>
+   <g transform="scale(1.002)" stroke="#e6e6e6">
+    <polyline points="82.5 27.5 82.5 413.5 966.5 413.5 966.5 27.5 82.5 27.5" fill="none" stroke="#e6e6e6"/>
    </g>
   </g>
-  <g transform="matrix(1.002 0 0 1.002 436.37 489.48)" font-family="Sans" font-size="14px" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
-   <text fill="#000000" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve">Single Run time [us]</text>
-  </g>
+ </g>
+ <g transform="matrix(1.002 0 0 1.002 436.37 489.48)" fill="#e6e6e6" fill-rule="evenodd" font-family="Sans" font-size="14px" font-weight="400" stroke="#000" stroke-linecap="square" stroke-linejoin="bevel">
+  <text fill="#e6e6e6" font-family="Sans" font-size="14px" font-weight="400" stroke="none" xml:space="preserve">Single Run time [us]</text>
  </g>
  <metadata>
   <rdf:RDF>
