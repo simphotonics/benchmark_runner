@@ -164,37 +164,87 @@ extension BenchmarkHelper on Stopwatch {
     return switch (scoreInMicroseconds) {
       < t1n1 => SampleSize(length: s1n1, innerIterations: i1n1), // 1 us
       > t1n1 && <= t1e0 => SampleSize(
-        length:
-            interpolateExp(scoreInMicroseconds, t1n1, s1n1, t1e0, s1e0).ceil(),
-        innerIterations:
-            interpolateExp(scoreInMicroseconds, t1n1, i1n1, t1e0, i1e0).ceil(),
+        length: interpolateExp(
+          scoreInMicroseconds,
+          t1n1,
+          s1n1,
+          t1e0,
+          s1e0,
+        ).ceil(),
+        innerIterations: interpolateExp(
+          scoreInMicroseconds,
+          t1n1,
+          i1n1,
+          t1e0,
+          i1e0,
+        ).ceil(),
       ), // 1 us
       > t1e0 && <= t1e1 => SampleSize(
-        length:
-            interpolateExp(scoreInMicroseconds, t1e0, s1e0, t1e1, s1e1).ceil(),
-        innerIterations:
-            interpolateExp(scoreInMicroseconds, t1e0, i1e0, t1e1, i1e1).ceil(),
+        length: interpolateExp(
+          scoreInMicroseconds,
+          t1e0,
+          s1e0,
+          t1e1,
+          s1e1,
+        ).ceil(),
+        innerIterations: interpolateExp(
+          scoreInMicroseconds,
+          t1e0,
+          i1e0,
+          t1e1,
+          i1e1,
+        ).ceil(),
       ), // 10 us
       > t1e1 && <= t1e2 => SampleSize(
-        length:
-            interpolateExp(scoreInMicroseconds, t1e1, s1e1, t1e2, s1e2).ceil(),
-        innerIterations:
-            interpolateExp(scoreInMicroseconds, t1e1, i1e1, t1e2, i1e2).ceil(),
+        length: interpolateExp(
+          scoreInMicroseconds,
+          t1e1,
+          s1e1,
+          t1e2,
+          s1e2,
+        ).ceil(),
+        innerIterations: interpolateExp(
+          scoreInMicroseconds,
+          t1e1,
+          i1e1,
+          t1e2,
+          i1e2,
+        ).ceil(),
       ), // 100 us
       > t1e2 && <= t1e3 => SampleSize(
-        length:
-            interpolateExp(scoreInMicroseconds, t1e2, s1e2, t1e3, s1e3).ceil(),
-        innerIterations:
-            interpolateExp(scoreInMicroseconds, t1e2, i1e2, t1e3, i1e3).ceil(),
+        length: interpolateExp(
+          scoreInMicroseconds,
+          t1e2,
+          s1e2,
+          t1e3,
+          s1e3,
+        ).ceil(),
+        innerIterations: interpolateExp(
+          scoreInMicroseconds,
+          t1e2,
+          i1e2,
+          t1e3,
+          i1e3,
+        ).ceil(),
       ), // 1ms
       > t1e3 && <= t1e4 => SampleSize(
-        length:
-            interpolateExp(scoreInMicroseconds, t1e3, s1e3, t1e4, s1e4).ceil(),
+        length: interpolateExp(
+          scoreInMicroseconds,
+          t1e3,
+          s1e3,
+          t1e4,
+          s1e4,
+        ).ceil(),
         innerIterations: i1e4,
       ), // 10 ms
       > t1e4 && <= t1e5 => SampleSize(
-        length:
-            interpolateExp(scoreInMicroseconds, t1e4, s1e4, t1e5, s1e5).ceil(),
+        length: interpolateExp(
+          scoreInMicroseconds,
+          t1e4,
+          s1e4,
+          t1e5,
+          s1e5,
+        ).ceil(),
         innerIterations: i1e5,
       ), // 100 ms
       _ => SampleSize(length: s1e5, innerIterations: i1e5),

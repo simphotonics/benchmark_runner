@@ -17,7 +17,6 @@ import 'sample_size.dart';
 /// * [runInIsolate]: Set to `true` to run benchmark in a
 ///    separate isolate.
 /// * [scoreEmitter]: A custom score emitter.
-/// * [warmUpRuns]: The number of times [run] is called before the measurement.
 /// * [warmUpDuration]: The duration used to create a score estimate.
 /// * [sampleSize]: An optional parameter of type [SampleSize] that is used
 /// to specify the
@@ -35,8 +34,9 @@ Future<void> asyncBenchmark(
   bool runInIsolate = true,
 }) async {
   final group = Zone.current[#group] as Group?;
-  final groupDescription =
-      group == null ? '' : '${group.description.addSeparator(':')} ';
+  final groupDescription = group == null
+      ? ''
+      : '${group.description.addSeparator(':')} ';
 
   final scoreGenerator = AsyncScoreGenerator(
     run: run,

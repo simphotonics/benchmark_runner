@@ -54,8 +54,9 @@ class ExportCommand extends ReportCommand {
 
     Ansi.status = isMonochrome ? AnsiOutput.disabled : AnsiOutput.enabled;
 
-    final searchDirectory =
-        argResults!.rest.isEmpty ? 'benchmark' : argResults!.rest.first;
+    final searchDirectory = argResults!.rest.isEmpty
+        ? 'benchmark'
+        : argResults!.rest.first;
 
     final benchmarkFiles = await findBenchmarkFiles();
 

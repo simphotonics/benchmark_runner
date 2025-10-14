@@ -29,8 +29,9 @@ void benchmark(
   SampleSize? sampleSize,
 }) {
   final group = Zone.current[#group] as Group?;
-  var groupDescription =
-      group == null ? '' : '${group.description.addSeparator(':')} ';
+  var groupDescription = group == null
+      ? ''
+      : '${group.description.addSeparator(':')} ';
   final scoreGenerator = ScoreGenerator(
     run: run,
     setup: setup,

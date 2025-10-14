@@ -43,14 +43,13 @@ class ReportCommand extends Command {
   /// * Uses `argResults!.rest.first` as path.
   /// * If no path is provided, the directory `benchmark` is used.
   Future<List<File>> findBenchmarkFiles() async {
-    final searchDirectory =
-        argResults!.rest.isEmpty ? 'benchmark' : argResults!.rest.first;
+    final searchDirectory = argResults!.rest.isEmpty
+        ? 'benchmark'
+        : argResults!.rest.first;
 
     // Resolving test files.
-    final (
-      benchmarkFiles: benchmarkFiles,
-      entityType: entityType,
-    ) = await resolveBenchmarkFiles(searchDirectory);
+    final (benchmarkFiles: benchmarkFiles, entityType: entityType) =
+        await resolveBenchmarkFiles(searchDirectory);
     if (benchmarkFiles.isEmpty) {
       print('');
       print(

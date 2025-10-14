@@ -31,9 +31,10 @@ class BenchmarkProcessResult {
   /// `--define=isBenchmarkProcess=true`.
   String command({bool isBrief = true}) {
     final args = switch (isBrief) {
-      true => arguments
-          .where((arg) => arg != '--define=isBenchmarkProcess=true')
-          .join(' '),
+      true =>
+        arguments
+            .where((arg) => arg != '--define=isBenchmarkProcess=true')
+            .join(' '),
       false => arguments.join(' '),
     };
     return executable +

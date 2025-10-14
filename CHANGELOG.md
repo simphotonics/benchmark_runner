@@ -1,6 +1,11 @@
+
+## 2.0.2
+- Updated dependencies.
+- Applied suggested lints.
+
 ## 2.0.1
 - Simplified methods `measure` and `measureAsync`.
-- Added `README.md` to folder `gnuplot`. 
+- Added `README.md` to folder `gnuplot`.
 
 ## 2.0.0
 Breaking changes:

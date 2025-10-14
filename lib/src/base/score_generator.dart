@@ -68,12 +68,11 @@ class ScoreGenerator {
       // Rescale to microseconds.
       // Note: frequency is expressed in Hz (ticks/second).
       return (
-        scores:
-            sample
-                .map<double>(
-                  (e) => e * (Duration.microsecondsPerSecond / watch.frequency),
-                )
-                .toList(),
+        scores: sample
+            .map<double>(
+              (e) => e * (Duration.microsecondsPerSecond / watch.frequency),
+            )
+            .toList(),
         innerIterations: sampleSize.innerIterations,
       );
     } finally {

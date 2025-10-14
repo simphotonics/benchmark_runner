@@ -33,8 +33,9 @@ extension Histogram on Stats {
     int intervalNumber = -1,
   }) {
     final sampleSize = sortedSample.length;
-    intervalNumber =
-        intervalNumber < 3 ? intervalNumberFreedman : intervalNumber;
+    intervalNumber = intervalNumber < 3
+        ? intervalNumberFreedman
+        : intervalNumber;
 
     final intervalSize = (max - min) / intervalNumber;
     final gridPoints = intervalNumber + 1;
@@ -127,8 +128,9 @@ extension Histogram on Stats {
   ///
   ///
   String blockHistogram({bool normalize = false, int intervalNumber = 0}) {
-    intervalNumber =
-        intervalNumber < 2 ? intervalNumberFreedman : intervalNumber;
+    intervalNumber = intervalNumber < 2
+        ? intervalNumberFreedman
+        : intervalNumber;
 
     /// Make sure we have at least 2 intervals
     while (intervalNumber < 2) {
