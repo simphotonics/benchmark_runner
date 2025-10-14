@@ -29,3 +29,6 @@ bin/*.exe
 
 # Exported benchmark scores
 benchmark/*.txt
+
+# Backup images
+images/.images

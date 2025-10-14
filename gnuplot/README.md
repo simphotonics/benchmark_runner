@@ -41,7 +41,7 @@ The graph below shows the sample size (orange curve) as calculated by the functi
 The green curve shows the lower limit of the total microbenchmark duration
 in microseconds.
 
-![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/sample_size_path.svg)
+![Sample Size](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/sample_size.svg)
 
 For short run times below 1 microsecond each score sample is generated
 using the functions [`measure`][measure] or the equivalent
