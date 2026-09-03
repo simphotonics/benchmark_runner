@@ -1,13 +1,9 @@
 import 'dart:math' show exp, log;
 
-import 'package:exception_templates/exception_templates.dart';
-
 import '../base/sample_size.dart';
 import 'duration_to_ticks.dart';
 
 typedef SampleSizeEstimator = SampleSize Function(int scoreEstimateAsTicks);
-
-class TimeError extends ErrorType {}
 
 extension BenchmarkHelper on Stopwatch {
   /// Starts, stops, and resets the [Stopwatch].
