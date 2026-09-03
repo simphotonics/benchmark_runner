@@ -5,7 +5,6 @@ import 'package:lazy_memo/lazy_memo.dart';
 /// Provides access to basic statistical entities of a
 /// numerical random sample.
 class Stats<T extends num>(List<T> sample) {
-
   /// Original random data sample. Must not be empty.
   final List<T> _sample = List.of(sample);
 
