@@ -25,7 +25,7 @@ void benchmark(
   void Function() setup = doNothing,
   void Function() teardown = doNothing,
   ScoreEmitter scoreEmitter = const StatsEmitter(),
-  final Duration warmUpDuration = const Duration(milliseconds: 200),
+  Duration warmUpDuration = const Duration(milliseconds: 200),
   SampleSize? sampleSize,
 }) {
   final group = Zone.current[#group] as Group?;
@@ -39,7 +39,8 @@ void benchmark(
   );
   final watch = Stopwatch()..start();
 
-  description = groupDescription + description.style(ColorProfile.benchmark);
+  final detailedDescription =
+      groupDescription + description.style(ColorProfile.benchmark);
 
   try {
     if (run is Future<void> Function()) {
@@ -49,7 +50,7 @@ void benchmark(
     reportError(
       error,
       stack,
-      description: description,
+      description: detailedDescription,
       duration: watch.elapsed,
       errorMark: benchmarkError,
     );
@@ -60,7 +61,7 @@ void benchmark(
     () {
       try {
         scoreEmitter.emit(
-          description: description,
+          description: detailedDescription,
           score: scoreGenerator.score(
             warmUpDuration: warmUpDuration,
             sampleSize: sampleSize,
@@ -71,7 +72,7 @@ void benchmark(
         reportError(
           error,
           stack,
-          description: description,
+          description: detailedDescription,
           duration: watch.elapsed,
           errorMark: benchmarkError,
         );
@@ -82,7 +83,7 @@ void benchmark(
       reportError(
         error,
         stack,
-        description: description,
+        description: detailedDescription,
         duration: watch.elapsed,
         errorMark: benchmarkError,
       );
