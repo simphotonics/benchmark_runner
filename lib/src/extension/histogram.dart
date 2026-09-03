@@ -1,7 +1,9 @@
 import '../util/stats.dart';
 import 'root.dart';
 import 'color_profile.dart';
+
 import 'dart:math' as math show min, max;
+
 import 'package:ansi_modifier/ansi_modifier.dart';
 
 extension Histogram on Stats {
@@ -12,6 +14,7 @@ extension Histogram on Stats {
 
   /// Returns the optimal number of intervals. The interval size
   /// is estimated using the Freedman-Diaconis rule.
+  /// The result of this function is always larger 2.
   int get intervalNumberFreedman =>
       iqr == 0 ? 3 : math.max((max - min).abs() ~/ intervalSizeFreedman, 3);
 
@@ -20,22 +23,17 @@ extension Histogram on Stats {
   /// * values: The map values represent a count of how many
   ///   sample values fall into to the corresponding interval:
   ///  `midPoint - h/2, ..., midPoint + h/2`, where `h` is the interval size.
-  /// * If `normalize == true`, the histogram count
+  /// * If [normalize] == `true`, the histogram count
   ///   will be normalized using the factor: `sampleSize * h`, such
-  ///   that the total area of the histogram bars is equal to one.
+  ///   that the total area covered by the histogram bars is equal to one.
   ///   This is useful when comparing the histogram to a
   ///   probability distribution.
-  /// * intervalNumber: To specify the number of intervals provide a number > 2.
+  /// * [intervals]: To specify the number of intervals provide a number > 2.
   ///   Otherwise the interval number is calculated using the Freedman-Diaconis
   ///   rule.
-  Map<double, double> histogram({
-    bool normalize = false,
-    int intervalNumber = -1,
-  }) {
+  Map<double, double> histogram({bool normalize = false, int intervals = -1}) {
     final sampleSize = sortedSample.length;
-    intervalNumber = intervalNumber < 3
-        ? intervalNumberFreedman
-        : intervalNumber;
+    final intervalNumber = intervals < 3 ? intervalNumberFreedman : intervals;
 
     final intervalSize = (max - min) / intervalNumber;
     final gridPoints = intervalNumber + 1;
@@ -127,15 +125,8 @@ extension Histogram on Stats {
   /// ▉▂__________________ 177  ____________________
   ///
   ///
-  String blockHistogram({bool normalize = false, int intervalNumber = 0}) {
-    intervalNumber = intervalNumber < 2
-        ? intervalNumberFreedman
-        : intervalNumber;
-
-    /// Make sure we have at least 2 intervals
-    while (intervalNumber < 2) {
-      intervalNumber++;
-    }
+  String blockHistogram({bool normalize = false, int intervals = 0}) {
+    final intervalNumber = intervals < 2 ? intervalNumberFreedman : intervals;
 
     final intervalSize = (max - min) / intervalNumber;
 

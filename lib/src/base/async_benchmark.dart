@@ -29,7 +29,7 @@ Future<void> asyncBenchmark(
   Future<void> Function() setup = futureDoNothing,
   Future<void> Function() teardown = futureDoNothing,
   ScoreEmitter scoreEmitter = const StatsEmitter(),
-  final Duration warmUpDuration = const Duration(milliseconds: 200),
+  Duration warmUpDuration = const Duration(milliseconds: 200),
   SampleSize? sampleSize,
   bool runInIsolate = true,
 }) async {
@@ -44,7 +44,7 @@ Future<void> asyncBenchmark(
     teardown: teardown,
   );
 
-  description =
+  final detailedDescription =
       groupDescription +
       (hourGlass + description).style(ColorProfile.asyncBenchmark);
 
@@ -56,7 +56,7 @@ Future<void> asyncBenchmark(
         if (runInIsolate) {
           await Isolate.run(
             () async => scoreEmitter.emit(
-              description: description,
+              description: detailedDescription,
               score: await scoreGenerator.score(
                 warmUpDuration: warmUpDuration,
                 sampleSize: sampleSize,
@@ -65,7 +65,7 @@ Future<void> asyncBenchmark(
           );
         } else {
           scoreEmitter.emit(
-            description: description,
+            description: detailedDescription,
             score: await scoreGenerator.score(
               warmUpDuration: warmUpDuration,
               sampleSize: sampleSize,
@@ -77,7 +77,7 @@ Future<void> asyncBenchmark(
         reportError(
           error,
           stack,
-          description: description,
+          description: detailedDescription,
           duration: watch.elapsed,
           errorMark: benchmarkError,
         );
@@ -88,7 +88,7 @@ Future<void> asyncBenchmark(
       reportError(
         error,
         stack,
-        description: description,
+        description: detailedDescription,
         duration: watch.elapsed,
         errorMark: benchmarkError,
       );
