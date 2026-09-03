@@ -58,7 +58,7 @@ extension DurationFormatter on Duration {
   /// Converts the duration into a String with
   /// format: milliseconds:microseconds.
   ///
-  /// * Returns [ssmm] if seconds is larger than 0.
+  /// * Returns [msus] if seconds is larger than 0.
   /// * Pads integers to width 2.
   String get msus {
     final seconds = inSeconds;
