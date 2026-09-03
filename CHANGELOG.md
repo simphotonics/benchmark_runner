@@ -1,4 +1,11 @@
 
+## 2.1.0
+- Added `asyncGroup`, a dedicated asynchronous benchmark group
+  that can be awaited.
+- Eliminated the use of `FutureOr`.
+- Fixed bug in `measureAsync`.
+- Requires Dart 3.13 (uses primary constructor syntax).
+
 ## 2.0.2
 - Updated dependencies.
 - Applied suggested lints.
