@@ -13,7 +13,7 @@ void main() {
 
       expect(
         usage,
-        'Runs benchmarks. Prints and exports score reports.\n'
+        'A command line utility for running benchmarks and printing/exporting score reports.\n'
         '\n'
         'Usage: dart run benchmark_runner <command> [arguments] <path to directory|file>\n'
         '\n'
@@ -23,12 +23,12 @@ void main() {
         '-m, --isMonochrome    Disables colorized reporting.\n'
         '\n'
         'Available commands:\n'
-        '  export   Exports benchmark scores. A custom file extension and directory may be specified.\n'
+        '  export   Exports benchmark scores. A file extension and directory may be specified.\n'
         '  report   Runs benchmarks and prints a score report to stdout.\n'
         '\n'
         'Run "benchmark_runner help <command>" for more information about a command.\n'
         '\n'
-        'Note: Benchmark files are dart files ending with \'_benchmark.dart\'.',
+        'Note: Benchmark files are Dart files ending with \'_benchmark.dart\'.',
       );
 
       // Assert that the process exits with code 0.
@@ -93,13 +93,14 @@ void main() {
 
       expect(
         usage,
-        'Exports benchmark scores. A custom file extension and directory may be specified.\n'
+        'Exports benchmark scores. A file extension and directory may be specified.\n'
         '\n'
         'Usage: benchmark_runner export [arguments] <path to directory|file>\n'
         '-h, --help         Print this usage information.\n'
         '-e, --extension    Set file extension of exported files.\n'
         '                   (defaults to "txt")\n'
-        '-o, --outputDir    Directory must exist. Score files will be written to it.\n'
+        '-o, --outputDir    Set directory where score files will be written.\n'
+        '                   (Defaults to the directory containing the benchmarks.)\n'
         '\n'
         'Run "benchmark_runner help" to see global options.',
       );
