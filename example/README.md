@@ -15,6 +15,9 @@ Write inline benchmarks using the functions:
    The callback `body` usually contains one or several calls to
    [`benchmark`][benchmark] and [`asyncBenchmark`][asyncBenchmark].
    Benchmark groups may not be nested.
+ * [`asyncGroup`][asyncGroup]: Used to label an asynchronous group of benchmarks.
+   The callback `body` usually contains one or several calls to
+   [`asyncBenchmark`][asyncBenchmark].
  * Files must end with `_benchmark.dart` in order to be detected as
    benchmark files by `benchmark_runner`.
 
@@ -22,35 +25,39 @@ Write inline benchmarks using the functions:
  asynchronous benchmarks.
 
   ```Dart
-  import 'package:benchmark_runner/benchmark_runner.dart';
+  import 'dart:io';
 
-  /// Returns the value [t] after waiting for [duration].
-  Future<T> later<T>(T t, [Duration duration = Duration.zero]) {
-    return Future.delayed(duration, () => t);
-  }
+import 'package:benchmark_runner/benchmark_runner.dart';
 
-  void main(List<String> args) async {
+/// Returns the value [t] after waiting for [duration].
+Future<T> later<T>(T t, [Duration duration = Duration.zero]) async {
+  sleep(duration); // Has lower overhead compared to Future.pause.
+  return t;
+}
 
-   await group('Wait for duration', () async {
-      await asyncBenchmark('10ms', () async {
-        await later<int>(39, Duration(milliseconds: 10));
-      });
-
-      await asyncBenchmark('5ms', () async {
-        await later<int>(27, Duration(milliseconds: 5));
-      }, scoreEmitter: MeanEmitter());
+void main(List<String> args) async {
+  await asyncGroup('1: Wait for duration', () async {
+    await asyncBenchmark('10ms', () async {
+      await later<int>(39, Duration(milliseconds: 10));
     });
 
-    group('Set', () async {
-      await asyncBenchmark('error test', () {
-        throw ('Thrown in benchmark.');
-      });
+    await asyncBenchmark('5ms', () async {
+      await later<String>('result', Duration(milliseconds: 5));
+    }, scoreEmitter: MeanEmitter());
+  });
 
-      benchmark('construct', () {
-        final set = {for (var i = 0; i < 1000; ++i) i};
-      });
+  group('2: Set', () {
+    benchmark('error test', () {
+      throw ('Thrown in benchmark: error test.');
     });
-  }
+
+    benchmark('construct', () {
+      final set = {for (var i = 0; i < 1000; ++i) i};
+    });
+
+    throw 'Error in group';
+  });
+}
   ```
 Run a *single* benchmark file as an executable:
 ```Console

@@ -29,7 +29,7 @@ Write inline benchmarks using the functions:
  * [`group`][group]: Used to label a group of benchmarks.
    The callback `body` usually contains one or several calls to
    [`benchmark`][benchmark].
- * [`asyncGroup`]: Used to label an asynchronous group of benchmarks.
+ * [`asyncGroup`][asyncGroup]: Used to label an asynchronous group of benchmarks.
    The callback `body` usually contains one or several calls to
    [`asyncBenchmark`][asyncBenchmark].
  * Benchmark groups may not be nested.
