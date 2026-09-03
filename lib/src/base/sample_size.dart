@@ -1,12 +1,10 @@
-class SampleSize {
-  const SampleSize({required this.length, this.innerIterations = 1});
-
+class const SampleSize({
   /// The size of the required score sample.
-  final int length;
+  required final int length,
 
   /// The number of runs each measurement is averaged over.
-  final int innerIterations;
-
+  final int innerIterations = 1,
+}) {
   @override
   String toString() {
     return 'SampleSize(length: $length, innerIterations: $innerIterations)';
