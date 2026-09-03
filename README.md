@@ -28,8 +28,11 @@ Write inline benchmarks using the functions:
    asynchronous benchmark.
  * [`group`][group]: Used to label a group of benchmarks.
    The callback `body` usually contains one or several calls to
-   [`benchmark`][benchmark] and [`asyncBenchmark`][asyncBenchmark].
-   Benchmark groups may not be nested.
+   [`benchmark`][benchmark].
+ * [`asyncGroup`]: Used to label an asynchronous group of benchmarks.
+   The callback `body` usually contains one or several calls to
+   [`asyncBenchmark`][asyncBenchmark].
+ * Benchmark groups may not be nested.
  * Benchmark files must end with `_benchmark.dart` in order to be detected
    by the `benchmark_runner`.
 
@@ -37,7 +40,7 @@ Write inline benchmarks using the functions:
 The functions [`benchmark`][benchmark] and [`asyncBenchmark`][asyncBenchmark]
    accept the following optional parameters:
    * `setup`: A function that is executed *before* the benchmark runs.
-   * `teardown`: A function that is executed *after* the benchmark runs,
+   * `teardown`: A function that is executed *after* the benchmark runs.
    * `scoreEmitter`: An object responsible for formatting the score results.
      Its default value is: `StatsEmitter()`.
    * `warmUpDuration`: The time expended on warm-up runs used to generate a
@@ -137,8 +140,8 @@ avoid spurious characters due to the use of Ansi modifiers.
 The functions [`benchmark`][benchmark] and
 [`asyncBenchmark`][asyncBenchmark] accept the optional parameters `scoreEmitter`.
 The parameter expects an object of a type that implements the interface
-`ScoreEmitter` and can be used to customize the score reports e.g.
-to make the score format more suitable for writing to a file:
+`ScoreEmitter` and can be used to customize the benchmark scores e.g.
+to make the format more suitable for writing the report to a file:
 
 ```Dart
 import 'package:benchmark_runner/benchmark_runner.dart';
@@ -212,7 +215,7 @@ error messages and the mean value is altered.
 completion. To print the scores in sequential order (as they are listed in the
 benchmark executable) it is required to *await* the completion
 of the async benchmark functions and
-the enclosing group.
+the enclosing async group.
 
 
 ## Score Sampling
@@ -247,6 +250,8 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 [benchmark_harness]: https://pub.dev/packages/benchmark_harness
 
 [benchmark_runner]: https://pub.dev/packages/benchmark_runner
+
+[asyncBenchmark]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/asyncBenchmark.html
 
 [benchmark]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/benchmark.html
 
