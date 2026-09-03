@@ -4,11 +4,10 @@ import 'package:lazy_memo/lazy_memo.dart';
 
 /// Provides access to basic statistical entities of a
 /// numerical random sample.
-class Stats<T extends num> {
-  Stats(List<T> sample) : _sample = List.of(sample);
+class Stats<T extends num>(List<T> sample) {
 
   /// Original random data sample. Must not be empty.
-  final List<T> _sample;
+  final List<T> _sample = List.of(sample);
 
   /// Returns a copy of the random sample
   List<T> get sample => List.of(_sample);
@@ -138,9 +137,8 @@ class Stats<T extends num> {
   /// * values larger than `quartile3 + iqrScaling * iqr`
   List<T> removeOutliers([double iqrScaling = 2.5]) {
     final outliers = <T>[];
-    iqrScaling = iqrScaling.abs();
-    final lowerFence = quartile1 - iqrScaling * iqr;
-    final upperFence = quartile3 + iqrScaling * iqr;
+    final lowerFence = quartile1 - iqrScaling.abs() * iqr;
+    final upperFence = quartile3 + iqrScaling.abs() * iqr;
     _sample.removeWhere((current) {
       if (current < lowerFence || current > upperFence) {
         outliers.add(current);
