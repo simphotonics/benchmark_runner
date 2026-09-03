@@ -83,7 +83,7 @@ The functions [`benchmark`][benchmark] and [`asyncBenchmark`][asyncBenchmark]
   ```
 ### 1. Running a Single Benchmark File
 A *single* benchmark file may be run as a Dart executable:
-![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/single_report.png)
+![Console Output Single](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/single_report.svg)
 
 The console output is shown above. By default,
 the functions [`benchmark`][benchmark] and
@@ -108,7 +108,7 @@ To run *several* benchmark files (with the format`*_benchmark.dart`)
 and print a report, invoke the sub-command `report` and specify a directory.
 If no directory is specified, it defaults to `benchmark`:
 
-![Runner Report](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/runner_report.png)
+![Runner Report](https://raw.githubusercontent.com/simphotonics/benchmark_runner/main/images/runner_report.svg)
 
 A typical console output is shown above. In this example, the benchmark_runner
 detected two benchmark files, ran the micro-benchmarks and produced a report.
