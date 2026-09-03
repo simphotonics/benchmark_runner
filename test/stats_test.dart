@@ -32,17 +32,17 @@ void main() {
 
   group('Histogram:', () {
     test('number of intervals', () {
-      expect(stats.histogram(intervalNumber: 8).keys.length, 9);
+      expect(stats.histogram(intervals: 8).keys.length, 9);
     });
     test('range', () {
-      final hist = stats.histogram(intervalNumber: 10);
+      final hist = stats.histogram(intervals: 10);
       expect(hist.keys.first, stats.min);
       expect(hist.keys.last, stats.max);
     });
     test('normalization', () {
       final numberOfIntervals = 10;
       final hist = stats.histogram(
-        intervalNumber: numberOfIntervals,
+        intervals: numberOfIntervals,
         normalize: true,
       );
       var sum = hist.values.fold<num>(0.0, (sum, current) => sum + current);
