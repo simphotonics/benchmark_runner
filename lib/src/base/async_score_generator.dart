@@ -12,36 +12,23 @@ Future<void> futureDoNothing() async {}
 
 /// A class used to benchmark asynchronous functions.
 /// The benchmarked function is provided as a constructor argument.
-class AsyncScoreGenerator {
-  /// Constructs an [AsyncScoreGenerator] object using the following arguments:
+class const AsyncScoreGenerator({
+  /// The benchmarked function.
+  required final AsyncFunction run,
 
-  /// * [run]: the asynchronous function to be benchmarked,
-  /// * [setup]: an asynchronous function that is executed
-  ///   once before running the benchmark,
-  /// * [teardown]: an asynchronous function that is executed once after
-  ///   the benchmark has completed.
-  const AsyncScoreGenerator({
-    required this.run,
-    this.setup = futureDoNothing,
-    this.teardown = futureDoNothing,
-  });
+  /// Function executed prior to the benchmark runs.
+  final AsyncFunction setup = futureDoNothing,
 
-  // The benchmarked function.
-  final AsyncFunction run;
-
-  // Function executed prior to the benchmark runs.
-  final AsyncFunction setup;
-
-  // Function executed after the benchmark runs.
-  final AsyncFunction teardown;
-
+  /// Function executed after the benchmark runs.
+  final AsyncFunction teardown = futureDoNothing,
+}) {
   /// Returns a sample of benchmark scores.
   /// The benchmark scores represent the run time in microseconds. The integer
   /// `innerIter` is larger than 1 if each score entry was averaged over
   /// `innerIter` runs.
   ///
   Future<({List<double> scores, int innerIterations})> sample({
-    final Duration warmUpDuration = const Duration(milliseconds: 200),
+    Duration warmUpDuration = const Duration(milliseconds: 200),
     SampleSize? sampleSize,
   }) async {
     await setup();
@@ -55,14 +42,13 @@ class AsyncScoreGenerator {
       );
 
       sampleSize ??= BenchmarkHelper.sampleSize(scoreEstimate.elapsedTicks);
-
       if (sampleSize.innerIterations > 1) {
-        final durationAsTicks =
-            sampleSize.innerIterations * scoreEstimate.elapsedTicks;
+        final runs = sampleSize.innerIterations;
+
         for (var i = 0; i < sampleSize.length; i++) {
-          // Averaging each score over approx. sampleSize.inner runs.
+          // Averaging each score over sampleSize.innerIteration runs.
           // For details see function BenchmarkHelper.sampleSize.
-          final score = await watch.measureAsync(run, durationAsTicks);
+          final score = await watch.measureAsync(run, runs);
           sample.add(score);
         }
       } else {
@@ -94,8 +80,8 @@ class AsyncScoreGenerator {
   /// and a [Stats] object created from the score sample.
   /// Note: The run time entries represent microseconds.
   Future<Score> score({
-    final int warmUpRuns = 3,
-    final Duration warmUpDuration = const Duration(microseconds: 200),
+    int warmUpRuns = 3,
+    Duration warmUpDuration = const Duration(microseconds: 200),
     SampleSize? sampleSize,
   }) async {
     final watch = Stopwatch()..start();

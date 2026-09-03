@@ -3,22 +3,19 @@ import '../util/stats.dart';
 /// Object aggreggating the score sample, score stats
 /// and the duration it took to generate the
 /// score sample.
-class Score<T extends num> {
-  Score({
-    required this.duration,
-    required this.innerIterations,
-    required List<T> scoreSample,
-  }) : scoreStats = Stats(scoreSample);
-
+class Score<T extends num>({
   /// Measured micro-benchmark duration
-  final Duration duration;
+  required final Duration duration,
 
   /// The number of times the benchmarked function was executed to generate one
   /// benchmark sample entry.
-  final int innerIterations;
+  required final int innerIterations,
 
+  /// Benchmark scores sample in microseconds.
+  required List<T> scoreSample,
+}) {
   /// Scores (in microseconds) and score stats.
-  final Stats<T> scoreStats;
+  final Stats<T> scoreStats = Stats(scoreSample);
 
   /// Time-scale when scores are divided by factor.
   late final ({String unit, int factor}) timeScale = switch (scoreStats.mean) {

@@ -12,7 +12,7 @@ import '../extension/duration_formatter.dart';
 import '../extension/string_utils.dart';
 import '../util/file_utils.dart';
 
-class ReportCommand extends Command {
+class ReportCommand extends Command<void> {
   @override
   String get name => 'report';
 
@@ -108,14 +108,16 @@ class ReportCommand extends Command {
 
     // Printing benchmark scores.
     for (final fResult in fResults) {
-      fResult.then((result) {
-        print('\$ '.style(ColorProfile.dim) + result.command());
-        print(result.stdout.indentLines(2, indentMultiplierFirstLine: 2));
-        print('\n');
-        if (isVerbose) {
-          print(result.stderr.indentLines(4, indentMultiplierFirstLine: 4));
-        }
-      });
+      unawaited(
+        fResult.then((result) {
+          print('\$ '.style(ColorProfile.dim) + result.command());
+          print(result.stdout.indentLines(2, indentMultiplierFirstLine: 2));
+          print('\n');
+          if (isVerbose) {
+            print(result.stderr.indentLines(4, indentMultiplierFirstLine: 4));
+          }
+        }),
+      );
     }
 
     // Close subscription to progress indicator.
@@ -131,6 +133,6 @@ class ReportCommand extends Command {
     );
 
     print(exitStatus.message);
-    exit(exitStatus.exitCode.code);
+    exit(exitStatus.exitCode.index);
   }
 }

@@ -8,35 +8,23 @@ void doNothing() {}
 
 /// A class used to benchmark synchronous functions.
 /// The benchmarked function is provided as a constructor argument.
-class ScoreGenerator {
-  /// Constructs a [ScoreGenerator] object using the following arguments:
-  /// * [description]: a [String] describing the benchmark,
-  /// * [run]: the synchronous function to be benchmarked,
-  /// * [setup]: a function that is executed once before running the benchmark,
-  /// * [teardown]: a function that is executed once after the benchmark has
-  /// completed.
-  const ScoreGenerator({
-    required this.run,
-    this.setup = doNothing,
-    this.teardown = doNothing,
-  });
-
+class const ScoreGenerator({
   // The benchmarked function.
-  final void Function() run;
+  required final void Function() run,
 
-  /// Setup function executed prior to the benchmark runs before [warmUp].
-  final void Function() setup;
+  /// Setup function executed once before runnign the benchmark.
+  final void Function() setup = doNothing,
 
-  /// Teardown function executed after the benchmark runs.
-  final void Function() teardown;
-
+  /// Teardown function executed once after the benchmark has completed.
+  final void Function() teardown = doNothing,
+}) {
   /// Generates a sample of benchmark scores.
   /// * The benchmark score entries represent the run time in microseconds.
   /// * The integer `innerIter` is larger than 1
   ///  if each score entry was averaged over
   /// `innerIter` runs.
   ({List<double> scores, int innerIterations}) sample({
-    final Duration warmUpDuration = const Duration(milliseconds: 200),
+    Duration warmUpDuration = const Duration(milliseconds: 200),
     SampleSize? sampleSize,
   }) {
     setup();
@@ -90,7 +78,7 @@ class ScoreGenerator {
   /// * Before the measurement the function is exercised repeatedly at least
   /// [warmUpRuns] times.
   Score score({
-    final Duration warmUpDuration = const Duration(microseconds: 200),
+    Duration warmUpDuration = const Duration(microseconds: 200),
     SampleSize? sampleSize,
   }) {
     final watch = Stopwatch()..start();

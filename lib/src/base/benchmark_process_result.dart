@@ -1,8 +1,8 @@
-import 'dart:collection';
 import 'dart:convert' show Encoding, Utf8Codec;
 import 'dart:io' show File, Process, ProcessResult;
 
 import 'package:ansi_modifier/ansi_modifier.dart';
+
 import '../enum/exit_code.dart';
 import '../extension/color_profile.dart';
 import '../extension/duration_formatter.dart';
@@ -12,22 +12,17 @@ import '../extension/string_utils.dart';
 /// * the name of the executable that was used to run the benchmark,
 /// * the list of arguments,
 /// * and the resulting [ProcessResult] object.
-class BenchmarkProcessResult {
-  BenchmarkProcessResult({
-    required this.executable,
-    required List<String> arguments,
-    required this.processResult,
-    required this.benchmarkFile,
-  }) : arguments = UnmodifiableListView(arguments);
-
-  final String executable;
-  final UnmodifiableListView<String> arguments;
-  final ProcessResult processResult;
-  final File benchmarkFile;
+class BenchmarkProcessResult({
+  required final String executable,
+  required List<String> arguments,
+  required final ProcessResult processResult,
+  required final File benchmarkFile,
+}) {
+  final List<String> arguments = List.unmodifiableOf(arguments);
 
   /// Returns the command used to generate the benchmark scores.
   ///
-  /// Set [isBrief] to true to strips the argument
+  /// Set [isBrief] to true to strip  the argument
   /// `--define=isBenchmarkProcess=true`.
   String command({bool isBrief = true}) {
     final args = switch (isBrief) {
@@ -44,10 +39,11 @@ class BenchmarkProcessResult {
   }
 }
 
-/// A record holding:
-/// * an exit message,
-/// * an exit code.
-typedef ExitStatus = ({String message, ExitCode exitCode});
+/// Represents a process exit status with an optional message.
+class const ExitStatus({
+  required final ExitCode exitCode,
+  final String message = '',
+});
 
 /// Extension on [Process].
 /// Adds the static method `runBenchmark`.
@@ -116,9 +112,9 @@ extension BenchmarkUtils on BenchmarkProcessResult {
       .replaceAll(groupErrorMark, '')
       .replaceAll(successMark, '');
 
-  /// Returns a record of type [ExitStatus].
-  /// * Checks if the benchmark processes exited normally.
-  /// * Checks if stderr contains the string `To do`.
+  /// Checks the exit status of the benchmark processes,
+  /// adds a message and returns an [ExitStatus].
+
   static ExitStatus aggregatedExitStatus({
     required List<BenchmarkProcessResult> results,
     required Duration duration,
@@ -174,9 +170,14 @@ extension BenchmarkUtils on BenchmarkProcessResult {
     switch (exitCode) {
       case ExitCode.someBenchmarksFailed:
         out.writeln(
-          'Exiting with code '
-          '${ExitCode.someBenchmarksFailed.code}: '
-          '${ExitCode.someBenchmarksFailed.description.style(ColorProfile.error)}',
+          // ignore: prefer_interpolation_to_compose_strings
+          'Exiting with code ' +
+              ExitCode.someBenchmarksFailed.index.toString() +
+              // ignore: prefer_interpolation_to_compose_strings
+              ': ' +
+              ExitCode.someBenchmarksFailed.description.style(
+                ColorProfile.error,
+              ),
         );
         break;
       case ExitCode.allBenchmarksExecuted:
@@ -188,13 +189,13 @@ extension BenchmarkUtils on BenchmarkProcessResult {
       case ExitCode.someGroupsFailed:
         out.writeln(
           'Exiting with code '
-          '${ExitCode.someGroupsFailed.code}: '
+          '${ExitCode.someGroupsFailed.index}: '
           '${ExitCode.someGroupsFailed.description.style(ColorProfile.error)}',
         );
         break;
       default:
     }
 
-    return (message: out.toString(), exitCode: exitCode);
+    return ExitStatus(message: out.toString(), exitCode: exitCode);
   }
 }

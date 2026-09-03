@@ -22,13 +22,13 @@ class ExportCommand extends ReportCommand {
 
   @override
   String get description =>
-      'Exports benchmark scores. A custom file extension '
+      'Exports benchmark scores. A file extension '
       'and directory may be specified.';
 
   static const _extension = 'extension';
   static const _outputDir = 'outputDir';
 
-  ExportCommand() {
+  new() {
     argParser
       ..addOption(
         _extension,
@@ -40,7 +40,9 @@ class ExportCommand extends ReportCommand {
         _outputDir,
         abbr: 'o',
         defaultsTo: null,
-        help: 'Directory must exist. Score files will be written to it.',
+        help:
+            'Set directory where score files will be written.\n'
+            '(Defaults to the directory containing the benchmarks.)',
       );
   }
 
@@ -117,6 +119,6 @@ class ExportCommand extends ReportCommand {
     );
 
     print(exitStatus.message);
-    exit(exitStatus.exitCode.code);
+    exit(exitStatus.exitCode.index);
   }
 }
