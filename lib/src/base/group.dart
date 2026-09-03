@@ -5,15 +5,10 @@ import 'package:ansi_modifier/ansi_modifier.dart';
 import '../extension/color_profile.dart';
 import '../extension/string_utils.dart';
 
-class Group {
-  const Group(this.description, this.body);
-
-  /// Group description
-  final String description;
-
-  /// Group body
-  final FutureOr<void> Function() body;
-
+abstract class const Group(
+  /// The group description.
+  final String description,
+) {
   /// Throws an error if this group is defined within another group.
   void _throwIfNested() {
     // Check for nested groups:
@@ -26,9 +21,38 @@ class Group {
       );
     }
   }
+}
 
+class const SyncGroup(
+  super.description,
+
+  /// Group body
+  final void Function() body,
+) extends Group {
+  // Runs the callback body.
+  void run() {
+    _throwIfNested();
+    final watch = Stopwatch()..start();
+    runZonedGuarded(body, ((error, stack) {
+      reportError(
+        error,
+        stack,
+        description: description,
+        duration: watch.elapsed,
+        errorMark: groupErrorMark,
+      );
+    }), zoneValues: {#group: this});
+  }
+}
+
+class const AsyncGroup(
+  super.description,
+
+  /// Group body
+  final Future<void> Function() body,
+) extends Group {
   /// Runs and awaits the callback body.
-  Future<void> runAsync() async {
+  Future<void> run() async {
     _throwIfNested();
     final watch = Stopwatch()..start();
     await runZonedGuarded(
@@ -58,37 +82,25 @@ class Group {
       zoneValues: {#group: this},
     );
   }
-
-  // Runs the callback body.
-  void run() {
-    _throwIfNested();
-    final watch = Stopwatch()..start();
-    runZonedGuarded(body, ((error, stack) {
-      reportError(
-        error,
-        stack,
-        description: description,
-        duration: watch.elapsed,
-        errorMark: groupErrorMark,
-      );
-    }), zoneValues: {#group: this});
-  }
 }
 
 /// Defines a benchmark group.
 ///
 /// Note: Groups may not be nested.
-FutureOr<void> group(String description, FutureOr<void> Function() body) async {
-  final isAsync = (body is Future<void> Function());
-
-  if (isAsync) {
-    description = hourGlass + description;
-  }
-
-  final instance = Group(description.style(ColorProfile.group), body);
-  if (isAsync) {
-    return instance.runAsync();
+void group(String description, void Function() body) {
+  if (body is Future<void> Function()) {
+    SyncGroup((hourGlass + description).style(ColorProfile.group), body).run();
   } else {
-    instance.run();
+    SyncGroup(description.style(ColorProfile.group), body).run();
   }
+}
+
+Future<void> asyncGroup(
+  String description,
+  Future<void> Function() body,
+) async {
+  await AsyncGroup(
+    (hourGlass + description).style(ColorProfile.group),
+    body,
+  ).run();
 }
