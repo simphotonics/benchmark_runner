@@ -19,7 +19,7 @@ void main(List<String> args) {
       var list = <int>[for (var i = 0; i < 1000; ++i) i];
     });
 
-    benchmark('construct', () {
+    benchmark('construct use MeanEmitter()', () {
       var list = <int>[for (var i = 0; i < 1000; ++i) i];
     }, scoreEmitter: MeanEmitter());
   });
