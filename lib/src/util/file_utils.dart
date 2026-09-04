@@ -1,26 +1,51 @@
 import 'dart:io';
 
-/// Returns a list of resolved benchmark files. If [path] represents
-/// a directory, the directory
+import 'package:glob/glob.dart';
+import 'package:glob/list_local_fs.dart' show ListLocalFileSystem;
+
+// /// Returns a list of resolved benchmark files.
+// /// * Benchmark files must end with `_benchmark.dart`.
+// /// * Returns an empty list if no benchmark files were found.
+// Future<({List<File> benchmarkFiles, FileSystemEntityType entityType})>
+// resolveBenchmarkFiles(String path) async {
+//   final benchmarkFiles = <File>[];
+//   final entityType = await FileSystemEntity.type(path);
+//   if ((entityType == FileSystemEntityType.directory)) {
+//     final directory = Directory(path);
+//     await for (final entity in directory.list()) {
+//       if (entity is File) {
+//         if (entity.path.endsWith('_benchmark.dart')) {
+//           benchmarkFiles.add(entity);
+//         }
+//       }
+//     }
+//   } else if ((entityType == FileSystemEntityType.file)) {
+//     benchmarkFiles.add(File(path));
+//   }
+//   return (benchmarkFiles: benchmarkFiles, entityType: entityType);
+// }
+
+/// Returns a list of resolved benchmark files.
 /// * Benchmark files must end with `_benchmark.dart`.
 /// * Returns an empty list if no benchmark files were found.
-Future<({List<File> benchmarkFiles, FileSystemEntityType entityType})>
-resolveBenchmarkFiles(String path) async {
+Future<List<File>> resolveBenchmarkFiles(String path) async {
   final benchmarkFiles = <File>[];
-  final entityType = await FileSystemEntity.type(path);
-  if ((entityType == FileSystemEntityType.directory)) {
-    final directory = Directory(path);
-    await for (final entity in directory.list()) {
-      if (entity is File) {
-        if (entity.path.endsWith('_benchmark.dart')) {
-          benchmarkFiles.add(entity);
+  final g = Glob(path);
+  
+  await for (final entity in g.list()) {
+    if (entity is Directory) {
+      await for (final e in (entity as Directory).list()) {
+        if (e is File) {
+          if (e.path.endsWith('_benchmark.dart')) {
+            benchmarkFiles.add(e);
+          }
         }
       }
+    } else if (entity is File && entity.path.endsWith('_benchmark.dart')) {
+      benchmarkFiles.add(entity as File);
     }
-  } else if ((entityType == FileSystemEntityType.file)) {
-    benchmarkFiles.add(File(path));
   }
-  return (benchmarkFiles: benchmarkFiles, entityType: entityType);
+  return benchmarkFiles;
 }
 
 /// Opens a file using [path], writes [contents], and closes the file.
