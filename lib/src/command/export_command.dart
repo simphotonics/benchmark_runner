@@ -23,7 +23,7 @@ class ExportCommand extends ReportCommand {
   @override
   String get description =>
       'Exports benchmark scores. A file extension '
-      'and directory may be specified.';
+      'and output directory may be specified.';
 
   static const _extension = 'extension';
   static const _outputDir = 'outputDir';
@@ -39,10 +39,8 @@ class ExportCommand extends ReportCommand {
       ..addOption(
         _outputDir,
         abbr: 'o',
-        defaultsTo: null,
-        help:
-            'Set directory where score files will be written.\n'
-            '(Defaults to the directory containing the benchmarks.)',
+        defaultsTo: 'benchmark',
+        help: 'Set directory where score files will be written.',
       );
   }
 
@@ -56,14 +54,10 @@ class ExportCommand extends ReportCommand {
 
     Ansi.status = isMonochrome ? AnsiOutput.disabled : AnsiOutput.enabled;
 
-    final searchDirectory = argResults!.rest.isEmpty
-        ? 'benchmark'
-        : argResults!.rest.first;
-
     final benchmarkFiles = await findBenchmarkFiles();
 
     // Reading options
-    final outputDirectory = argResults!.option(_outputDir) ?? searchDirectory;
+    final outputDirectory = argResults!.option(_outputDir) ?? 'benchmark';
 
     // Starting processes.
     final fResults = <Future<BenchmarkProcessResult>>[];
@@ -74,7 +68,7 @@ class ExportCommand extends ReportCommand {
           arguments: [
             '--define=isBenchmarkProcess=true',
             if (isVerbose) '--define=isVerbose=true',
-            if (isMonochrome) '--define=isMonochrome=true',
+            //if (isMonochrome) '--define=isMonochrome=true',
           ],
           benchmarkFile: file,
         ),

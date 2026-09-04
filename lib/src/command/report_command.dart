@@ -17,7 +17,7 @@ class ReportCommand extends Command<void> {
   String get name => 'report';
 
   @override
-  String get invocation => super.invocation + ' <path to directory|file>';
+  String get invocation => super.invocation + ' <path to directory|files>';
 
   @override
   String get description =>
@@ -41,34 +41,25 @@ class ReportCommand extends Command<void> {
 
   /// Attempts to find benchmark files and prints an error/success message.
   /// * Uses `argResults!.rest.first` as path.
-  /// * If no path is provided, the directory `benchmark` is used.
+  /// * If no path is provided, the directory `benchmark` is used instead.
   Future<List<File>> findBenchmarkFiles() async {
-    final searchDirectory = argResults!.rest.isEmpty
+    final path = argResults!.rest.isEmpty
         ? 'benchmark'
         : argResults!.rest.first;
 
     // Resolving test files.
-    final (benchmarkFiles: benchmarkFiles, entityType: entityType) =
-        await resolveBenchmarkFiles(searchDirectory);
+    final benchmarkFiles = await resolveBenchmarkFiles(path);
     if (benchmarkFiles.isEmpty) {
       print('');
       print(
         'Could not resolve any benchmark files using path: '
-        '${searchDirectory.style(ColorProfile.highlight)}\n',
+        '${path.style(ColorProfile.highlight)}\n',
       );
       exit(ExitCode.noBenchmarkFilesFound.index);
     } else {
-      if (entityType == FileSystemEntityType.directory) {
-        print(
-          '\nFinding benchmark files in '.style(ColorProfile.dim) +
-              searchDirectory +
-              ' ...'.style(ColorProfile.dim),
-        );
-      } else {
-        print('\nFinding benchmark files ... '.style(ColorProfile.dim));
-      }
+      print('\nLocating benchmark files ... '.style(ColorProfile.dim));
       for (final file in benchmarkFiles) {
-        print('  ${file.path}');
+        print(file.path);
       }
       print('');
     }
@@ -96,7 +87,7 @@ class ReportCommand extends Command<void> {
           arguments: [
             '--define=isBenchmarkProcess=true',
             if (isVerbose) '--define=isVerbose=true',
-            if (isMonochrome) '--define=isMonochrome=true',
+            //if (isMonochrome) '--define=isMonochrome=true',
           ],
           benchmarkFile: file,
         ),
