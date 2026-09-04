@@ -1,28 +1,15 @@
-// Extension on `num` providing the method
 import 'dart:math' show pow;
 
-import 'package:exception_templates/exception_templates.dart';
-
-/// `root`.
 extension Root on num {
   /// Returns the n-th root of this as a `double`.
-  /// * Usage: `final n = 32.root(5);`
-  /// * Only supported for positive numbers.
-  ///
-  /// Important: The dot operator has higher precedence than the minus sign.
-  ///
-  /// Therefore: `-32.root(5) == -(32.root(5)) == -2`.
-  ///
-  /// Whereas:  `(-32).root(5)` throws an error of
-  /// type `ErrorOf<num>`.
-  double root(num n) {
-    if (isNegative) {
-      throw ErrorOf<num>(
-        message: 'Error in extension function root($this).',
-        invalidState: '$this < 0',
-        expectedState: 'A positive function argument.',
-      );
-    }
+  /// ```
+  /// // Usage
+  /// final a = 32.root(5);
+  /// ```
+  /// * Only supported for positive numbers: `(-32).root(5)` is NaN.
+  /// * The dot operator has higher precedence than the minus sign: <br/>
+  ///   `-32.root(5) == -(32.root(5)) == -2` <br/>
+  double root(int n) {
     return pow(this, 1 / n).toDouble();
   }
 }
