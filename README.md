@@ -109,7 +109,7 @@ below the histogram.
 ### 2. Using the Benchmark Runner
 To run the benchmarks in *several* benchmark files (ending in `_benchmark.dart`)
 and print a report, invoke the sub-command `report` and specify a
-search path (glob syntax is supported).
+search path ([Glob][Glob] syntax is supported).
 If no search path is specified, it defaults to `benchmark`.
 
 ```Console
@@ -276,3 +276,5 @@ Please file feature requests and bugs at the [issue tracker][tracker].
 [estimate]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/estimate.html
 
 [estimateAsync]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/estimateUpAsync.html
+
+[Glob]: https://pub.dev/packages/glob
