@@ -25,6 +25,7 @@ dependencies:
   ansi_modifier: ^1.0.0
   args: ^2.7.0
   exception_templates: ^1.0.0
+  glob: ^2.2.0
   lazy_memo: ^1.0.0
   path: ^1.9.1
 
