@@ -1,5 +1,7 @@
 
 ## 2.1.0
+- The console utility `benchmark_runner` now supports [Glob][Glob] syntax when
+  entering a path.
 - Added `asyncGroup`, a dedicated asynchronous benchmark group
   that can be awaited.
 - Eliminated the use of `FutureOr`.
@@ -104,3 +106,4 @@ score sample size.
 - Initial version
 
 [sampleSize]: https://pub.dev/documentation/benchmark_runner/latest/benchmark_runner/BenchmarkHelper/sampleSize.html
+[Glob]: https://pub.dev/packages/glob
