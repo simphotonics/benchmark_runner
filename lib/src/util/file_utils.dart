@@ -31,7 +31,7 @@ import 'package:glob/list_local_fs.dart' show ListLocalFileSystem;
 Future<List<File>> resolveBenchmarkFiles(String path) async {
   final benchmarkFiles = <File>[];
   final g = Glob(path);
-  
+
   await for (final entity in g.list()) {
     if (entity is Directory) {
       await for (final e in (entity as Directory).list()) {

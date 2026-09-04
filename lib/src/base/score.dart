@@ -12,7 +12,7 @@ class Score<T extends num>({
   required final int innerIterations,
 
   /// Benchmark score sample in microseconds.
-  /// Must have at least 2 entries. 
+  /// Must have at least 2 entries.
   required List<T> scoreSample,
 }) {
   /// Scores (in microseconds) and score stats.

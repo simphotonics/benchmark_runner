@@ -23,7 +23,7 @@ void main() {
         '-m, --isMonochrome    Disables colorized reporting.\n'
         '\n'
         'Available commands:\n'
-        '  export   Exports benchmark scores. A file extension and directory may be specified.\n'
+        '  export   Exports benchmark scores. A file extension and output directory may be specified.\n'
         '  report   Runs benchmarks and prints a score report to stdout.\n'
         '\n'
         'Run "benchmark_runner help <command>" for more information about a command.\n'
@@ -51,7 +51,7 @@ void main() {
         equals(
           'Runs benchmarks and prints a score report to stdout.\n'
           '\n'
-          'Usage: benchmark_runner report [arguments] <path to directory|file>\n'
+          'Usage: benchmark_runner report [arguments] <path to directory|files>\n'
           '-h, --help    Print this usage information.\n'
           '\n'
           'Run "benchmark_runner help" to see global options.',
@@ -93,14 +93,14 @@ void main() {
 
       expect(
         usage,
-        'Exports benchmark scores. A file extension and directory may be specified.\n'
+        'Exports benchmark scores. A file extension and output directory may be specified.\n'
         '\n'
-        'Usage: benchmark_runner export [arguments] <path to directory|file>\n'
+        'Usage: benchmark_runner export [arguments] <path to directory|files>\n'
         '-h, --help         Print this usage information.\n'
         '-e, --extension    Set file extension of exported files.\n'
         '                   (defaults to "txt")\n'
         '-o, --outputDir    Set directory where score files will be written.\n'
-        '                   (Defaults to the directory containing the benchmarks.)\n'
+        '                   (defaults to "benchmark")\n'
         '\n'
         'Run "benchmark_runner help" to see global options.',
       );
