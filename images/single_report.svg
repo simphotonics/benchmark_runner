@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1931.2" height="394" viewBox="0 0 1931.2 394" role="img" aria-label="console2svg output">
+<svg xmlns="http://www.w3.org/2000/svg" width="822.4" height="394" viewBox="0 0 822.4 394" role="img" aria-label="console2svg output">
 <style>
 .c2.c { font-family: "JetBrains Mono","Cascadia Mono","Segoe UI Mono","Noto Sans Mono","SFMono-Regular",Menlo,Consolas,"DejaVu Sans Mono","Liberation Mono",monospace; font-size: 14px; }
 .c2 text { dominant-baseline: alphabetic; }
@@ -11,200 +11,181 @@
 .c2 .ac{fill:#0dbc79}
 .c2 .ad{fill:#2472c8}
 @keyframes c2b { 50% { visibility: hidden; } }
-</style><rect width="1931.2" height="394" fill="#1e1e1e"/>
+</style><rect width="822.4" height="394" fill="#1e1e1e"/>
 <defs>
 <g id="c2r0" class="c2 c">
-<rect width="1915.2" height="18" id="c2e0" fill="#1e1e1e"/>
-<text class="aa" y="14" textLength="109.2">[375ms:803us]</text>
+<rect width="806.4" height="18" id="c2e0" fill="#1e1e1e"/>
+<text class="aa" y="14" textLength="109.2">[415ms:930us]</text>
 <text class="ab w" x="117.6" y="14" textLength="117.6">Set: construct</text>
 </g>
 <g id="c2r1" class="c2 c">
 <use href="#c2e0"/>
-<text class="ac w" x="16.8" y="14" textLength="184.8">mean: 31.24 ± 1.95 us,</text>
-<text class="ad w" x="210" y="14" textLength="201.6">median: 30.71 ± 1.041 us</text>
+<text class="ac w" x="16.8" y="14" textLength="184.8">mean: 33.51 ± 3.29 us,</text>
+<text class="ad w" x="210" y="14" textLength="193.2">median: 32.62 ± 2.54 us</text>
 </g>
 <g id="c2r2" class="c2 c">
 <use href="#c2e0"/>
+<rect class="q" x="16.8" y="6.75" width="8.4" height="11.25" id="c2e1" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="25.2" width="7.35" height="18" id="c2e2" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="33.6" width="7.35" height="18" id="c2e3" fill="#11a8cd" stroke="#11a8cd" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="42" width="8.4" height="18" id="c2e4" fill="#0dbc79" stroke="#0dbc79" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<text class="ab" x="50.4" y="14" textLength="8.4">_</text>
+<rect class="q" x="58.8" y="13.5" width="8.4" height="4.5" id="c2e5" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="67.2" y="15.75" width="8.4" height="2.25" id="c2e6" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<text class="ab" x="75.6" y="14" textLength="8.4">_</text>
+<text class="aa" x="84" y="14" textLength="8.4">_</text>
+<text class="ab" x="92.4" y="14" textLength="8.4">_</text>
+<text class="aa" x="100.8" y="14" textLength="109.2">_____________</text>
+<text class="ab" x="210" y="14" textLength="8.4">_</text>
 </g>
 <g id="c2r3" class="c2 c">
 <use href="#c2e0"/>
-<rect class="q" x="16.8" y="2.25" width="8.4" height="15.75" id="c2e1" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="25.2" width="7.35" height="18" id="c2e2" fill="#11a8cd" stroke="#11a8cd" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="33.6" y="6.75" width="8.4" height="11.25" id="c2e3" fill="#0dbc79" stroke="#0dbc79" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="42" y="13.5" width="8.4" height="4.5" id="c2e4" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="50.4" y="15.75" width="8.4" height="2.25" id="c2e5" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="58.8" y="15.75" width="8.4" height="2.25" id="c2e6" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<text class="ab" x="67.2" y="14" textLength="8.4">_</text>
-<text class="aa" x="75.6" y="14" textLength="8.4">_</text>
-<text class="ab" x="84" y="14" textLength="8.4">_</text>
-<text class="aa" x="92.4" y="14" textLength="8.4">_</text>
-<text class="ab" x="100.8" y="14" textLength="8.4">_</text>
-<text class="aa" x="109.2" y="14" textLength="16.8">__</text>
-<text class="ab" x="126" y="14" textLength="8.4">_</text>
-<text class="aa" x="134.4" y="14" textLength="8.4">_</text>
-<text class="ab" x="142.8" y="14" textLength="8.4">_</text>
-<text class="aa" x="151.2" y="14" textLength="134.4">________________</text>
-<text class="ab" x="285.6" y="14" textLength="8.4">_</text>
+<text class="ab w" x="16.8" y="14" textLength="126">sample size: 90</text>
+<text class="aa w" x="151.2" y="14" textLength="193.2">(averaged over 70 runs)</text>
 </g>
 <g id="c2r4" class="c2 c">
 <use href="#c2e0"/>
-<text class="ab w" x="16.8" y="14" textLength="126">sample size: 87</text>
-<text class="aa w" x="151.2" y="14" textLength="193.2">(averaged over 63 runs)</text>
 </g>
 <g id="c2r5" class="c2 c">
 <use href="#c2e0"/>
-<text class="aa" y="14" textLength="109.2">[424ms:861us]</text>
+<text class="aa" y="14" textLength="109.2">[456ms:487us]</text>
 <text class="ab w" x="117.6" y="14" textLength="201.6">Set: construct from list</text>
 </g>
 <g id="c2r6" class="c2 c">
 <use href="#c2e0"/>
-<text class="ac w" x="16.8" y="14" textLength="184.8">mean: 33.45 ± 2.79 us,</text>
-<text class="ad w" x="210" y="14" textLength="193.2">median: 32.61 ± 1.59 us</text>
+<text class="ac w" x="16.8" y="14" textLength="193.2">mean: 41.26 ± 12.22 us,</text>
+<text class="ad w" x="218.4" y="14" textLength="193.2">median: 35.55 ± 6.13 us</text>
 </g>
-<g id="c2r7" class="c2 c">
-<use href="#c2e0"/>
-<rect class="q" x="16.8" y="13.5" width="8.4" height="4.5" id="c2e7" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="25.2" width="7.35" height="18" id="c2e8" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="33.6" y="6.75" width="8.4" height="11.25" id="c2e9" fill="#11a8cd" stroke="#11a8cd" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="42" y="9" width="8.4" height="9" id="c2e10" fill="#0dbc79" stroke="#0dbc79" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<text class="ab" x="50.4" y="14" textLength="8.4">_</text>
-<use href="#c2e6"/>
-<rect class="q" x="67.2" y="15.75" width="8.4" height="2.25" id="c2e11" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<text class="ab" x="75.6" y="14" textLength="16.8">__</text>
-<text class="aa" x="92.4" y="14" textLength="16.8">__</text>
-<text class="ab" x="109.2" y="14" textLength="25.2">___</text>
-<text class="aa" x="134.4" y="14" textLength="126">_______________</text>
-<text class="ab" x="260.4" y="14" textLength="8.4">_</text>
+<g id="c2r7" class="c2 c"><use href="#c2r4"/>
+<g transform="translate(16.8)">
+<rect width="126" height="18" id="c2e7" fill="#1e1e1e" stroke="#1e1e1e" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" y="6.75" width="8.4" height="11.25" id="c2e8" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="8.4" width="7.35" height="18" id="c2e9" fill="#11a8cd" stroke="#11a8cd" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="16.8" y="13.5" width="8.4" height="4.5" id="c2e10" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="25.2" y="15.75" width="8.4" height="2.25" id="c2e11" fill="#0dbc79" stroke="#0dbc79" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="33.6" y="15.75" width="8.4" height="2.25" id="c2e12" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<text class="ab" x="42" y="14" textLength="8.4">_</text>
+<text class="aa" x="50.4" y="14" textLength="33.6">____</text>
+<text class="ab" x="84" y="14" textLength="16.8">__</text>
+<rect class="q" x="100.8" y="13.5" width="8.4" height="4.5" id="c2e13" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<text class="ab" x="109.2" y="14" textLength="16.8">__</text>
+</g>
 </g>
 <g id="c2r8" class="c2 c">
 <use href="#c2e0"/>
-<text class="ab w" x="16.8" y="14" textLength="126">sample size: 92</text>
-<text class="aa w" x="151.2" y="14" textLength="193.2">(averaged over 73 runs)</text>
+<text class="ab w" x="16.8" y="14" textLength="126">sample size: 90</text>
+<text class="aa w" x="151.2" y="14" textLength="193.2">(averaged over 69 runs)</text>
 </g>
 <g id="c2r9" class="c2 c">
 <use href="#c2e0"/>
-<text class="aa" y="14" textLength="109.2">[177ms:886us]</text>
+<text class="aa" y="14" textLength="109.2">[191ms:227us]</text>
 <text class="ab w" x="117.6" y="14" textLength="126">List: construct</text>
 </g>
 <g id="c2r10" class="c2 c">
 <use href="#c2e0"/>
-<text class="ac w" x="16.8" y="14" textLength="176.4">mean: 5.94 ± 0.28 us,</text>
-<text class="ad w" x="201.6" y="14" textLength="184.8">median: 5.82 ± 0.26 us</text>
+<text class="ac w" x="16.8" y="14" textLength="176.4">mean: 7.88 ± 1.64 us,</text>
+<text class="ad w" x="201.6" y="14" textLength="184.8">median: 7.29 ± 2.23 us</text>
 </g>
-<g id="c2r11" class="c2 c"><use href="#c2r2"/>
+<g id="c2r11" class="c2 c"><use href="#c2r4"/>
 <g transform="translate(16.8)">
-<rect width="126" height="18" id="c2e12" fill="#1e1e1e" stroke="#1e1e1e" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" y="15.75" width="8.4" height="2.25" id="c2e13" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="8.4" y="13.5" width="8.4" height="4.5" id="c2e14" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="16.8" width="7.35" height="18" id="c2e15" fill="#11a8cd" stroke="#11a8cd" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="25.2" y="15.75" width="8.4" height="2.25" id="c2e16" fill="#0dbc79" stroke="#0dbc79" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="33.6" y="13.5" width="8.4" height="4.5" id="c2e17" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<rect class="q" x="42" y="15.75" width="8.4" height="2.25" id="c2e18" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
-<text class="ab" x="50.4" y="14" textLength="8.4">_</text>
-<use href="#c2e6"/>
-<text class="ab" x="67.2" y="14" textLength="25.2">___</text>
-<text class="aa" x="92.4" y="14" textLength="8.4">_</text>
-<text class="ab" x="100.8" y="14" textLength="8.4">_</text>
-<text class="aa" x="109.2" y="14" textLength="8.4">_</text>
+<use href="#c2e7"/>
+<text class="ab" y="14" textLength="8.4">_</text>
+<rect class="q" x="8.4" width="7.35" height="18" id="c2e14" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="16.8" y="13.5" width="8.4" height="4.5" id="c2e15" fill="#11a8cd" stroke="#11a8cd" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="25.2" y="9" width="8.4" height="9" id="c2e16" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<rect class="q" x="33.6" y="11.25" width="8.4" height="6.75" id="c2e17" fill="#d4d4d4" stroke="#d4d4d4" stroke-width="2" vector-effect="non-scaling-stroke"/>
+<text class="aa" x="42" y="14" textLength="33.6">____</text>
+<text class="ab" x="75.6" y="14" textLength="8.4">_</text>
+<text class="aa" x="84" y="14" textLength="33.6">____</text>
 <text class="ab" x="117.6" y="14" textLength="8.4">_</text>
 </g>
 </g>
 <g id="c2r12" class="c2 c">
 <use href="#c2e0"/>
-<text class="ab w" x="16.8" y="14" textLength="134.4">sample size: 132</text>
-<text class="aa w" x="159.6" y="14" textLength="201.6">(averaged over 145 runs)</text>
+<text class="ab w" x="16.8" y="14" textLength="134.4">sample size: 115</text>
+<text class="aa w" x="159.6" y="14" textLength="201.6">(averaged over 120 runs)</text>
 </g>
 <g id="c2r13" class="c2 c">
 <use href="#c2e0"/>
 <text class="ab w" y="14" textLength="210">List: construct(RunTime):</text>
-<text class="ac w" x="218.4" y="14" textLength="58.8">6.18 us</text>
+<text class="ac w" x="218.4" y="14" textLength="58.8">6.50 us</text>
 </g>
 </defs>
 <g transform="translate(8 8)">
 <g>
 <use href="#c2r0" display="inline"/>
 <use href="#c2r1" y="18" display="inline"/>
-<use href="#c2r2" y="36" display="none">
-<animate attributeName="display" values="inline;none" keyTimes="0;0.073529" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
-</use>
-<use href="#c2r3" y="36" display="none">
-<animate attributeName="display" values="none;inline" keyTimes="0;0.073529" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
-</use>
-<use href="#c2r2" y="54" display="none">
-<animate attributeName="display" values="inline;none" keyTimes="0;0.073529" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
-</use>
-<use href="#c2r4" y="54" display="none">
-<animate attributeName="display" values="none;inline" keyTimes="0;0.073529" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
-</use>
-<use href="#c2r2" y="72" display="inline"/>
-<use href="#c2r2" y="90" display="none">
-<animate attributeName="display" values="inline;none" keyTimes="0;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
+<use href="#c2r2" y="36" display="inline"/>
+<use href="#c2r3" y="54" display="inline"/>
+<use href="#c2r4" y="72" display="inline"/>
+<use href="#c2r4" y="90" display="none">
+<animate attributeName="display" values="inline;none" keyTimes="0;0.083333" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r5" y="90" display="none">
-<animate attributeName="display" values="none;inline" keyTimes="0;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
+<animate attributeName="display" values="none;inline" keyTimes="0;0.083333" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="108" display="none">
-<animate attributeName="display" values="inline;none" keyTimes="0;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
+<use href="#c2r4" y="108" display="none">
+<animate attributeName="display" values="inline;none" keyTimes="0;0.083333" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r6" y="108" display="none">
-<animate attributeName="display" values="none;inline" keyTimes="0;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
+<animate attributeName="display" values="none;inline" keyTimes="0;0.083333" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="126" display="none">
+<use href="#c2r4" y="126" display="none">
 <animate attributeName="display" values="inline;none" keyTimes="0;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r7" y="126" display="none">
 <animate attributeName="display" values="none;inline" keyTimes="0;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="144" display="none">
+<use href="#c2r4" y="144" display="none">
 <animate attributeName="display" values="inline;none" keyTimes="0;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r8" y="144" display="none">
 <animate attributeName="display" values="none;inline" keyTimes="0;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="162" display="inline"/>
-<use href="#c2r2" y="180" display="none">
+<use href="#c2r4" y="162" display="inline"/>
+<use href="#c2r4" y="180" display="none">
 <animate attributeName="display" values="inline;none" keyTimes="0;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r9" y="180" display="none">
 <animate attributeName="display" values="none;inline" keyTimes="0;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="198" display="none">
+<use href="#c2r4" y="198" display="none">
 <animate attributeName="display" values="inline;none" keyTimes="0;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r10" y="198" display="none">
 <animate attributeName="display" values="none;inline" keyTimes="0;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="216" display="none">
+<use href="#c2r4" y="216" display="none">
 <animate attributeName="display" values="inline;none" keyTimes="0;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r11" y="216" display="none">
 <animate attributeName="display" values="none;inline" keyTimes="0;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="234" display="none">
+<use href="#c2r4" y="234" display="none">
 <animate attributeName="display" values="inline;none" keyTimes="0;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r12" y="234" display="none">
 <animate attributeName="display" values="none;inline" keyTimes="0;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="252" display="inline"/>
-<use href="#c2r2" y="270" display="none">
+<use href="#c2r4" y="252" display="inline"/>
+<use href="#c2r4" y="270" display="none">
 <animate attributeName="display" values="inline;none" keyTimes="0;0.117647" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
 <use href="#c2r13" y="270" display="none">
 <animate attributeName="display" values="none;inline" keyTimes="0;0.117647" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
 </use>
-<use href="#c2r2" y="288" display="inline"/>
-<use href="#c2r2" y="306" display="inline"/>
-<use href="#c2r2" y="324" display="inline"/>
-<use href="#c2r2" y="342" display="inline"/>
-<use href="#c2r2" y="360" display="inline"/>
+<use href="#c2r4" y="288" display="inline"/>
+<use href="#c2r4" y="306" display="inline"/>
+<use href="#c2r4" y="324" display="inline"/>
+<use href="#c2r4" y="342" display="inline"/>
+<use href="#c2r4" y="360" display="inline"/>
 <g display="none">
-<animate attributeName="display" values="inline;none" keyTimes="0;0.073529" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
-<rect class="u" y="36" width="8.4" height="18" fill="#d4d4d4" opacity="0.65"/>
+<animate attributeName="display" values="inline;none" keyTimes="0;0.083333" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
+<rect class="u" y="90" width="8.4" height="18" fill="#d4d4d4" opacity="0.65"/>
 </g>
 <g display="none">
-<animate attributeName="display" values="none;inline;none" keyTimes="0;0.073529;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
-<rect class="u" y="90" width="8.4" height="18" fill="#d4d4d4" opacity="0.65"/>
+<animate attributeName="display" values="none;inline;none" keyTimes="0;0.083333;0.098039" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
+<rect class="u" y="126" width="8.4" height="18" fill="#d4d4d4" opacity="0.65"/>
 </g>
 <g display="none">
 <animate attributeName="display" values="none;inline;none" keyTimes="0;0.098039;0.107843" dur="17s" calcMode="discrete" repeatCount="indefinite"/>
