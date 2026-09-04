@@ -11,7 +11,7 @@ Future<T> later<T>(T t, [Duration duration = Duration.zero]) async {
 }
 
 void main(List<String> args) async {
-  await asyncGroup('1: Wait for duration', () async {
+  await asyncGroup('Wait for duration', () async {
     await asyncBenchmark('10ms', () async {
       await later<int>(39, Duration(milliseconds: 10));
     });
@@ -21,15 +21,11 @@ void main(List<String> args) async {
     }, scoreEmitter: MeanEmitter());
   });
 
-  group('2: Set', () {
+  group('Testing', () {
     benchmark('error test', () {
-      throw ('Thrown in benchmark: error test.');
+      throw ('Thrown in benchmark.');
     });
 
-    benchmark('construct', () {
-      final set = {for (var i = 0; i < 1000; ++i) i};
-    });
-
-    throw 'Error in group';
+    throw 'Thrown in group';
   });
 }
