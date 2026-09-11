@@ -18,9 +18,8 @@ void main() {
         'Usage: dart run benchmark_runner <command> [arguments] <path to directory|file>\n'
         '\n'
         'Global options:\n'
-        '-h, --help            Print this usage information.\n'
-        '-v, --verbose         Enable to show more info and error messages.\n'
-        '-m, --isMonochrome    Disables colorized reporting.\n'
+        '-h, --help       Print this usage information.\n'
+        '-v, --verbose    Enable to show more info and error messages.\n'
         '\n'
         'Available commands:\n'
         '  export   Exports benchmark scores. A file extension and output directory may be specified.\n'
@@ -52,7 +51,8 @@ void main() {
           'Runs benchmarks and prints a score report to stdout.\n'
           '\n'
           'Usage: benchmark_runner report [arguments] <path to directory|files>\n'
-          '-h, --help    Print this usage information.\n'
+          '-h, --help          Print this usage information.\n'
+          '-m, --monochrome    Disables colorized reporting.\n'
           '\n'
           'Run "benchmark_runner help" to see global options.',
         ),
@@ -95,12 +95,13 @@ void main() {
         usage,
         'Exports benchmark scores. A file extension and output directory may be specified.\n'
         '\n'
-        'Usage: benchmark_runner export [arguments] <path to directory|files>\n'
-        '-h, --help         Print this usage information.\n'
-        '-e, --extension    Set file extension of exported files.\n'
-        '                   (defaults to "txt")\n'
-        '-o, --outputDir    Set directory where score files will be written.\n'
-        '                   (defaults to "benchmark")\n'
+        'Usage: benchmark_runner export [arguments]\n'
+        '-h, --help                 Print this usage information.\n'
+        '-e, --extension            Set file extension of exported files.\n'
+        '                           (defaults to "txt")\n'
+        '-o, --output-dir           Set directory where score files will be written.\n'
+        '                           (defaults to "benchmark")\n'
+        '-c, --[no-]color-output    Enables colorized reporting.\n'
         '\n'
         'Run "benchmark_runner help" to see global options.',
       );

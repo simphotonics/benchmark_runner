@@ -1,43 +1,43 @@
 import 'package:ansi_modifier/ansi_modifier.dart';
 
 /// Defines styles and colors used to print benchmark reports to a terminal.
-extension ColorProfile on Ansi {
+extension ColorProfile on FontModifier {
   /// Style of an error message
-  static Ansi error = Ansi.red;
+  static FontModifier error = Ansi.red;
 
   /// Style of a group label.
-  static Ansi group = Ansi.defaultFont;
+  static FontModifier group = Ansi.defaultFont;
 
   /// Style of a benchmark label.
-  static Ansi benchmark = Ansi.defaultFg;
+  static FontModifier benchmark = Ansi.defaultForeground;
 
   /// Style of an asynchronous benchmark label.
-  static Ansi asyncBenchmark = Ansi.defaultFont;
+  static FontModifier asyncBenchmark = Ansi.defaultFont;
 
   /// Style used to print a sample mean.
-  static Ansi mean = Ansi.green;
+  static FontModifier mean = Ansi.green;
 
   /// Style used to print a sample median.
-  static Ansi median = Ansi.blue;
+  static FontModifier median = Ansi.blue;
 
   /// Style used to color the histogram block containing the mean value.
-  static Ansi meanHistogramBlock = mean;
+  static FontModifier meanHistogramBlock = mean;
 
   /// Style used to print the histogram block containing the median value.
-  static Ansi medianHistogramBlock = median;
+  static FontModifier medianHistogramBlock = median;
 
   /// Style used to print the histogram block containing mean and median.
-  static Ansi meanMedianHistogramBlock = Ansi.cyan;
+  static FontModifier meanMedianHistogramBlock = Ansi.cyan;
 
   /// Style used to print dimmed console messages.
-  static Ansi dim = Ansi.grey;
+  static FontModifier dim = Ansi.grey;
 
   /// Style used to print emphasized console messages.
-  static Ansi emphasize = Ansi.bold;
+  static FontModifier emphasize = Ansi.bold;
 
   /// Style used to print highlighted console messages.
-  static Ansi highlight = Ansi.yellow;
+  static FontModifier highlight = Ansi.yellow;
 
   /// Style used to print success messages.
-  static Ansi success = Ansi.green;
+  static FontModifier success = Ansi.green;
 }
