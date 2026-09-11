@@ -1,4 +1,13 @@
 
+## 2.2.0
+- Removed the options `-m` or `-isMonoChrome` from command `benchmark_runner`.
+- The subcommand `report` now has the flags `-m` or `--monochrome` to disable
+  color output.
+- The subcommand `export` now thas the flag `-c` or `--color-output` to
+  enable color output.
+- Updated dependencies. The Ansi escape codes used to colorize console output
+  are not instances of the extension type `FontModifier`.
+
 ## 2.1.0
 - The console utility `benchmark_runner` now supports [Glob][Glob] syntax when
   entering a path.
