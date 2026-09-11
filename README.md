@@ -128,7 +128,7 @@ occur within the scope of a benchmark function).
 * The total benchmark run time may be shorter than the sum of the
 micro-benchmark run times since each executable benchmark file is run in
 a separate process.
-* To disable color output use the command option ``-m`` or ``--monochrome``.
+* To disable color output use the command options ``-m`` or ``--monochrome``.
 
 
 ### 3. Exporting Benchmark Scores
@@ -145,7 +145,7 @@ The following points are worth considering:
 *  The output directory must *exist* and the user
 must have *write access*.
 * When exporting benchmark scores to a file
-colorized output is disabled by default. To enable is use the command
+colorized output is disabled by default. To enable it use the command
 option ``-c`` or ``--color-output``.
 * The functions [`benchmark`][benchmark] and
 [`asyncBenchmark`][asyncBenchmark] accept the optional parameter `scoreEmitter`,
@@ -196,9 +196,6 @@ score statistics.
 the report similar to that produced by
 [`benchmark_harness`][benchmark_harness], use the
 optional argument `emitter: MeanEmitter()`.
-
-- Color output can be switched off by using the option: `--isMonochrome` or `-m`
-when calling the benchmark runner.
 
 - The default colors used to style benchmark reports are best suited
 for a dark terminal background.
