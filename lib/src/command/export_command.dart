@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ansi_modifier/ansi_modifier.dart';
+import 'package:args/command_runner.dart' show Command;
 import 'package:path/path.dart' as p;
 
 import '../base/benchmark_process_result.dart';
@@ -11,9 +12,10 @@ import '../extension/color_profile.dart';
 import '../extension/path_helper.dart';
 import '../extension/string_utils.dart';
 import '../util/file_utils.dart';
-import 'report_command.dart';
+import 'file_explorer.dart';
+import 'progress_indicator.dart';
 
-class ExportCommand extends ReportCommand {
+class ExportCommand extends Command<void> with BenchmarkFileExplorer {
   @override
   String get name => 'export';
 
@@ -26,7 +28,8 @@ class ExportCommand extends ReportCommand {
       'and output directory may be specified.';
 
   static const _extension = 'extension';
-  static const _outputDir = 'outputDir';
+  static const _outputDir = 'output-dir';
+  static const _colorOutput = "color-output";
 
   new() {
     argParser
@@ -41,6 +44,13 @@ class ExportCommand extends ReportCommand {
         abbr: 'o',
         defaultsTo: 'benchmark',
         help: 'Set directory where score files will be written.',
+      )
+      ..addFlag(
+        _colorOutput,
+        abbr: 'c',
+        defaultsTo: false,
+        negatable: true,
+        help: 'Enables colorized reporting.',
       );
   }
 
@@ -48,16 +58,20 @@ class ExportCommand extends ReportCommand {
   Future<void> run() async {
     final clock = Stopwatch()..start();
 
-    // Reading flags
+    // Reading global flags
     final isVerbose = globalResults!.flag('verbose');
-    final isMonochrome = globalResults!.flag('isMonochrome');
 
-    Ansi.status = isMonochrome ? AnsiOutput.disabled : AnsiOutput.enabled;
+    // Reading local flags
+    final isMonochrome = !argResults!.flag(_colorOutput);
+    if (isMonochrome) {
+      Ansi.status = AnsiOutput.disabled;
+    }
 
     final benchmarkFiles = await findBenchmarkFiles();
 
     // Reading options
-    final outputDirectory = argResults!.option(_outputDir) ?? 'benchmark';
+    final outputDirectory = argResults!.option(_outputDir) ?? "benchmark";
+    final extension = argResults!.option(_extension) ?? "txt";
 
     // Starting processes.
     final fResults = <Future<BenchmarkProcessResult>>[];
@@ -68,7 +82,7 @@ class ExportCommand extends ReportCommand {
           arguments: [
             '--define=isBenchmarkProcess=true',
             if (isVerbose) '--define=isVerbose=true',
-            //if (isMonochrome) '--define=isMonochrome=true',
+            if (isMonochrome) '--define=isMonochrome=true',
           ],
           benchmarkFile: file,
         ),
@@ -90,7 +104,7 @@ class ExportCommand extends ReportCommand {
       final outputFileName = p
           .fromUri(result.benchmarkFile.uri)
           .basename
-          .setExtension('.' + argResults!.option(_extension)!);
+          .setExtension('.' + extension);
 
       final outputPath = outputDirectory.join(outputFileName);
 
