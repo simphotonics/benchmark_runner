@@ -29,12 +29,6 @@ class BenchmarkRunner._([
         defaultsTo: false,
         negatable: false,
         help: 'Enable to show more info and error messages.',
-      )
-      ..argParser.addFlag(
-        'isMonochrome',
-        abbr: 'm',
-        negatable: false,
-        help: 'Disables colorized reporting.',
       );
   }
 
