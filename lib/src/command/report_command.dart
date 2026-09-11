@@ -6,13 +6,12 @@ import 'package:ansi_modifier/ansi_modifier.dart';
 import 'package:args/command_runner.dart';
 
 import '../base/benchmark_process_result.dart';
-import '../enum/exit_code.dart';
 import '../extension/color_profile.dart';
-import '../extension/duration_formatter.dart';
 import '../extension/string_utils.dart';
-import '../util/file_utils.dart';
+import 'file_explorer.dart';
+import 'progress_indicator.dart';
 
-class ReportCommand extends Command<void> {
+class ReportCommand extends Command<void> with BenchmarkFileExplorer {
   @override
   String get name => 'report';
 
@@ -23,58 +22,28 @@ class ReportCommand extends Command<void> {
   String get description =>
       'Runs benchmarks and prints a score report to stdout.';
 
-  StreamSubscription<String> progressIndicatorSubscription() {
-    final stream = Stream<String>.periodic(
-      const Duration(milliseconds: 250),
-      (i) =>
-          'Progress timer: '.style(ColorProfile.dim) +
-          Duration(milliseconds: i * 250).ssms.style(Ansi.green),
+  new() {
+    argParser.addFlag(
+      'monochrome',
+      abbr: 'm',
+      negatable: false,
+      defaultsTo: false,
+      help: 'Disables colorized reporting.',
     );
-    const cursorToStartOfLine = Ansi.cursorToColumn(1);
-
-    return stream.listen((event) {
-      stdout.write(cursorToStartOfLine);
-      stdout.write(event);
-      stdout.write(cursorToStartOfLine);
-    });
-  }
-
-  /// Attempts to find benchmark files and prints an error/success message.
-  /// * Uses `argResults!.rest.first` as path.
-  /// * If no path is provided, the directory `benchmark` is used instead.
-  Future<List<File>> findBenchmarkFiles() async {
-    final path = argResults!.rest.isEmpty
-        ? 'benchmark'
-        : argResults!.rest.first;
-
-    // Resolving test files.
-    final benchmarkFiles = await resolveBenchmarkFiles(path);
-    if (benchmarkFiles.isEmpty) {
-      print('');
-      print(
-        'Could not resolve any benchmark files using path: '
-        '${path.style(ColorProfile.highlight)}\n',
-      );
-      exit(ExitCode.noBenchmarkFilesFound.index);
-    } else {
-      print('\nLocating benchmark files ... '.style(ColorProfile.dim));
-      for (final file in benchmarkFiles) {
-        print(file.path);
-      }
-      print('');
-    }
-    return benchmarkFiles;
   }
 
   @override
   Future<void> run() async {
     final clock = Stopwatch()..start();
 
-    // Reading flags
+    // Reading global flags
     final isVerbose = globalResults!.flag('verbose');
-    final isMonochrome = globalResults!.flag('isMonochrome');
 
-    Ansi.status = isMonochrome ? AnsiOutput.disabled : AnsiOutput.enabled;
+    // Reading local flags
+    final isMonochrome = argResults!.flag('monochrome');
+    if (isMonochrome) {
+      Ansi.status = AnsiOutput.disabled;
+    }
 
     final benchmarkFiles = await findBenchmarkFiles();
 
@@ -87,7 +56,7 @@ class ReportCommand extends Command<void> {
           arguments: [
             '--define=isBenchmarkProcess=true',
             if (isVerbose) '--define=isVerbose=true',
-            //if (isMonochrome) '--define=isMonochrome=true',
+            if (isMonochrome) '--define=isMonochrome=true',
           ],
           benchmarkFile: file,
         ),
