@@ -1,4 +1,7 @@
 
+## 2.2.1
+- Updated deps. 
+
 ## 2.2.0
 - Removed the options `-m` or `-isMonoChrome` from command `benchmark_runner`.
 - The subcommand `report` now has the flags `-m` or `--monochrome` to disable
