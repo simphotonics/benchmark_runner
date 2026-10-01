@@ -77,34 +77,42 @@ class Stats<T extends num>(List<T> sample) {
   T get sum => _sum();
 
   late final _median = Lazy<double>(() {
-    final q2 = _sortedSample().length ~/ 2;
-    return (_sample.length.isEven)
-        ? (_sortedSample()[q2 - 1] + _sortedSample()[q2]) / 2
-        : _sortedSample()[q2].toDouble();
+    final midIndex = sample.length ~/ 2;
+    if (sample.length.isEven) {
+      return (_sortedSample()[midIndex - 1] + _sortedSample()[midIndex]) / 2;
+    } else {
+      return _sortedSample()[midIndex].toDouble();
+    }
   });
 
   /// Returns the sample median (second quartile).
   double get median => _median();
 
   late final _quartile1 = Lazy<double>(() {
-    final length = _sortedSample().length;
-    final halfLength = (length.isOdd) ? length ~/ 2 + 1 : length ~/ 2;
-    final q1 = halfLength ~/ 2;
-    return (halfLength.isEven)
-        ? (_sortedSample()[q1 - 1] + _sortedSample()[q1]) / 2
-        : _sortedSample()[q1].toDouble();
+    final halfLength = sample.length ~/ 2;
+    final quaterIndex = halfLength ~/ 2;
+    if (halfLength.isEven) {
+      return (_sortedSample()[quaterIndex - 1] + _sortedSample()[quaterIndex]) /
+          2;
+    } else {
+      return _sortedSample()[quaterIndex].toDouble();
+    }
   });
 
   /// Returns the first quartile.
   double get quartile1 => _quartile1();
 
   late final _quartile3 = Lazy<double>(() {
-    final length = _sortedSample().length;
-    final halfLength = (length.isOdd) ? length ~/ 2 + 1 : length ~/ 2;
-    final q3 = length ~/ 2 + halfLength ~/ 2;
-    return (halfLength.isEven)
-        ? (_sortedSample()[q3 - 1] + _sortedSample()[q3]) / 2
-        : _sortedSample()[q3].toDouble();
+    final halfLength = sample.length ~/ 2;
+    final quaterIndex = halfLength ~/ 2;
+
+    if (halfLength.isEven) {
+      return (_sortedSample()[halfLength + quaterIndex - 1] +
+              _sortedSample()[halfLength + quaterIndex]) /
+          2;
+    } else {
+      return _sortedSample()[halfLength + 1 + quaterIndex].toDouble();
+    }
   });
 
   /// Returns the third quartile.
@@ -169,5 +177,21 @@ class Stats<T extends num>(List<T> sample) {
     _quartile1.updateCache();
     _quartile3.updateCache();
     _iqr.updateCache();
+  }
+
+  @override
+  String toString() {
+    final b = StringBuffer('sample: \n');
+    b.writeln('  length:    ${sample.length}');
+    b.writeln('  min:       $min');
+    b.writeln('  max:       $max');
+    b.writeln('  iqr:       $iqr');
+    b.writeln('  stdDev:    $stdDev');
+    b.writeln('  mean:      $mean');
+    b.writeln('  median:    $median');
+    b.writeln('  quartile1: $quartile1');
+    b.writeln('  quartile3: $quartile3');
+    b.writeln('  sum:       $sum');
+    return b.toString();
   }
 }
