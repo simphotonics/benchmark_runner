@@ -18,6 +18,14 @@ extension Histogram on Stats {
   int get intervalNumberFreedman =>
       iqr == 0 ? 3 : math.max((max - min).abs() ~/ intervalSizeFreedman, 3);
 
+  int get intervals {
+    if (intervalNumberFreedman > sample.length) {
+      return sample.length ~/ 1.2;
+    } else {
+      return intervalNumberFreedman;
+    }
+  }
+
   /// Returns a map representing a sample histogram.
   /// * keys: The map keys correspond to the histogram interval mid-points.
   /// * values: The map values represent a count of how many
@@ -33,7 +41,7 @@ extension Histogram on Stats {
   ///   rule.
   Map<double, double> histogram({bool normalize = false, int intervals = -1}) {
     final sampleSize = sortedSample.length;
-    final intervalNumber = intervals < 3 ? intervalNumberFreedman : intervals;
+    final intervalNumber = intervals < 3 ? this.intervals : intervals;
 
     final intervalSize = (max - min) / intervalNumber;
     final gridPoints = intervalNumber + 1;
@@ -64,11 +72,8 @@ extension Histogram on Stats {
 
   static final blocks = switch (Ansi.status) {
     AnsiOutput.enabled => [
-      '_'.style(ColorProfile.dim),
-      '_',
-      // '\u2581'.colorize(AnsiModifier.grey),
+      '\u2581'.style(ColorProfile.dim),
       '\u2581',
-      // '\u2582'.colorize(AnsiModifier.grey),
       '\u2582',
       '\u2583',
       '\u2584',
@@ -79,7 +84,6 @@ extension Histogram on Stats {
       '\u2589',
     ],
     AnsiOutput.disabled => [
-      '_',
       '\u2581',
       '\u2582',
       '\u2583',
@@ -92,8 +96,11 @@ extension Histogram on Stats {
     ],
   };
 
+  static const meanBlock = '\u258F\u2595'; // \u25B3
+
   /// Returns a block histogram in the form of a [String].
-  /// * The single block containing the *mean and median* is colored cyan.
+  /// * If the same block contains the [mean] and [median] it is styled using
+  ///   [ColorProfile.meanMedianHistogramBlock].
   /// * To disable color output set:
   /// `AnsiModifier.colorOutput = ColoOutput.off;`
   /// Sample output (with color output disabled):
@@ -105,15 +112,18 @@ extension Histogram on Stats {
       '${blocks.first}';
 
   /// Returns a block histogram in the form of a [String].
-  /// * The block containing the *mean* value is colored green.
-  /// * The block containing the *median* is colored blue.
-  /// * The block containing the *mean and median* is colored cyan.
+  /// * The block containing the [mean] value is styled using
+  ///   [ColorProfile.meanHistogramBlock].
+  /// * The block containing the [median] is styled using
+  ///   [ColorProfile.medianHistogramBlock].
+  /// * The block containing the [mean] and [median] is styled using
+  ///   [ColorProfile.meanMedianHistogramBlock].
   /// * If the sample range is high resulting in a large number of
   ///   histogram intervals only the first 20 and last 20 intervals
   ///   are displayed and the
   ///   number of skipped intervals is shown.
   /// * To disable color output set:
-  /// `AnsiModifier.colorOutput = ColoOutput.off;`
+  ///   [Ansi.status] to [AnsiOutput.disabled].
   ///
   /// Usage:
   /// ```
@@ -123,10 +133,8 @@ extension Histogram on Stats {
   /// Sample output (with color output disabled):
   ///
   /// ▉▂__________________ 177  ____________________
-  ///
-  ///
   String blockHistogram({bool normalize = false, int intervals = 0}) {
-    final intervalNumber = intervals < 2 ? intervalNumberFreedman : intervals;
+    final intervalNumber = intervals < 3 ? this.intervals : intervals;
 
     final intervalSize = (max - min) / intervalNumber;
 
@@ -139,27 +147,36 @@ extension Histogram on Stats {
     final leftBorder = min - intervalSize / 2;
 
     // Generating histogram
-    for (final current in sortedSample) {
-      // Calculate interval index of current.
-      final index = (current - leftBorder) ~/ intervalSize;
+    for (final dataPoint in sortedSample) {
+      // Calculate interval index of the current dataPoint.
+      final index = (dataPoint - leftBorder) ~/ intervalSize;
       counts[index]++;
     }
     final sampleSize = sortedSample.length;
-    for (var i = 0; i < gridPoints; ++i) {
-      counts[i] = counts[i] / (sampleSize * intervalSize);
+
+    if (normalize) {
+      for (var i = 0; i < gridPoints; ++i) {
+        counts[i] = counts[i] / (sampleSize * intervalSize);
+      }
     }
 
     final countsMax = counts.reduce(
       (value, element) => math.max(value, element),
     );
-    final deltaCounts = countsMax / (blocks.length - 1);
-    final result = List<String>.filled(gridPoints, ' ');
+
+    // The number of available histogram blocks depends on Ansi.status.
     final blockCount = blocks.length;
+    final deltaCounts = countsMax / (blockCount - 1);
+
+    // The empty histogram.
+    final result = List<String>.filled(gridPoints, ' ');
+
     // Assign a block string to each value.
     for (var i = 0; i < gridPoints; i++) {
-      final j = math.min((counts[i] / deltaCounts).ceil(), blockCount);
-      result[i] = blocks[j];
+      final blockIndex = math.min((counts[i] / deltaCounts).ceil(), blockCount);
+      result[i] = blocks[blockIndex];
     }
+
     final length = result.length;
 
     final indexOfMean = (mean - leftBorder) ~/ intervalSize;
@@ -167,15 +184,28 @@ extension Histogram on Stats {
     final indexOfMedian = (median - leftBorder) ~/ intervalSize;
 
     if (indexOfMedian == indexOfMean) {
+      // Replace block if it will not be visible:
+      result[indexOfMedian] = switch (result[indexOfMedian]) {
+        String b when (b == blocks[0] || b == blocks[1]) => blocks[2],
+        String b => b,
+      };
       // Colorize block containing mean and median
       result[indexOfMedian] = result[indexOfMedian].style(
         ColorProfile.meanMedianHistogramBlock,
       );
     } else {
+      result[indexOfMedian] = switch (result[indexOfMedian]) {
+        String b when (b == blocks[0] || b == blocks[1]) => blocks[2],
+        String b => b,
+      };
       // Colorize block containing the median value.
       result[indexOfMedian] = result[indexOfMedian].style(
-        ColorProfile.meanMedianHistogramBlock,
+        ColorProfile.medianHistogramBlock,
       );
+      result[indexOfMean] = switch (result[indexOfMean]) {
+        String b when (b == blocks[0] || b == blocks[1]) => blocks[2],
+        String b => b,
+      };
       // Colorize block containing the mean value.
       result[indexOfMean] = result[indexOfMean].style(
         ColorProfile.meanHistogramBlock,
