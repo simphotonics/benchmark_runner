@@ -3,7 +3,7 @@ import 'package:ansi_modifier/ansi_modifier.dart';
 /// Defines styles and colors used to print benchmark reports to a terminal.
 extension ColorProfile on FontModifier {
   /// Style of an error message
-  static FontModifier error = Ansi.red;
+  static FontModifier error = Ansi.redBright;
 
   /// Style of a group label.
   static FontModifier group = Ansi.defaultFont;
@@ -15,10 +15,10 @@ extension ColorProfile on FontModifier {
   static FontModifier asyncBenchmark = Ansi.defaultFont;
 
   /// Style used to print a sample mean.
-  static FontModifier mean = Ansi.green;
+  static FontModifier mean = Ansi.greenBright;
 
   /// Style used to print a sample median.
-  static FontModifier median = Ansi.blue;
+  static FontModifier median = Ansi.blueBright;
 
   /// Style used to color the histogram block containing the mean value.
   static FontModifier meanHistogramBlock = mean;
@@ -26,11 +26,12 @@ extension ColorProfile on FontModifier {
   /// Style used to print the histogram block containing the median value.
   static FontModifier medianHistogramBlock = median;
 
-  /// Style used to print the histogram block containing mean and median.
+  /// Style used to print the histogram block containing the mean and the
+  /// median.
   static FontModifier meanMedianHistogramBlock = Ansi.cyan;
 
   /// Style used to print dimmed console messages.
-  static FontModifier dim = Ansi.grey;
+  static FontModifier dim = Ansi.faint;
 
   /// Style used to print emphasized console messages.
   static FontModifier emphasize = Ansi.bold;
@@ -39,5 +40,5 @@ extension ColorProfile on FontModifier {
   static FontModifier highlight = Ansi.yellow;
 
   /// Style used to print success messages.
-  static FontModifier success = Ansi.green;
+  static FontModifier success = Ansi.greenBright;
 }
