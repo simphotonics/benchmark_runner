@@ -1,6 +1,10 @@
 
-## 2.2.1
+## 2.2.2
+- Fixed bug in the calculation of `quartile1` and `quartile3`.
 - Updated deps. 
+
+## 2.2.1
+- Updated deps.
 
 ## 2.2.0
 - Removed the options `-m` or `-isMonoChrome` from command `benchmark_runner`.
