@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 import 'package:ansi_modifier/ansi_modifier.dart';
+import 'package:sample_statistics/sample_statistics.dart' hide ColorProfile;
 
-import '../extension/histogram.dart';
-import '../extension/precision.dart';
 import '../extension/duration_formatter.dart';
 import '../extension/color_profile.dart';
 import '../base/score.dart';
@@ -23,7 +22,7 @@ class const MeanEmitter() implements ScoreEmitter {
   void emit({required String description, required Score score}) {
     print(
       '$description(RunTime): ' +
-          '${score.scoreStats.mean.toStringAsFixedDigits()} us'.style(
+          '${score.stats.mean.toStringAsFixedDigits()} us'.style(
             ColorProfile.mean,
           ) +
           '\n',
@@ -41,10 +40,10 @@ class const StatsEmitter() implements ScoreEmitter {
     final indent = '  ';
     final part1 = '${score.duration.msus.style(ColorProfile.dim)} $description';
 
-    final mean = score.scoreStats.mean / score.timeScale.factor;
-    final stdDev = score.scoreStats.stdDev / score.timeScale.factor;
-    final median = score.scoreStats.median / score.timeScale.factor;
-    final iqr = score.scoreStats.iqr / score.timeScale.factor;
+    final mean = score.stats.mean / score.timeScale.factor;
+    final stdDev = score.stats.stdDev / score.timeScale.factor;
+    final median = score.stats.median / score.timeScale.factor;
+    final iqr = score.stats.iqr / score.timeScale.factor;
     final unit = score.timeScale.unit;
 
     final part2 =
@@ -55,14 +54,22 @@ class const StatsEmitter() implements ScoreEmitter {
                 '${iqr.toStringAsFixedDigits()} $unit'
             .style(ColorProfile.median);
 
-    final part3 = '$indent${score.scoreStats.blockHistogram()} ';
-
-    final part4 =
-        '${indent}sample size: ${score.scoreStats.sortedSample.length}' +
+    final part3 =
+        '${indent}sample size: ${score.stats.sortedSample.length}' +
         (score.innerIterations > 1
                 ? ' (averaged over ${score.innerIterations} runs)'
                 : '')
             .style(ColorProfile.dim);
+
+    final part4 =
+        score.stats.blockHistogram(
+          indent: indent,
+          infoOption: HistogramInfoOption.showMedian,
+          scalingFactor: score.timeScale.factor,
+          minIntervals: 9,
+        ) +
+        ' ';
+
     print(part1);
     print(part2);
     print(part3);
