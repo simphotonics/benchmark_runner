@@ -11,8 +11,5 @@ export 'src/enum/exit_code.dart';
 export 'src/extension/benchmark_helper.dart';
 export 'src/extension/color_profile.dart';
 export 'src/extension/duration_formatter.dart';
-export 'src/extension/histogram.dart';
-export 'src/extension/precision.dart';
 export 'src/extension/string_utils.dart' hide benchmarkError, addErrorMark;
 export 'src/util/file_utils.dart';
-export 'src/util/stats.dart';
