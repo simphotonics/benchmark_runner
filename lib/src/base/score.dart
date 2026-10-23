@@ -1,4 +1,4 @@
-import '../util/stats.dart';
+import 'package:sample_statistics/sample_statistics.dart' show Stats;
 
 /// Object aggreggating the score sample, score stats
 /// and the duration it took to generate the
@@ -13,13 +13,15 @@ class Score<T extends num>({
 
   /// Benchmark score sample in microseconds.
   /// Must have at least 2 entries.
-  required List<T> scoreSample,
+  required List<T> sample,
 }) {
+  this : stats = Stats(sample);
+
   /// Scores (in microseconds) and score stats.
-  final Stats<T> scoreStats = Stats(scoreSample);
+  late final Stats<T> stats;
 
   /// Time-scale when scores are divided by factor.
-  late final ({String unit, int factor}) timeScale = switch (scoreStats.mean) {
+  late final ({String unit, int factor}) timeScale = switch (stats.mean) {
     > 1000000 => (unit: 's', factor: 1000000),
     > 1000 => (unit: 'ms', factor: 1000),
     _ => (unit: 'us', factor: 1),
