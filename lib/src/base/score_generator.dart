@@ -1,5 +1,4 @@
 import '../extension/benchmark_helper.dart';
-import '../util/stats.dart';
 import 'sample_size.dart';
 import 'score.dart';
 
@@ -88,7 +87,7 @@ class const ScoreGenerator({
     );
     return Score(
       duration: watch.elapsed,
-      scoreSample: sample.scores,
+      sample: sample.scores,
       innerIterations: sample.innerIterations,
     );
   }
