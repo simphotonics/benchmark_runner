@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import '../extension/benchmark_helper.dart';
-import '../util/stats.dart';
 import 'sample_size.dart';
 import 'score.dart';
 
@@ -24,8 +23,8 @@ class const AsyncScoreGenerator({
 }) {
   /// Returns a sample of benchmark scores.
   /// The benchmark scores represent the run time in microseconds. The integer
-  /// `innerIter` is larger than 1 if each score entry was averaged over
-  /// `innerIter` runs.
+  /// `innerIterations` is larger than 1 if each score entry was averaged over
+  /// `innerIterations` runs.
   ///
   Future<({List<double> scores, int innerIterations})> sample({
     Duration warmUpDuration = const Duration(milliseconds: 200),
@@ -76,8 +75,7 @@ class const AsyncScoreGenerator({
     }
   }
 
-  /// Returns an instance of [Score] holding the total benchmark duration
-  /// and a [Stats] object created from the score sample.
+  /// Returns an instance of [Score] created from the score sample.
   /// Note: The run time entries represent microseconds.
   Future<Score> score({
     int warmUpRuns = 3,
@@ -93,7 +91,7 @@ class const AsyncScoreGenerator({
     //stats.removeOutliers(10);
     return Score(
       duration: watch.elapsed,
-      scoreSample: sample.scores,
+      sample: sample.scores,
       innerIterations: sample.innerIterations,
     );
   }
