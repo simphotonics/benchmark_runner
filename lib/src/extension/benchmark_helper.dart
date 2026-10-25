@@ -24,6 +24,8 @@ extension BenchmarkHelper on Stopwatch {
   }
 
   /// Returns the average runtime of [run] expressed as clock ticks.
+  ///
+  /// The function [run] is executed [runs] times.
   Future<int> measureAsync(Future<void> Function() run, int runs) async {
     prime();
     start();
@@ -121,7 +123,8 @@ extension BenchmarkHelper on Stopwatch {
   /// * number of runs each score is averaged over: `.innerIterations`.
   ///
   /// Note: An estimate of the total benchmark runtime in clock ticks is given by
-  /// `length*innerIterations*clockTicks`. The estimate does not include any setup,
+  /// `length*innerIterations*clockTicks`.
+  /// The estimate does not include any setup,
   /// warm-up, or teardown functionality.
   static SampleSize sampleSizeDefault(int scoreEstimateAsTicks) {
     // Estimates for the averaging used within `measure` and `measureAsync.
