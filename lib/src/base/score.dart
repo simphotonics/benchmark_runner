@@ -21,7 +21,7 @@ class Score<T extends num>({
   late final Stats<T> stats;
 
   /// Time-scale when scores are divided by factor.
-  late final ({String unit, int factor}) timeScale = switch (stats.mean) {
+  late final ({String unit, int factor}) timeScale = switch (stats.median) {
     > 1000000 => (unit: 's', factor: 1000000),
     > 1000 => (unit: 'ms', factor: 1000),
     _ => (unit: 'us', factor: 1),
