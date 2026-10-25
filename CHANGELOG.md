@@ -1,7 +1,17 @@
+## 2.3.0
+- Removed the following entities and made them available via an import
+from the package `sample_statistics`:
+     * The extension method used to create block histograms,
+     * The extension `Precision` providing `toStringAsFixedDigits`.
+- The block histograms shown by the default score emitter now have a slightly
+different format. Each block extends over two lines and is two characters wide.
+Below the histogram the sample min/max and the interval size is shown
+(space permitting). The interval symbol is printed below the block containing
+the sample median. 
 
 ## 2.2.2
 - Fixed bug in the calculation of `quartile1` and `quartile3`.
-- Updated deps. 
+- Updated deps.
 
 ## 2.2.1
 - Updated deps.
